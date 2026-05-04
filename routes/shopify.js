@@ -61,7 +61,7 @@ router.get('/callback', async (req, res) => {
     shopTokens[shop] = tokenData.access_token;
 
     // Rediriger vers le dashboard avec succès
-    res.redirect(`http://localhost:3001/api/shopify/success?shop=${shop}`);
+    res.redirect(`/api/shopify/success?shop=${shop}`);
 
   } catch (err) {
     res.status(500).send('Erreur OAuth : ' + err.message);
