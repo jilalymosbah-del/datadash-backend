@@ -141,7 +141,7 @@ router.get('/oauth-start', (req, res) => {
           let shop = document.getElementById('shop').value.trim().replace('https://','').replace(/\/$/,'');
           if (!shop) return alert('Entrez votre domaine');
           if (!shop.includes('.')) shop = shop + '.myshopify.com';
-          window.location.href = '/api/shopify/auth?shop=' + encodeURIComponent(shop);
+         window.location.href = 'https://www.mydatadash.tech/api/shopify/auth?shop=' + encodeURIComponent(shop);
         }
         document.getElementById('shop').addEventListener('keydown', e => { if(e.key==='Enter') go(); });
       </script>
