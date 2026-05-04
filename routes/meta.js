@@ -5,8 +5,7 @@ const router  = express.Router();
 
 const META_APP_ID     = process.env.META_APP_ID;
 const META_APP_SECRET = process.env.META_APP_SECRET;
-const REDIRECT_URI    = 'http://localhost:3001/api/meta/callback';
-
+const REDIRECT_URI = process.env.META_REDIRECT_URI || 'http://localhost:3001/api/meta/callback';
 // Stockage temporaire des states et tokens
 const oauthStates = {};
 const metaTokens  = {};
