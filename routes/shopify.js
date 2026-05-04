@@ -127,6 +127,19 @@ router.get('/proxy', async (req, res) => {
 });
 // ── 6. OAuth Start ──
 router.get('/oauth-start', (req, res) => {
+  const shop = req.query.shop;
+  if (shop) {
+    // Si shop fourni en paramètre, lancer directement l'OAuth
+    const state = require('crypto').randomBytes(16).toString('hex');
+    oauthStates[state] = { shop, createdAt: Date.now() };
+    const authUrl = `https://${shop}/admin/oauth/authorize?` +
+      `client_id=${SHOPIFY_CLIENT_ID}&` +
+      `scope=${SCOPES}&` +
+      `redirect_uri=${encodeURIComponent(REDIRECT_URI)}&` +
+      `state=${state}`;
+    return res.redirect(authUrl);
+  }
+  // Sinon afficher le formulaire
   res.send(`
     <html><body style="font-family:sans-serif;background:#0f172a;color:#fff;display:flex;align-items:center;justify-content:center;height:100vh;margin:0;flex-direction:column;gap:16px;">
       <h2 style="margin:0">Connecter Shopify</h2>
@@ -138,14 +151,13 @@ router.get('/oauth-start', (req, res) => {
       <button onclick="go()" style="background:#5c6ac4;color:#fff;border:none;padding:12px 28px;border-radius:8px;font-size:15px;cursor:pointer;font-weight:600">Connecter →</button>
       <script>
         function go() {
-          let shop = document.getElementById('shop').value.trim().replace('https://','').replace(/\/$/,'');
+          let shop = document.getElementById('shop').value.trim().replace('https://','').replace(/\\/$/,'');
           if (!shop) return alert('Entrez votre domaine');
           if (!shop.includes('.')) shop = shop + '.myshopify.com';
-        window.location.href = 'https://datadash-backend-production.up.railway.app/api/shopify/auth?shop=' + encodeURIComponent(shop);
+          window.location.href = 'https://datadash-backend-production.up.railway.app/api/shopify/oauth-start?shop=' + encodeURIComponent(shop);
         }
         document.getElementById('shop').addEventListener('keydown', e => { if(e.key==='Enter') go(); });
       </script>
     </body></html>
   `);
-});
-module.exports = router;
+});module.exports = router;
