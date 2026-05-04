@@ -125,5 +125,27 @@ router.get('/proxy', async (req, res) => {
     res.status(500).json({ error: 'Erreur serveur : ' + err.message });
   }
 });
-
+// ── 6. OAuth Start ──
+router.get('/oauth-start', (req, res) => {
+  res.send(`
+    <html><body style="font-family:sans-serif;background:#0f172a;color:#fff;display:flex;align-items:center;justify-content:center;height:100vh;margin:0;flex-direction:column;gap:16px;">
+      <h2 style="margin:0">Connecter Shopify</h2>
+      <p style="color:#94a3b8;margin:0">Entrez le domaine de votre boutique</p>
+      <div style="display:flex;gap:8px;align-items:center">
+        <span style="color:#94a3b8">https://</span>
+        <input id="shop" placeholder="ma-boutique.myshopify.com" style="padding:10px 14px;border-radius:8px;border:1px solid #334155;background:#1e293b;color:#fff;font-size:15px;width:260px;" />
+      </div>
+      <button onclick="go()" style="background:#5c6ac4;color:#fff;border:none;padding:12px 28px;border-radius:8px;font-size:15px;cursor:pointer;font-weight:600">Connecter →</button>
+      <script>
+        function go() {
+          let shop = document.getElementById('shop').value.trim().replace('https://','').replace(/\/$/,'');
+          if (!shop) return alert('Entrez votre domaine');
+          if (!shop.includes('.')) shop = shop + '.myshopify.com';
+          window.location.href = '/api/shopify/auth?shop=' + encodeURIComponent(shop);
+        }
+        document.getElementById('shop').addEventListener('keydown', e => { if(e.key==='Enter') go(); });
+      </script>
+    </body></html>
+  `);
+});
 module.exports = router;
