@@ -5130,32 +5130,12 @@ function renderSettingsPage() {
         '<div class="int-body">' +
           '<div class="int-body-left">' +
 
-            // Domain field
-            '<div class="int-field">' +
-              '<label class="int-lbl">' + (fr?'DOMAINE DE VOTRE BOUTIQUE':'YOUR STORE DOMAIN') + '</label>' +
-              '<div class="int-inp-row">' +
-                '<span class="int-prefix">https://</span>' +
-                '<input class="int-inp" id="shopifyDomainInp" placeholder="my-store.myshopify.com" value="' + escHtml(shopify.domain||'') + '" oninput="shopifyCleanDomain(this)"/>' +
-              '</div>' +
-            '</div>' +
-
-            // Token field (hidden if connected)
-            (connected ? '' :
-              '<div class="int-field">' +
-                '<label class="int-lbl">' + (fr?'ACCESS TOKEN':'ACCESS TOKEN') + '</label>' +
-                '<div class="int-inp-row">' +
-                  '<input class="int-inp" id="shopifyTokenInp" type="password" placeholder="shpat_xxxxxxxxxxxxxxxxxxxx" value="' + escHtml(shopify.token||'') + '" oninput="shopifyState.token=this.value.trim()"/>' +
-                  '<button class="int-eye" onclick="shopifyToggleToken()" title="show/hide">👁</button>' +
-                '</div>' +
-              '</div>'
-            ) +
-
             // Note box
             '<div class="int-note">' +
-              '<strong>' + (fr?'Mode de connexion :':'Connection mode:') + '</strong> ' +
+              '<strong>' + (fr?'Connexion OAuth sécurisée :':'Secure OAuth connection:') + '</strong> ' +
               (connected
                 ? (fr?'Vos données Shopify sont synchronisées automatiquement.':'Your Shopify data is synced automatically.')
-                : (fr?'Entrez votre domaine et votre token pour connecter votre boutique et accéder à vos données en temps réel.':'Enter your domain and token to connect your store and access real-time data.')) +
+                : (fr?'Cliquez sur le bouton pour vous connecter via Shopify. Aucun token à saisir manuellement.':'Click the button to connect via Shopify. No token to enter manually.')) +
             '</div>' +
 
             // Stats if connected
@@ -5517,7 +5497,7 @@ let metaState = {
   syncStats:    { spend: 0, impressions: 0, clicks: 0, roas: 0 }
 };
 
-var BACKEND_URL = 'http://localhost:3001';
+var BACKEND_URL = 'https://www.mydatadash.tech';
 
 function saveMetaState() {
   try {
@@ -5715,52 +5695,27 @@ async function shopifyFetch(domain, token, endpoint) {
   }
 }
 
-async function shopifyConnect() {
+function shopifyConnect() {
   const fr = currentLang === 'fr';
-  const domain = shopifyState.domain.trim().replace('https://','').replace('http://','').replace(/\/$/,'');
-  const token  = shopifyState.token.trim();
+  const popup = window.open(BACKEND_URL + '/api/shopify/oauth-start', 'ShopifyAuth', 'width=600,height=700,scrollbars=yes');
 
-  if (!domain) {
-    alert(fr ? 'Veuillez entrer votre domaine Shopify.' : 'Please enter your Shopify domain.');
-    return;
-  }
-  if (!token) {
-    alert(fr ? 'Veuillez entrer votre Access Token.' : 'Please enter your Access Token.');
-    return;
-  }
-  if (!domain.includes('.myshopify.com') && !domain.includes('.')) {
-    alert(fr ? 'Domaine invalide. Format : ma-boutique.myshopify.com' : 'Invalid domain. Format: my-store.myshopify.com');
-    return;
-  }
+  shopifyLog(fr ? 'Ouverture de la connexion Shopify...' : 'Opening Shopify connection...', 'info');
 
-  const btn = document.getElementById('shopifyConnectBtn');
-  if (btn) { btn.disabled = true; btn.textContent = fr ? 'Connexion...' : 'Connecting...'; }
+  window.addEventListener('message', function onMsg(e) {
+    if (!e.data || e.data.type !== 'SHOPIFY_CONNECTED') return;
+    window.removeEventListener('message', onMsg);
 
-  shopifyLog(fr ? 'Tentative de connexion à ' + domain : 'Connecting to ' + domain, 'info');
+    shopifyState.connected  = true;
+    shopifyState.domain     = e.data.shop || '';
+    shopifyState.token      = e.data.token || '';
+    shopifyState.storeName  = e.data.shopName || e.data.shop || '';
+    shopifyState.lastSync   = new Date().toISOString();
 
-  try {
-    // Test connection — fetch shop info via CORS proxy si nécessaire
-    const data = await shopifyFetch(domain, token, 'shop.json');
-    const shopName = (data.shop && data.shop.name) || domain;
-
-    shopifyState.connected = true;
-    shopifyState.domain    = domain;
-    shopifyState.token     = token;
-    shopifyLog((fr ? 'Connecté à ' : 'Connected to ') + shopName + ' ✓', 'success');
+    shopifyLog((fr ? 'Connecté à ' : 'Connected to ') + (shopifyState.storeName || shopifyState.domain) + ' ✓', 'success');
     saveShopifyState();
-
-    // Auto-sync after connect
-    await shopifySyncData();
-
-  } catch(e) {
-    shopifyLog((fr ? 'Erreur : ' : 'Error: ') + e.message, 'error');
-    if (btn) { btn.disabled = false; btn.textContent = fr ? 'Connecter Shopify' : 'Connect Shopify'; }
-    alert(fr
-      ? 'Connexion échouée : ' + e.message + '\n\nVérifiez votre domaine et votre Access Token.'
-      : 'Connection failed: ' + e.message + '\n\nCheck your domain and Access Token.');
-  }
-
-  renderSettingsPage();
+    shopifySyncData().then(() => renderSettingsPage());
+    renderSettingsPage();
+  });
 }
 
 async function shopifySync() {
