@@ -5697,7 +5697,7 @@ async function shopifyFetch(domain, token, endpoint) {
 
 function shopifyConnect() {
   const fr = currentLang === 'fr';
-  const popup = window.open(BACKEND_URL + '/api/shopify/oauth-start', 'ShopifyAuth', 'width=600,height=700,scrollbars=yes');
+  const popup = window.open('https://datadash-backend-production.up.railway.app/api/shopify/oauth-start', 'width=600,height=700,scrollbars=yes');
 
   shopifyLog(fr ? 'Ouverture de la connexion Shopify...' : 'Opening Shopify connection...', 'info');
 
