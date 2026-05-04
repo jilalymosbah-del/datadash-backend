@@ -7,7 +7,7 @@ dotenv.config();
 
 const app  = express();
 app.use(express.static(__dirname));
-const PORT = process.env.PORT || 3001;
+const PORT = process.env.PORT || 8080;
 
 // ── Middleware ──
 app.use(cors({ origin: '*' }));
