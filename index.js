@@ -7,12 +7,10 @@ dotenv.config();
 const app  = express();
 const PORT = process.env.PORT || 8080;
 
-// ── Middleware ──
+// ── Middleware de base ──
 app.use(cors({ origin: '*' }));
-app.use(express.json());
-app.use(express.static(__dirname, { etag: false, maxAge: 0 }));
 
-// ── Routes ──
+// ── Routes API (AVANT le static) ──
 const shopifyRoutes = require('./routes/shopify');
 const metaRoutes    = require('./routes/meta');
 const lsRoutes      = require('./routes/lemonsqueezy');
@@ -25,6 +23,10 @@ app.use('/api/ls',      lsRoutes);
 app.get('/api/health', (req, res) => {
   res.json({ status: 'ok', version: '1.0.0', timestamp: new Date().toISOString() });
 });
+
+// ── Fichiers statiques (APRÈS les routes API) ──
+app.use(express.json());
+app.use(express.static(__dirname, { etag: false, maxAge: 0 }));
 
 app.get('/connected.html', (req, res) => {
   res.sendFile(path.join(__dirname, 'connected.html'));
