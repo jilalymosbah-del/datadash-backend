@@ -9141,7 +9141,7 @@ function toggleObKeyVis() {
   if (icon) icon.style.opacity = inp.type === 'text' ? '1' : '.6';
 }
 
-function submitOnboarding() {
+async function submitOnboarding() {
   const first   = document.getElementById('obFirstName')?.value?.trim();
   const last    = document.getElementById('obLastName')?.value?.trim() || '';
   const email   = document.getElementById('obEmail')?.value?.trim();
@@ -9160,13 +9160,27 @@ function submitOnboarding() {
   if (!key)   { setErr(fr?'Clé de licence requise.':'License key is required.'); return; }
 
   // Validate key format or against list
-  const keyValid = VALID_KEYS.includes(key) || /^[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{4}$/.test(key);
-  if (!keyValid) {
-    setErr(fr?'Clé de licence invalide.':'Invalid license key.'); return;
+ // Validate key against backend
+if (btn) { btn.disabled = true; btn.textContent = fr?'Activation…':'Activating…'; }
+try {
+  const resp = await fetch('https://datadash-backend-dhbe.onrender.com/api/ls/validate', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ key })
+  });
+  const result = await resp.json();
+  if (!result.valid) {
+    setErr(fr?'Clé de licence invalide.':'Invalid license key.');
+    if (btn) { btn.disabled = false; btn.textContent = fr?'Activer':'Activate'; }
+    return;
   }
+} catch(e) {
+  setErr(fr?'Erreur de connexion.':'Connection error.');
+  if (btn) { btn.disabled = false; btn.textContent = fr?'Activer':'Activate'; }
+  return;
+}
 
-  if (btn) { btn.disabled = true; btn.textContent = fr?'Activation…':'Activating…'; }
-
+ 
   setTimeout(() => {
     // Save user — pick storage based on "remember me" flag.
     // localStorage = persists across browser sessions; sessionStorage = cleared on tab close.
