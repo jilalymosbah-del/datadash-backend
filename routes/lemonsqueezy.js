@@ -58,9 +58,38 @@ router.post('/validate', express.json(), async (req, res) => {
   if (license.activations >= license.max_activations)
     return res.status(403).json({ valid: false, error: 'Limite activation atteinte' });
 
+  // Générer une api_key unique si pas encore créée
+  let apiKey = license.api_key;
+  if (!apiKey) {
+    apiKey = 'DD-' + crypto.randomBytes(16).toString('hex').toUpperCase();
+    await supabase.from('licenses')
+      .update({ api_key: apiKey })
+      .eq('license_key', key);
+  }
+
   await supabase.from('licenses')
     .update({ activations: license.activations + 1 })
     .eq('license_key', key);
+
+  res.json({ valid: true, email: license.email, api_key: apiKey });
+});
+
+// ── Vérifier une api_key (utilisé par l'app Shopify) ──
+router.post('/verify-api-key', express.json(), async (req, res) => {
+  const { api_key, shop } = req.body;
+  if (!api_key) return res.status(400).json({ valid: false, error: 'api_key manquante' });
+
+  const { data: license, error } = await supabase
+    .from('licenses').select('*').eq('api_key', api_key).single();
+
+  if (error || !license) return res.status(404).json({ valid: false, error: 'Clé API invalide' });
+
+  // Sauvegarder le shop si fourni
+  if (shop && !license.shopify_shop) {
+    await supabase.from('licenses')
+      .update({ shopify_shop: shop })
+      .eq('api_key', api_key);
+  }
 
   res.json({ valid: true, email: license.email });
 });
