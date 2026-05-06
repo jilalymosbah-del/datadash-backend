@@ -4,7 +4,7 @@ const crypto  = require('crypto');
 const router  = express.Router();
 
 // ── Config OAuth ──
-const SHOPIFY_CLIENT_ID     = '4ab51015937afc8302534d659e4b7a85';
+const SHOPIFY_CLIENT_ID = process.env.SHOPIFY_API_KEY || '4ab51015937afc8302534d659e4b7a85';
 const SHOPIFY_CLIENT_SECRET = process.env.SHOPIFY_CLIENT_SECRET || '';
 const REDIRECT_URI = process.env.SHOPIFY_REDIRECT_URI || '';
 const SCOPES                = 'read_orders,read_products,read_customers';
