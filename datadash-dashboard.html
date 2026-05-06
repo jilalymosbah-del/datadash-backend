@@ -9162,13 +9162,14 @@ async function submitOnboarding() {
   // Validate key format or against list
  // Validate key against backend
 if (btn) { btn.disabled = true; btn.textContent = fr?'Activation…':'Activating…'; }
+let result = {};
 try {
   const resp = await fetch('https://datadash-backend-dhbe.onrender.com/api/ls/validate', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ key })
   });
-  const result = await resp.json();
+  result = await resp.json();
   if (!result.valid) {
     setErr(fr?'Clé de licence invalide.':'Invalid license key.');
     if (btn) { btn.disabled = false; btn.textContent = fr?'Activer':'Activate'; }
@@ -9794,7 +9795,7 @@ function deleteRoasRow(id) {
 </div>
 
 <!-- ══ ONBOARDING ══ -->
-<div class="onboarding-overlay" id="onboardingOverlay">
+<div class="onboarding-overlay hidden" id="onboardingOverlay">
   <div class="onboarding-card">
     <div class="ob-topbar">
       <div class="ob-logo">
