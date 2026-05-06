@@ -24,7 +24,10 @@ app.use('/api/meta',    metaRoutes);
 app.get('/api/health', (req, res) => {
   res.json({ status: 'ok', version: '1.0.0', timestamp: new Date().toISOString() });
 });
-
+const path = require('path');
+app.get('/connected.html', (req, res) => {
+  res.sendFile(path.join(__dirname, 'connected.html'));
+});
 // ── Start ──
 app.listen(PORT, () => {
   console.log(`✅ DataDash backend running on http://localhost:${PORT}`);
