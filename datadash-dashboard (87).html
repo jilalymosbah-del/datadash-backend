@@ -9036,7 +9036,7 @@ function detectBrowserLang() {
   return 'en';
 }
 
-function checkOnboarding() { return; } function checkOnboarding_disabled(
+function checkOnboarding() { return; } function checkOnboarding_disabled() {
   // Look up persisted user from either localStorage (Keep me signed in) or sessionStorage (per-session)
   try {
     const saved = localStorage.getItem('dd_user') || sessionStorage.getItem('dd_user');
