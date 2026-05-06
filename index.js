@@ -12,8 +12,7 @@ const PORT = process.env.PORT || 8080;
 // ── Middleware ──
 app.use(cors({ origin: '*' }));
 app.use(express.json());
-app.use(express.static(__dirname));
-
+app.use(express.static(__dirname, { etag: false, maxAge: 0 }));
 // ── Routes ──
 const shopifyRoutes = require('./routes/shopify');
 const metaRoutes    = require('./routes/meta');
