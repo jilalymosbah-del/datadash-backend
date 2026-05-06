@@ -10,14 +10,16 @@ const supabase = createClient(
 );
 
 // ── Webhook LemonSqueezy ──
-router.post('/webhook', express.raw({ type: 'application/json' }), async (req, res) => {
+router.post('/webhook', express.raw({ type: '*/*' }), async (req, res) => {
   const signature = req.headers['x-signature'];
+  const body = Buffer.isBuffer(req.body) ? req.body : Buffer.from(JSON.stringify(req.body));
+  
   const hmac = crypto.createHmac('sha256', WEBHOOK_SECRET)
-    .update(req.body).digest('hex');
+    .update(body).digest('hex');
 
   if (signature !== hmac) return res.status(401).json({ error: 'Invalid signature' });
 
-  const event = JSON.parse(req.body);
+  const event = JSON.parse(body.toString());
   const eventName = event.meta?.event_name;
 
   if (eventName === 'order_created' || eventName === 'license_key_created') {
