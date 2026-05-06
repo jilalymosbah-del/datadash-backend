@@ -10,36 +10,39 @@ const supabase = createClient(
 );
 
 // ── Webhook LemonSqueezy ──
-router.post('/webhook', express.raw({ type: '*/*' }), async (req, res) => {
-  const signature = req.headers['x-signature'];
-  const body = Buffer.isBuffer(req.body) ? req.body : Buffer.from(JSON.stringify(req.body));
-  
-  const hmac = crypto.createHmac('sha256', WEBHOOK_SECRET)
-    .update(body).digest('hex');
+router.post('/webhook', (req, res) => {
+  let rawBody = '';
+  req.on('data', chunk => { rawBody += chunk.toString(); });
+  req.on('end', async () => {
+    const signature = req.headers['x-signature'];
+    const hmac = crypto.createHmac('sha256', WEBHOOK_SECRET)
+      .update(rawBody).digest('hex');
 
-  if (signature !== hmac) return res.status(401).json({ error: 'Invalid signature' });
+    if (signature !== hmac) return res.status(401).json({ error: 'Invalid signature' });
 
-  const event = JSON.parse(body.toString());
-  const eventName = event.meta?.event_name;
+    const event = JSON.parse(rawBody);
+    const eventName = event.meta?.event_name;
 
-  if (eventName === 'order_created' || eventName === 'license_key_created') {
-    const licenseKey = event.data?.attributes?.license_key ||
-                       event.meta?.custom_data?.license_key;
-    const email      = event.data?.attributes?.user_email;
+    if (eventName === 'order_created' || eventName === 'license_key_created') {
+      const licenseKey = event.data?.attributes?.key ||
+                         event.data?.attributes?.license_key;
+      const email      = event.data?.attributes?.user_email ||
+                         event.meta?.custom_data?.email;
 
-    if (licenseKey) {
-      await supabase.from('licenses').upsert({
-        license_key: licenseKey,
-        email,
-        active: true,
-        activations: 0,
-        max_activations: 1
-      });
-      console.log(`✅ License enregistrée : ${licenseKey} pour ${email}`);
+      if (licenseKey) {
+        await supabase.from('licenses').upsert({
+          license_key: licenseKey,
+          email: email || '',
+          active: true,
+          activations: 0,
+          max_activations: 1
+        });
+        console.log(`✅ License enregistrée : ${licenseKey} pour ${email}`);
+      }
     }
-  }
 
-  res.json({ received: true });
+    res.json({ received: true });
+  });
 });
 
 // ── Valider une license key ──
