@@ -28,6 +28,10 @@ const path = require('path');
 app.get('/connected.html', (req, res) => {
   res.sendFile(path.join(__dirname, 'connected.html'));
 });
+const lsRoutes = require('./routes/lemonsqueezy');
+app.use('/api/ls', lsRoutes);
+// ── Start ──
+app.listen(PORT, () => {
 // ── Start ──
 app.listen(PORT, () => {
   console.log(`✅ DataDash backend running on http://localhost:${PORT}`);
