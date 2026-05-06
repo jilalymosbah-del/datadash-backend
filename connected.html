@@ -3,344 +3,303 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
-<title>DataDash — Connected</title>
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<title>DataDash</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
 <style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   :root {
-    --bg: #f8f9fb;
-    --card: #ffffff;
-    --accent: #2563eb;
-    --accent2: #7c3aed;
-    --green: #16a34a;
-    --green-bg: #dcfce7;
-    --green-dot: #22c55e;
-    --text: #0f172a;
-    --muted: #64748b;
-    --border: #e2e8f0;
-    --shadow: 0 1px 3px rgba(0,0,0,.06), 0 4px 24px rgba(0,0,0,.06);
+    --blue:     #1D4ED8;
+    --blue-med: #2563EB;
+    --blue-lt:  #DBEAFE;
+    --green-d:  #16A34A;
+    --green-bg: #DCFCE7;
+    --green-br: #86efac;
+    --red:      #ef4444;
+    --t1: #0F172A; --t2: #334155; --t3: #94A3B8;
+    --border: #E2E8F0; --bg: #F8FAFC; --card: #FFFFFF;
+    --font: 'Plus Jakarta Sans', sans-serif;
+  }
+  html, body { height: 100%; font-family: var(--font); background: #fff; color: var(--t1); -webkit-font-smoothing: antialiased; font-size: 14px; }
+
+  .layout { display: flex; height: 100vh; }
+
+  /* ── SIDEBAR ── */
+  .sidebar {
+    width: 240px;
+    background: #0f172a;
+    display: flex; flex-direction: column;
+    padding: 28px 0 24px;
+    flex-shrink: 0;
   }
 
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-
-  body {
-    font-family: 'DM Sans', sans-serif;
-    background: var(--bg);
-    color: var(--text);
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 24px;
+  .sidebar-logo {
+    display: flex; align-items: center; gap: 10px;
+    padding: 0 22px 36px;
   }
 
-  .card {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 20px;
-    box-shadow: var(--shadow);
-    width: 100%;
-    max-width: 480px;
-    padding: 40px;
-    display: flex;
-    flex-direction: column;
-    gap: 28px;
+  /* DataDash "D" logo reproduced as SVG */
+  .logo-svg { width: 38px; height: 38px; flex-shrink: 0; }
+
+  .logo-text {
+    font-size: 17px; font-weight: 800;
+    color: #fff; letter-spacing: -.3px;
   }
 
-  /* Header */
-  .header {
-    display: flex;
-    align-items: center;
-    gap: 12px;
+  .nav-item {
+    display: flex; align-items: center; gap: 10px;
+    padding: 11px 22px; font-size: 13px; font-weight: 600;
+    color: #94a3b8; cursor: pointer;
+    border-left: 3px solid transparent;
+    text-decoration: none;
+    transition: background .12s;
   }
-  .logo {
-    width: 40px; height: 40px;
-    background: linear-gradient(135deg, var(--accent), var(--accent2));
-    border-radius: 10px;
-    display: flex; align-items: center; justify-content: center;
-  }
-  .logo svg { width: 22px; height: 22px; }
-  .brand { font-size: 18px; font-weight: 600; letter-spacing: -.3px; }
-
-  /* Status badge */
-  .status-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 7px;
-    background: var(--green-bg);
-    color: var(--green);
-    font-size: 13px;
-    font-weight: 500;
-    padding: 6px 14px;
-    border-radius: 999px;
-    width: fit-content;
-  }
-  .dot {
-    width: 8px; height: 8px;
-    background: var(--green-dot);
-    border-radius: 50%;
-    animation: pulse 2s infinite;
-  }
-  @keyframes pulse {
-    0%,100% { opacity: 1; transform: scale(1); }
-    50% { opacity: .6; transform: scale(.8); }
-  }
-
-  /* Title block */
-  .title-block h1 {
-    font-size: 22px;
-    font-weight: 600;
-    letter-spacing: -.4px;
-    line-height: 1.3;
-    margin-bottom: 6px;
-  }
-  .title-block p {
-    font-size: 14px;
-    color: var(--muted);
-    line-height: 1.6;
-  }
-  .shop-name {
-    font-family: 'DM Mono', monospace;
-    font-size: 13px;
-    color: var(--accent);
-    background: #eff6ff;
-    padding: 2px 8px;
-    border-radius: 6px;
-    display: inline-block;
-    margin-top: 6px;
-  }
-
-  /* Stats row */
-  .stats {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    gap: 12px;
-  }
-  .stat {
-    background: var(--bg);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    padding: 14px 12px;
-    text-align: center;
-  }
-  .stat-val {
-    font-size: 18px;
-    font-weight: 600;
-    letter-spacing: -.5px;
-  }
-  .stat-label {
-    font-size: 11px;
-    color: var(--muted);
-    margin-top: 2px;
-    text-transform: uppercase;
-    letter-spacing: .4px;
-  }
-
-  /* CTA button */
-  .btn-main {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    background: linear-gradient(135deg, var(--accent), var(--accent2));
+  .nav-item.active {
     color: #fff;
-    font-family: 'DM Sans', sans-serif;
-    font-size: 15px;
-    font-weight: 600;
-    border: none;
-    border-radius: 12px;
-    padding: 16px 24px;
-    cursor: pointer;
-    width: 100%;
-    text-decoration: none;
-    transition: opacity .15s, transform .15s;
+    background: rgba(255,255,255,.07);
+    border-left-color: #2563eb;
   }
-  .btn-main:hover { opacity: .92; transform: translateY(-1px); }
-  .btn-main svg { width: 18px; height: 18px; }
+  .nav-item svg { width: 16px; height: 16px; flex-shrink: 0; }
 
-  /* Sub CTA */
-  .btn-sub {
-    display: flex;
+  /* ── MAIN ── */
+  .main { flex: 1; overflow-y: auto; background: #fff; display: flex; flex-direction: column; }
+
+  .main-header {
+    padding: 30px 40px 0;
+    font-size: 20px; font-weight: 700; letter-spacing: -.4px;
+    color: var(--t1);
+  }
+
+  .main-body {
+    flex: 1;
+    padding: 60px 40px 40px;
+    display: flex; flex-direction: column;
     align-items: center;
-    justify-content: center;
-    gap: 8px;
-    background: transparent;
-    color: var(--muted);
-    font-family: 'DM Sans', sans-serif;
-    font-size: 14px;
-    font-weight: 500;
+    gap: 40px;
+  }
+
+  /* ── STATUS CIRCLE ── */
+  .circle-outer {
+    width: 180px; height: 180px; border-radius: 50%;
+    border: 3px solid var(--border);
+    background: var(--bg);
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center; gap: 8px;
+    position: relative;
+    transition: all .3s;
+  }
+  .circle-outer::after {
+    content: '';
+    position: absolute; inset: -12px;
+    border-radius: 50%;
+    border: 2px solid var(--border);
+    opacity: .5;
+    transition: border-color .3s;
+  }
+  .circle-outer.connected {
+    background: var(--green-bg);
+    border-color: var(--green-br);
+  }
+  .circle-outer.connected::after { border-color: var(--green-br); opacity: .4; }
+
+  .circle-icon { width: 56px; height: 56px; }
+  .circle-label { font-size: 13px; font-weight: 600; color: var(--t3); }
+  .circle-outer.connected .circle-label { color: var(--green-d); }
+
+  /* ── STATS ── */
+  .stats-wrap { width: 100%; max-width: 680px; }
+  .stats-title { font-size: 14px; font-weight: 600; color: var(--t2); margin-bottom: 14px; }
+
+  .stats-row {
+    display: flex;
     border: 1px solid var(--border);
     border-radius: 12px;
-    padding: 13px 24px;
-    cursor: pointer;
-    width: 100%;
-    text-decoration: none;
-    transition: background .15s, color .15s;
-    margin-top: -8px;
+    overflow: hidden;
   }
-  .btn-sub:hover { background: var(--bg); color: var(--text); }
-
-  /* Footer note */
-  .footer-note {
-    font-size: 12px;
-    color: var(--muted);
-    text-align: center;
-    line-height: 1.6;
+  .stat-cell {
+    flex: 1;
+    padding: 22px 20px;
+    border-right: 1px solid var(--border);
+    display: flex; flex-direction: column; gap: 4px;
   }
-  .footer-note a { color: var(--accent); text-decoration: none; }
+  .stat-cell:last-child { border-right: none; }
 
-  /* Plan tag */
-  .plan-tag {
-    display: inline-flex;
-    align-items: center;
-    gap: 5px;
-    font-size: 12px;
-    font-weight: 500;
-    color: var(--accent2);
-    background: #f5f3ff;
-    border: 1px solid #ede9fe;
-    border-radius: 6px;
-    padding: 3px 8px;
+  .stat-icon-row { display: flex; align-items: center; gap: 6px; margin-bottom: 4px; }
+  .stat-icon-row svg { width: 15px; height: 15px; color: var(--t3); }
+  .stat-sep { width: 1px; height: 14px; background: var(--border); }
+
+  .stat-val { font-size: 22px; font-weight: 700; letter-spacing: -.6px; color: var(--t1); }
+  .stat-lbl { font-size: 11px; color: var(--t3); font-weight: 500; text-transform: uppercase; letter-spacing: .5px; }
+  .stat-delta { font-size: 11px; color: var(--t3); margin-top: 4px; display: flex; align-items: center; gap: 4px; }
+  .badge-delta {
+    display: inline-flex; align-items: center;
+    font-size: 10px; font-weight: 600;
+    padding: 2px 5px; border-radius: 4px;
   }
-
-  /* Divider */
-  .divider {
-    height: 1px;
-    background: var(--border);
-  }
-
-  /* Subscription state (hidden by default) */
-  .sub-active { display: none; }
-  .no-sub .sub-active { display: none; }
-  .has-sub .sub-inactive { display: none; }
-  .has-sub .sub-active { display: flex; }
+  .neg { background: #fee2e2; color: var(--red); }
+  .pos { background: var(--green-bg); color: var(--green-d); }
 </style>
 </head>
 <body>
+<div class="layout">
 
-<div class="card" id="mainCard">
-
-  <!-- Header -->
-  <div class="header">
-    <div class="logo">
-      <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round">
-        <rect x="3" y="3" width="7" height="7" rx="1"/>
-        <rect x="14" y="3" width="7" height="7" rx="1"/>
-        <rect x="3" y="14" width="7" height="7" rx="1"/>
-        <path d="M14 17.5h7M17.5 14v7"/>
+  <!-- ── SIDEBAR ── -->
+  <aside class="sidebar">
+    <div class="sidebar-logo">
+      <!-- DataDash "D" logo SVG -->
+      <svg class="logo-svg" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect width="100" height="100" rx="18" fill="#2563EB"/>
+        <!-- D shape -->
+        <path d="M28 24 L28 76 L52 76 C68 76 78 65 78 50 C78 35 68 24 52 24 Z" fill="white"/>
+        <!-- speed lines cutout -->
+        <rect x="20" y="41" width="28" height="6" rx="3" fill="#2563EB"/>
+        <rect x="20" y="53" width="22" height="6" rx="3" fill="#2563EB"/>
+        <rect x="20" y="29" width="14" height="5" rx="2.5" fill="#2563EB"/>
+        <rect x="20" y="66" width="10" height="5" rx="2.5" fill="#2563EB"/>
       </svg>
+      <span class="logo-text">DataDash</span>
     </div>
-    <span class="brand">DataDash</span>
-    <span class="plan-tag" id="planTag" style="margin-left:auto">Free Trial</span>
-  </div>
 
-  <!-- Status -->
-  <div>
-    <div class="status-badge">
-      <span class="dot"></span>
-      Shop connected
-    </div>
-  </div>
-
-  <!-- Title -->
-  <div class="title-block">
-    <h1>Your store is ready 🎉</h1>
-    <p>DataDash is connected to your Shopify store and ready to track your analytics.</p>
-    <span class="shop-name" id="shopName">zjziwa-9i.myshopify.com</span>
-  </div>
-
-  <!-- Stats -->
-  <div class="stats">
-    <div class="stat">
-      <div class="stat-val" id="statOrders">—</div>
-      <div class="stat-label">Orders</div>
-    </div>
-    <div class="stat">
-      <div class="stat-val" id="statRevenue">—</div>
-      <div class="stat-label">Revenue</div>
-    </div>
-    <div class="stat">
-      <div class="stat-val" id="statCustomers">—</div>
-      <div class="stat-label">Customers</div>
-    </div>
-  </div>
-
-  <div class="divider"></div>
-
-  <!-- CTA — no subscription -->
-  <div class="sub-inactive" id="noSubBlock">
-    <div style="display:flex;flex-direction:column;gap:10px;width:100%">
-      <a href="https://YOUR_LEMONSQUEEZY_LINK" class="btn-main" id="subscribeBtn">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
-          <path d="M5 12h14M12 5l7 7-7 7"/>
-        </svg>
-        Start free trial — 14 days
-      </a>
-      <p style="font-size:12px;color:var(--muted);text-align:center">No credit card required · Cancel anytime</p>
-    </div>
-  </div>
-
-  <!-- CTA — has subscription -->
-  <div class="sub-active" id="hasSubBlock" style="flex-direction:column;gap:10px;width:100%">
-    <a href="https://app.mydatadash.tech/datadash-dashboard.html" class="btn-main" target="_blank">
+    <a class="nav-item active" href="#">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
-        <rect x="3" y="3" width="18" height="18" rx="2"/>
-        <path d="M3 9h18M9 21V9"/>
+        <rect x="2" y="3" width="9" height="9" rx="1"/>
+        <rect x="13" y="3" width="9" height="9" rx="1"/>
+        <rect x="2" y="14" width="9" height="9" rx="1"/>
+        <rect x="13" y="14" width="9" height="9" rx="1"/>
       </svg>
-      Open DataDash Dashboard
+      Overview
     </a>
-    <a href="https://app.mydatadash.tech/datadash-dashboard.html" class="btn-sub" target="_blank">
-      Manage subscription
-    </a>
-  </div>
+  </aside>
 
-  <div class="footer-note">
-    Need help? <a href="mailto:support@mydatadash.tech">support@mydatadash.tech</a>
-  </div>
+  <!-- ── MAIN ── -->
+  <main class="main">
+    <div class="main-header">Overview</div>
 
+    <div class="main-body">
+
+      <!-- Status circle -->
+      <div class="circle-outer" id="ring">
+        <svg class="circle-icon" viewBox="0 0 24 24" fill="none" id="ringIcon">
+          <circle cx="12" cy="12" r="9" stroke="#94a3b8" stroke-width="1.5"/>
+          <line x1="12" y1="8" x2="12" y2="12" stroke="#94a3b8" stroke-width="1.5" stroke-linecap="round"/>
+          <circle cx="12" cy="16" r="1" fill="#94a3b8"/>
+        </svg>
+        <span class="circle-label" id="circleLabel">Not connected</span>
+      </div>
+
+      <!-- Stats (shown when connected) -->
+      <div class="stats-wrap" id="statsWrap" style="display:none">
+        <div class="stats-title">Tracked today</div>
+        <div class="stats-row">
+          <div class="stat-cell">
+            <div class="stat-icon-row">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+                <rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/>
+              </svg>
+            </div>
+            <div class="stat-val" id="sRevenue">€ —</div>
+            <div class="stat-lbl">Total Revenue</div>
+            <div class="stat-delta">
+              <span class="badge-delta neg" id="dRevenue">—</span>
+              Since yesterday
+            </div>
+          </div>
+          <div class="stat-cell">
+            <div class="stat-icon-row">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+                <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/>
+                <line x1="3" y1="6" x2="21" y2="6"/>
+                <path d="M16 10a4 4 0 0 1-8 0"/>
+              </svg>
+            </div>
+            <div class="stat-val" id="sAov">€ —</div>
+            <div class="stat-lbl">Average Order Value</div>
+            <div class="stat-delta">
+              <span class="badge-delta neg" id="dAov">—</span>
+              Since yesterday
+            </div>
+          </div>
+          <div class="stat-cell">
+            <div class="stat-icon-row">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+                <circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/>
+                <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
+              </svg>
+            </div>
+            <div class="stat-val" id="sOrders">—</div>
+            <div class="stat-lbl">Total Orders</div>
+            <div class="stat-delta">
+              <span class="badge-delta neg" id="dOrders">—</span>
+              Since yesterday
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </main>
 </div>
 
 <script>
-  // Read shop from URL params (injected by backend after OAuth)
-  const params = new URLSearchParams(window.location.search);
-  const shop = params.get('shop') || params.get('shopify_shop') || 'your-store.myshopify.com';
-  const token = params.get('token') || params.get('shopify_token') || '';
+  const p     = new URLSearchParams(window.location.search);
+  const shop  = p.get('shop') || p.get('shopify_shop') || '';
+  const token = p.get('token') || p.get('shopify_token') || '';
 
-  document.getElementById('shopName').textContent = shop;
+  if (shop && token) {
+    // Connected state
+    const ring = document.getElementById('ring');
+    ring.classList.add('connected');
+    document.getElementById('ringIcon').innerHTML =
+      '<path d="M20 6 9 17l-5-5" stroke="#16a34a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>';
+    document.getElementById('circleLabel').textContent = 'Connected';
+    document.getElementById('statsWrap').style.display = 'block';
 
-  // Check subscription status via backend
-  async function checkSubscription() {
-    try {
-      const res = await fetch(`https://datadash-backend-production.up.railway.app/api/subscription/status?shop=${encodeURIComponent(shop)}`);
-      const data = await res.json();
-      if (data.active) {
-        document.getElementById('noSubBlock').style.display = 'none';
-        document.getElementById('hasSubBlock').style.display = 'flex';
-        document.getElementById('planTag').textContent = data.plan || 'Pro';
-        document.getElementById('planTag').style.color = '#16a34a';
-        document.getElementById('planTag').style.background = '#dcfce7';
-        document.getElementById('planTag').style.borderColor = '#bbf7d0';
-      }
-    } catch(e) {}
+    // Fetch stats
+    (async () => {
+      try {
+        const base = 'https://datadash-backend-production.up.railway.app/api/shopify/proxy';
+        const now  = new Date();
+        const tod  = new Date(now.getFullYear(), now.getMonth(), now.getDate()).toISOString();
+        const yes  = new Date(now.getFullYear(), now.getMonth(), now.getDate() - 1).toISOString();
+
+        const [todayRes, yestRes, countRes] = await Promise.all([
+          fetch(`${base}?domain=${shop}&token=${token}&endpoint=orders.json?status=any&financial_status=paid&created_at_min=${tod}&limit=250`),
+          fetch(`${base}?domain=${shop}&token=${token}&endpoint=orders.json?status=any&financial_status=paid&created_at_min=${yes}&created_at_max=${tod}&limit=250`),
+          fetch(`${base}?domain=${shop}&token=${token}&endpoint=orders/count.json`)
+        ]);
+
+        const todayData = await todayRes.json();
+        const yestData  = await yestRes.json();
+        const countData = await countRes.json();
+
+        const tOrders = todayData.orders || [];
+        const yOrders = yestData.orders  || [];
+
+        const tRev = tOrders.reduce((s, o) => s + parseFloat(o.total_price || 0), 0);
+        const yRev = yOrders.reduce((s, o) => s + parseFloat(o.total_price || 0), 0);
+        const tAov = tOrders.length ? tRev / tOrders.length : 0;
+        const yAov = yOrders.length ? yRev / yOrders.length : 0;
+
+        const pct = (a, b) => b === 0 ? null : Math.round(((a - b) / b) * 100);
+        const badge = (id, val) => {
+          const el = document.getElementById(id);
+          if (val === null) { el.textContent = '—'; return; }
+          el.textContent = (val >= 0 ? '+' : '') + val + '%';
+          el.className = 'badge-delta ' + (val >= 0 ? 'pos' : 'neg');
+        };
+
+        document.getElementById('sRevenue').textContent = '€ ' + tRev.toFixed(2);
+        document.getElementById('sAov').textContent     = '€ ' + tAov.toFixed(2);
+        document.getElementById('sOrders').textContent  = tOrders.length.toLocaleString();
+        if (countData.count !== undefined)
+          document.getElementById('sOrders').textContent = tOrders.length + ' / ' + countData.count + ' total';
+
+        badge('dRevenue', pct(tRev, yRev));
+        badge('dAov',     pct(tAov, yAov));
+        badge('dOrders',  pct(tOrders.length, yOrders.length));
+
+      } catch(e) { console.error(e); }
+    })();
   }
-
-  // Load basic stats
-  async function loadStats() {
-    if (!token) return;
-    try {
-      const [oRes, cRes] = await Promise.all([
-        fetch(`https://datadash-backend-production.up.railway.app/api/shopify/proxy?domain=${shop}&token=${token}&endpoint=orders/count.json`),
-        fetch(`https://datadash-backend-production.up.railway.app/api/shopify/proxy?domain=${shop}&token=${token}&endpoint=customers/count.json`)
-      ]);
-      const oData = await oRes.json();
-      const cData = await cRes.json();
-      if (oData.count !== undefined) document.getElementById('statOrders').textContent = oData.count.toLocaleString();
-      if (cData.count !== undefined) document.getElementById('statCustomers').textContent = cData.count.toLocaleString();
-    } catch(e) {}
-  }
-
-  checkSubscription();
-  loadStats();
 </script>
 </body>
 </html>
