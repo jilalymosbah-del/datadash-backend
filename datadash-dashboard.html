@@ -9185,7 +9185,7 @@ try {
     // Save user — pick storage based on "remember me" flag.
     // localStorage = persists across browser sessions; sessionStorage = cleared on tab close.
     const color = pickColor(first + last);
-    userProfile = { firstName: first, lastName: last, email, country, licenseKey: key, color, activated: true, lang: currentLang };
+   userProfile = { firstName: first, lastName: last, email, country, licenseKey: key, apiKey: result.api_key || '', color, activated: true, lang: currentLang };
     try {
       const payload = JSON.stringify(userProfile);
       // Always clear the other store to avoid stale data
