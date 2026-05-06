@@ -10,7 +10,7 @@ const PORT = process.env.PORT || 8080;
 // ── Middleware de base ──
 app.use(cors({ origin: '*' }));
 
-// ── Routes API (AVANT le static) ──
+// ── Routes API (AVANT le static et json parser) ──
 const shopifyRoutes = require('./routes/shopify');
 const metaRoutes    = require('./routes/meta');
 const lsRoutes      = require('./routes/lemonsqueezy');
@@ -19,13 +19,15 @@ app.use('/api/shopify', shopifyRoutes);
 app.use('/api/meta',    metaRoutes);
 app.use('/api/ls',      lsRoutes);
 
+// ── JSON parser (APRÈS les routes API) ──
+app.use(express.json());
+
 // ── Health check ──
 app.get('/api/health', (req, res) => {
   res.json({ status: 'ok', version: '1.0.0', timestamp: new Date().toISOString() });
 });
 
-// ── Fichiers statiques (APRÈS les routes API) ──
-app.use(express.json());
+// ── Fichiers statiques ──
 app.use(express.static(__dirname, { etag: false, maxAge: 0 }));
 
 app.get('/connected.html', (req, res) => {
