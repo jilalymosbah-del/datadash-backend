@@ -5709,7 +5709,7 @@ async function shopifyFetch(domain, token, endpoint) {
 
 function shopifyConnect() {
   const fr = currentLang === 'fr';
-  const popup = window.open('https://datadash-backend-production.up.railway.app/api/shopify/oauth-start', 'ShopifyAuth', 'width=600,height=700,scrollbars=yes,popup=yes,noopener=no');
+  const popup = window.open('https://datadash-backend-dhbe.onrender.com/api/shopify/oauth-start', 'ShopifyAuth', 'width=600,height=700,scrollbars=yes,popup=yes,noopener=no');
 
   shopifyLog(fr ? 'Ouverture de la connexion Shopify...' : 'Opening Shopify connection...', 'info');
 
