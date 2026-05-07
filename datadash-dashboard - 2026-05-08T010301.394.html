@@ -9660,7 +9660,9 @@ function viewStore(idx) {
   document.getElementById('stores-list-view').style.display   = 'none';
   document.getElementById('stores-wizard').style.display      = 'none';
   document.getElementById('stores-detail-view').style.display = '';
-  document.getElementById('stores-detail-content').innerHTML  = `
+
+  // Render skeleton first
+  document.getElementById('stores-detail-content').innerHTML = `
     <div style="max-width:700px;">
       <div style="background:var(--card);border:1px solid var(--border);border-radius:22px;padding:48px;text-align:center;">
         <div style="width:80px;height:80px;border-radius:50%;border:3px solid #bbf7d0;background:#f0fdf4;display:flex;align-items:center;justify-content:center;margin:0 auto 18px;">
@@ -9675,24 +9677,59 @@ function viewStore(idx) {
         <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:32px;">
           <div style="background:var(--bg);border:1px solid var(--border);border-radius:14px;padding:20px;">
             <div style="font-size:11px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px;">Total Revenue</div>
-            <div style="font-size:26px;font-weight:800;color:var(--t1);letter-spacing:-.5px;">€${(s.revenue||0).toFixed(2)}</div>
-            <div style="font-size:11px;color:var(--t3);margin-top:4px;">Since yesterday</div>
+            <div id="store-revenue" style="font-size:26px;font-weight:800;color:var(--t1);letter-spacing:-.5px;">...</div>
+            <div style="font-size:11px;color:var(--t3);margin-top:4px;">Today</div>
           </div>
           <div style="background:var(--bg);border:1px solid var(--border);border-radius:14px;padding:20px;">
             <div style="font-size:11px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px;">Avg Order Value</div>
-            <div style="font-size:26px;font-weight:800;color:var(--t1);letter-spacing:-.5px;">€${(s.aov||0).toFixed(2)}</div>
-            <div style="font-size:11px;color:var(--t3);margin-top:4px;">Since yesterday</div>
+            <div id="store-aov" style="font-size:26px;font-weight:800;color:var(--t1);letter-spacing:-.5px;">...</div>
+            <div style="font-size:11px;color:var(--t3);margin-top:4px;">Today</div>
           </div>
           <div style="background:var(--bg);border:1px solid var(--border);border-radius:14px;padding:20px;">
             <div style="font-size:11px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px;">Total Orders</div>
-            <div style="font-size:26px;font-weight:800;color:var(--t1);letter-spacing:-.5px;">${s.orders||0}</div>
-            <div style="font-size:11px;color:var(--t3);margin-top:4px;">Since yesterday</div>
+            <div id="store-orders" style="font-size:26px;font-weight:800;color:var(--t1);letter-spacing:-.5px;">...</div>
+            <div style="font-size:11px;color:var(--t3);margin-top:4px;">Today</div>
           </div>
         </div>
-        <button onclick="removeStore(${idx})" style="background:transparent;border:1.5px solid var(--border);color:var(--t3);border-radius:10px;padding:10px 24px;font-size:13px;font-weight:600;cursor:pointer;transition:all .15s;" onmouseenter="this.style.borderColor='var(--red)';this.style.color='var(--red)'" onmouseleave="this.style.borderColor='var(--border)';this.style.color='var(--t3)'">Remove store</button>
+        <button onclick="removeStore(${idx})" style="background:transparent;border:1.5px solid var(--border);color:var(--t3);border-radius:10px;padding:10px 24px;font-size:13px;font-weight:600;cursor:pointer;" onmouseenter="this.style.borderColor='var(--red)';this.style.color='var(--red)'" onmouseleave="this.style.borderColor='var(--border)';this.style.color='var(--t3)'">Remove store</button>
       </div>
     </div>
   `;
+
+  // Fetch real Shopify data if token exists
+  if (s.token && s.domain) {
+    (async () => {
+      try {
+        const base = 'https://datadash-backend-dhbe.onrender.com/api/shopify/proxy';
+        const now  = new Date();
+        const tod  = new Date(now.getFullYear(), now.getMonth(), now.getDate()).toISOString();
+
+        const res = await fetch(`${base}?domain=${s.domain}&token=${s.token}&endpoint=orders.json?status=any&financial_status=paid&created_at_min=${tod}&limit=250`);
+        const data = await res.json();
+        const orders = data.orders || [];
+        const revenue = orders.reduce((sum, o) => sum + parseFloat(o.total_price || 0), 0);
+        const aov = orders.length ? revenue / orders.length : 0;
+
+        document.getElementById('store-revenue').textContent = '€' + revenue.toFixed(2);
+        document.getElementById('store-aov').textContent     = '€' + aov.toFixed(2);
+        document.getElementById('store-orders').textContent  = orders.length;
+
+        // Save to store
+        storesData[idx].revenue = revenue;
+        storesData[idx].aov     = aov;
+        storesData[idx].orders  = orders.length;
+        saveStoresData();
+      } catch(e) {
+        document.getElementById('store-revenue').textContent = '€0.00';
+        document.getElementById('store-aov').textContent     = '€0.00';
+        document.getElementById('store-orders').textContent  = '0';
+      }
+    })();
+  } else {
+    document.getElementById('store-revenue').textContent = '€' + (s.revenue||0).toFixed(2);
+    document.getElementById('store-aov').textContent     = '€' + (s.aov||0).toFixed(2);
+    document.getElementById('store-orders').textContent  = s.orders || 0;
+  }
 }
 
 function removeStore(idx) {
