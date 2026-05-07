@@ -55,7 +55,7 @@
   --modal-bg:#FFFFFF;
   --drop-shadow: rgba(0,0,0,0.11);
 
-  --sb: 80px;
+  --sb: 220px;
   --tb: 52px;
   --gap: 12px;
   --font: 'Plus Jakarta Sans', sans-serif;
@@ -94,33 +94,36 @@ html, body {
 /* ══ SIDEBAR ══ */
 .sidebar {
   position: fixed; top: 0; left: 0; bottom: 0; width: var(--sb);
-  background: var(--sb-bg); border-right: 1px solid var(--border);
-  display: flex; flex-direction: column; align-items: center;
-  padding: 14px 0; z-index: 300; transition: background .25s, border-color .25s;
+  background: #0f172a; border-right: 1px solid #1e293b;
+  display: flex; flex-direction: column; align-items: stretch;
+  padding: 0; z-index: 300; overflow-y: auto;
 }
 .sb-logo {
-  width: 38px; height: 38px;
-  display: flex; align-items: center; justify-content: center;
-  margin-bottom: 18px; flex-shrink: 0;
+  padding: 24px 20px 20px; display: flex; flex-direction: column;
+  align-items: center; gap: 8px; flex-shrink: 0;
 }
-.sb-logo svg { width: 38px; height: 38px; }
+.sb-logo svg { width: 48px; height: 48px; }
+.sb-logo-name { font-size: 18px; font-weight: 800; color: #f8fafc; letter-spacing: -.3px; }
+.sb-nav { display: flex; flex-direction: column; gap: 4px; padding: 16px 14px; flex: 1; }
 .sb-item {
-  display: flex; flex-direction: column; align-items: center; gap: 4px;
-  width: 66px; padding: 9px 0; border-radius: 10px; cursor: pointer;
-  position: relative; transition: background .15s; margin-bottom: 3px;
+  display: flex; flex-direction: row; align-items: center; gap: 13px;
+  padding: 13px 16px; cursor: pointer; border-radius: 8px;
+  position: relative; transition: background .15s;
 }
-.sb-item:hover { background: var(--hover); }
-.sb-item.on { background: var(--blue-lt); }
+.sb-item:hover { background: rgba(255,255,255,.07); }
+.sb-item.on { background: rgba(255,255,255,.09); }
 .sb-item.on::before {
   content: ''; position: absolute; left: 0; top: 50%; transform: translateY(-50%);
-  width: 3px; height: 24px; background: var(--blue-med); border-radius: 0 3px 3px 0;
+  width: 3px; height: 22px; background: #f8fafc; border-radius: 0 3px 3px 0;
 }
-.sb-item svg { width: 20px; height: 20px; }
-.sb-lbl { font-size: 10px; font-weight: 500; color: var(--t3); line-height: 1; }
-.sb-item.on .sb-lbl { color: var(--blue-med); font-weight: 600; }
+.sb-item svg { width: 20px; height: 20px; flex-shrink: 0; opacity: .6; }
+.sb-item.on svg { opacity: 1; }
+.sb-lbl { font-size: 15px; font-weight: 500; color: #94a3b8; line-height: 1; }
+.sb-item.on .sb-lbl { color: #f8fafc; font-weight: 600; }
+.sb-item.on svg path, .sb-item.on svg rect, .sb-item.on svg circle { stroke: #f8fafc !important; }
 .sb-bottom {
-  margin-top: auto; display: flex; flex-direction: column; align-items: center; gap: 3px;
-  width: 100%; padding-top: 10px; border-top: 1px solid var(--border);
+  margin-top: auto; display: flex; flex-direction: column;
+  padding: 12px; border-top: 1px solid #1e293b;
 }
 
 /* ══ TOPBAR ══ */
@@ -2748,33 +2751,28 @@ html, body {
 <!-- SIDEBAR -->
 <aside class="sidebar">
   <div class="sb-logo">
-    <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" width="38" height="38">
+    <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" width="48" height="48">
       <rect width="100" height="100" rx="20" fill="#1D4ED8"/>
-      <!-- D outer solid shape -->
       <path d="M28 22 L44 22 C62 22 72 32 72 50 C72 68 62 78 44 78 L28 78 Z" fill="white"/>
-      <!-- Inner cutout — makes D hollow -->
       <path d="M38 34 L43 34 C55 34 60 40 60 50 C60 60 55 66 43 66 L38 66 Z" fill="#1D4ED8"/>
-      <!-- Speed lines: long, medium, dot -->
       <rect x="13" y="38" width="23" height="7" rx="3.5" fill="white"/>
       <rect x="9"  y="49" width="27" height="7" rx="3.5" fill="white"/>
       <rect x="15" y="60" width="11" height="7" rx="3.5" fill="white"/>
     </svg>
+    <span class="sb-logo-name">DataDash</span>
   </div>
-  <div class="sb-item on" onclick="setSb(this)" data-page="overview">
+  <div class="sb-nav">
+  <div class="sb-item" onclick="setSb(this)" data-page="overview">
     <svg viewBox="0 0 20 20" fill="none"><rect x="2" y="2" width="7" height="7" rx="1.5" fill="#2563EB"/><rect x="11" y="2" width="7" height="7" rx="1.5" fill="#BFDBFE"/><rect x="2" y="11" width="7" height="7" rx="1.5" fill="#BFDBFE"/><rect x="11" y="11" width="7" height="7" rx="1.5" fill="#BFDBFE"/></svg>
     <span class="sb-lbl" data-i18n="nav.overview">Overview</span>
-  </div>
-  <div class="sb-item" onclick="setSb(this)" data-page="testing">
-    <svg viewBox="0 0 20 20" fill="none"><path d="M7.5 3h5M10 3v6l4 6a1 1 0 01-.83 1.5H6.83A1 1 0 016 15l4-6V3" stroke="#94A3B8" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/><path d="M7 13.5h6" stroke="#94A3B8" stroke-width="1.2" stroke-linecap="round"/></svg>
-    <span class="sb-lbl" data-i18n="nav.testing">Testing</span>
   </div>
   <div class="sb-item" onclick="setSb(this)" data-page="analytics">
     <svg viewBox="0 0 20 20" fill="none"><rect x="2" y="2" width="16" height="16" rx="2.5" stroke="#94A3B8" stroke-width="1.4"/><path d="M3 13l4-4 3 3 4-5 3 3" stroke="#94A3B8" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
     <span class="sb-lbl" data-i18n="nav.analytics">Analytics</span>
   </div>
-  <div class="sb-item" onclick="setSb(this)" data-page="orders">
-    <svg viewBox="0 0 20 20" fill="none"><path d="M3 5h1.5l2.5 8h8l2-6H6" stroke="#94A3B8" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/><circle cx="9" cy="16" r="1.2" fill="#94A3B8"/><circle cx="14" cy="16" r="1.2" fill="#94A3B8"/></svg>
-    <span class="sb-lbl" data-i18n="nav.orders">Orders</span>
+  <div class="sb-item" onclick="setSb(this)" data-page="stores">
+    <svg viewBox="0 0 20 20" fill="none"><path d="M3 9.5V17a1 1 0 001 1h12a1 1 0 001-1V9.5" stroke="#94A3B8" stroke-width="1.4" stroke-linecap="round"/><path d="M1.5 6l1.8-3.5h13.4L18.5 6v1.5a2.5 2.5 0 01-5 0 2.5 2.5 0 01-5 0 2.5 2.5 0 01-5 0V6z" stroke="#94A3B8" stroke-width="1.4" stroke-linejoin="round"/><path d="M8 18v-5h4v5" stroke="#94A3B8" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    <span class="sb-lbl">Stores</span>
   </div>
   <div class="sb-item" onclick="setSb(this)" data-page="transactions">
     <svg viewBox="0 0 20 20" fill="none"><path d="M5 8l-3 3 3 3M15 8l3 3-3 3" stroke="#94A3B8" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/><path d="M2 11h16" stroke="#94A3B8" stroke-width="1.4" stroke-linecap="round"/><path d="M7 5h10M3 5h2" stroke="#94A3B8" stroke-width="1.3" stroke-linecap="round"/></svg>
@@ -2796,8 +2794,8 @@ html, body {
     <svg viewBox="0 0 20 20" fill="none"><path d="M3 17l4-5 3 3 3-4 4-5" stroke="#94A3B8" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/><circle cx="15" cy="6" r="2" stroke="#94A3B8" stroke-width="1.3"/></svg>
     <span class="sb-lbl" data-i18n="nav.roas">ROAS</span>
   </div>
+  </div><!-- end sb-nav -->
   <div class="sb-bottom">
-    <!-- ••• button — mobile only -->
     <div class="sb-item" id="mobMoreBtn" onclick="openMobMore()" style="display:none;">
       <svg viewBox="0 0 20 20" fill="none"><circle cx="4" cy="10" r="1.8" fill="#94A3B8"/><circle cx="10" cy="10" r="1.8" fill="#94A3B8"/><circle cx="16" cy="10" r="1.8" fill="#94A3B8"/></svg>
       <span class="sb-lbl" data-i18n="more">More</span>
@@ -3842,6 +3840,7 @@ function setSb(el) {
     if (page === 'roas')      { renderRoasPage(); }
     if (page === 'settings')  { renderSettingsPage(); }
     if (page === 'overview')  { updateDashboard(); }
+    if (page === 'stores')    { renderStoresPage(); }
   } else {
     document.getElementById('page-overview').classList.add('active');
     updateDashboard();
@@ -9573,6 +9572,341 @@ function deleteRoasRow(id) {
   renderRoasPage();
 }
 
+/* ══════════════════════════════════════════
+   STORES
+══════════════════════════════════════════ */
+let storesData = [];
+let wizardStep  = 1;
+let wizardName  = '';
+let wizardKey   = '';
+
+function _storesStore() {
+  try { localStorage.getItem('x'); return localStorage; } catch(e) { return sessionStorage; }
+}
+
+function installDataDash() {
+  const inp = document.getElementById('shopify-domain-inp');
+  if (!inp) return;
+  let domain = inp.value.trim().toLowerCase();
+  if (!domain) { inp.focus(); inp.style.borderColor = 'var(--red)'; return; }
+  domain = domain.replace(/^https?:\/\//i, '').replace(/\/.*$/, '');
+  if (!domain.includes('.myshopify.com')) domain = domain.replace(/\.shopify\.com$/, '') + '.myshopify.com';
+  const installUrl = 'https://datadash-backend-dhbe.onrender.com/api/shopify/auth?shop=' + encodeURIComponent(domain);
+  window.open(installUrl, '_blank');
+}
+
+function loadStoresData() {
+  try {
+    const raw = _storesStore().getItem('dd_stores');
+    if (raw) storesData = JSON.parse(raw);
+  } catch(e) { storesData = []; }
+}
+
+function saveStoresData() {
+  try { _storesStore().setItem('dd_stores', JSON.stringify(storesData)); } catch(e) {}
+}
+
+function genApiKey() {
+  const c = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+  let k = 'DD';
+  for (let i = 0; i < 28; i++) {
+    if (i % 7 === 0) k += '-';
+    k += c[Math.floor(Math.random() * c.length)];
+  }
+  return k;
+}
+
+function renderStoresPage() {
+  loadStoresData();
+  // Show list, hide others
+  document.getElementById('stores-list-view').style.display  = '';
+  document.getElementById('stores-wizard').style.display     = 'none';
+  document.getElementById('stores-detail-view').style.display = 'none';
+
+  const grid  = document.getElementById('stores-grid');
+  const empty = document.getElementById('stores-empty');
+
+  if (storesData.length === 0) {
+    grid.innerHTML = `
+      <div onclick="openAddStore()" style="background:var(--card);border:2px dashed var(--border);border-radius:10px;padding:40px 24px;display:flex;flex-direction:column;align-items:center;gap:12px;text-align:center;cursor:pointer;transition:all .2s;min-height:180px;justify-content:center;" onmouseenter="this.style.borderColor='var(--blue-med)'" onmouseleave="this.style.borderColor='var(--border)'">
+        <div style="width:48px;height:48px;border-radius:12px;background:var(--bg);border:1.5px solid var(--border);display:flex;align-items:center;justify-content:center;">
+          <svg viewBox="0 0 20 20" fill="none" width="20" height="20"><path d="M10 4v12M4 10h12" stroke="var(--t3)" stroke-width="1.8" stroke-linecap="round"/></svg>
+        </div>
+        <div style="font-size:14px;font-weight:700;color:var(--t2);">Add your first store</div>
+        <div style="font-size:12px;color:var(--t3);">Click to connect your Shopify store</div>
+      </div>
+    `;
+    return;
+  }
+  grid.innerHTML = storesData.map((s, i) => `
+    <div style="background:var(--card);border:1px solid var(--border);border-radius:10px;padding:28px 24px;display:flex;flex-direction:column;align-items:center;gap:12px;text-align:center;transition:box-shadow .2s;" onmouseenter="this.style.boxShadow='0 4px 20px rgba(0,0,0,.08)'" onmouseleave="this.style.boxShadow='none'">
+      <div style="width:56px;height:56px;border-radius:14px;background:#f0fdf4;border:1px solid #bbf7d0;display:flex;align-items:center;justify-content:center;">
+        <svg viewBox="0 0 24 24" fill="none" width="26" height="26"><path d="M3 10V20a1 1 0 001 1h16a1 1 0 001-1V10" stroke="#16a34a" stroke-width="1.7" stroke-linecap="round"/><path d="M1 6l2.5-4h17L23 6v2.5a3 3 0 01-6 0 3 3 0 01-6 0 3 3 0 01-6 0A3 3 0 011 8.5V6z" stroke="#16a34a" stroke-width="1.7" stroke-linejoin="round"/></svg>
+      </div>
+      <div style="display:flex;align-items:center;gap:6px;">
+        <span style="width:7px;height:7px;border-radius:50%;background:var(--green);display:inline-block;box-shadow:0 0 0 3px rgba(34,197,94,.15);"></span>
+        <span style="font-size:11px;font-weight:700;color:var(--green);letter-spacing:.02em;">Store connected</span>
+      </div>
+      <div style="font-size:15px;font-weight:800;color:var(--t1);">${s.name}</div>
+      <div style="font-size:12px;color:var(--t3);">${s.domain || 'Shopify store'}</div>
+      <button onclick="viewStore(${i})" style="width:100%;margin-top:4px;background:transparent;border:1.5px solid var(--border);color:var(--t2);border-radius:10px;padding:10px;font-size:13px;font-weight:600;cursor:pointer;transition:all .15s;" onmouseenter="this.style.borderColor='var(--blue-med)';this.style.color='var(--blue-med)'" onmouseleave="this.style.borderColor='var(--border)';this.style.color='var(--t2)'">View store →</button>
+    </div>
+  `).join('');
+}
+
+function viewStore(idx) {
+  const s = storesData[idx];
+  if (!s) return;
+  document.getElementById('stores-list-view').style.display   = 'none';
+  document.getElementById('stores-wizard').style.display      = 'none';
+  document.getElementById('stores-detail-view').style.display = '';
+  document.getElementById('stores-detail-content').innerHTML  = `
+    <div style="max-width:700px;">
+      <div style="background:var(--card);border:1px solid var(--border);border-radius:22px;padding:48px;text-align:center;">
+        <div style="width:80px;height:80px;border-radius:50%;border:3px solid #bbf7d0;background:#f0fdf4;display:flex;align-items:center;justify-content:center;margin:0 auto 18px;">
+          <svg viewBox="0 0 24 24" fill="none" width="34" height="34"><path d="M3 10V20a1 1 0 001 1h16a1 1 0 001-1V10" stroke="#16a34a" stroke-width="1.7" stroke-linecap="round"/><path d="M1 6l2.5-4h17L23 6v2.5a3 3 0 01-6 0 3 3 0 01-6 0 3 3 0 01-6 0A3 3 0 011 8.5V6z" stroke="#16a34a" stroke-width="1.7" stroke-linejoin="round"/></svg>
+        </div>
+        <div style="display:flex;align-items:center;justify-content:center;gap:7px;margin-bottom:8px;">
+          <span style="width:9px;height:9px;border-radius:50%;background:var(--green);box-shadow:0 0 0 3px rgba(34,197,94,.2);"></span>
+          <span style="font-size:13px;font-weight:700;color:var(--green);">Connected</span>
+        </div>
+        <div style="font-size:24px;font-weight:800;color:var(--t1);margin-bottom:4px;">${s.name}</div>
+        <div style="font-size:13px;color:var(--t3);margin-bottom:36px;">${s.domain || 'Shopify store'}</div>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:32px;">
+          <div style="background:var(--bg);border:1px solid var(--border);border-radius:14px;padding:20px;">
+            <div style="font-size:11px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px;">Total Revenue</div>
+            <div style="font-size:26px;font-weight:800;color:var(--t1);letter-spacing:-.5px;">€${(s.revenue||0).toFixed(2)}</div>
+            <div style="font-size:11px;color:var(--t3);margin-top:4px;">Since yesterday</div>
+          </div>
+          <div style="background:var(--bg);border:1px solid var(--border);border-radius:14px;padding:20px;">
+            <div style="font-size:11px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px;">Avg Order Value</div>
+            <div style="font-size:26px;font-weight:800;color:var(--t1);letter-spacing:-.5px;">€${(s.aov||0).toFixed(2)}</div>
+            <div style="font-size:11px;color:var(--t3);margin-top:4px;">Since yesterday</div>
+          </div>
+          <div style="background:var(--bg);border:1px solid var(--border);border-radius:14px;padding:20px;">
+            <div style="font-size:11px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px;">Total Orders</div>
+            <div style="font-size:26px;font-weight:800;color:var(--t1);letter-spacing:-.5px;">${s.orders||0}</div>
+            <div style="font-size:11px;color:var(--t3);margin-top:4px;">Since yesterday</div>
+          </div>
+        </div>
+        <button onclick="removeStore(${idx})" style="background:transparent;border:1.5px solid var(--border);color:var(--t3);border-radius:10px;padding:10px 24px;font-size:13px;font-weight:600;cursor:pointer;transition:all .15s;" onmouseenter="this.style.borderColor='var(--red)';this.style.color='var(--red)'" onmouseleave="this.style.borderColor='var(--border)';this.style.color='var(--t3)'">Remove store</button>
+      </div>
+    </div>
+  `;
+}
+
+function removeStore(idx) {
+  if (!confirm('Remove this store?')) return;
+  storesData.splice(idx, 1);
+  saveStoresData();
+  renderStoresPage();
+}
+
+function openAddStore() {
+  wizardStep = 1;
+  wizardName = '';
+  wizardKey  = genApiKey();
+  document.getElementById('stores-list-view').style.display   = 'none';
+  document.getElementById('stores-detail-view').style.display = 'none';
+  document.getElementById('stores-wizard').style.display      = '';
+  renderWizard();
+}
+
+function cancelWizard() {
+  renderStoresPage();
+}
+
+function renderWizard() {
+  const STEPS = ['Store name', 'Connect API', 'Enable app embed'];
+  const offset = 94.2 - (94.2 * (wizardStep / 3));
+  document.getElementById('wizard-progress-lbl').textContent = wizardStep + '/3';
+  const circle = document.getElementById('wizard-circle');
+  if (circle) circle.style.strokeDashoffset = offset;
+
+  // Progress steps — exactly like TrackBee with connecting line
+  document.getElementById('wizard-steps-list').innerHTML = STEPS.map((label, i) => {
+    const n = i + 1;
+    const done = n < wizardStep;
+    const cur  = n === wizardStep;
+    const isLast = i === STEPS.length - 1;
+    return `<div style="display:flex;align-items:flex-start;gap:14px;">
+      <div style="display:flex;flex-direction:column;align-items:center;flex-shrink:0;">
+        <div style="width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+          ${done ? 'background:#EAB308;border:2px solid #EAB308;' : cur ? 'background:transparent;border:2px solid #EAB308;' : 'background:transparent;border:2px solid var(--border);'}">
+          ${done ? '<svg viewBox="0 0 12 12" width="10" height="10"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>' : cur ? '<div style="width:8px;height:8px;border-radius:50%;background:#EAB308;"></div>' : ''}
+        </div>
+        ${!isLast ? `<div style="width:2px;height:24px;background:${done ? '#EAB308' : 'var(--border)'};margin-top:3px;"></div>` : ''}
+      </div>
+      <span style="font-size:13px;font-weight:${cur ? '600' : '400'};color:${cur ? 'var(--t1)' : done ? 'var(--t2)' : 'var(--t3)'};padding-top:2px;">${label}</span>
+    </div>`;
+  }).join('');
+
+  document.getElementById('wizard-prev-btn').style.display = wizardStep > 1 ? '' : 'none';
+  const nextBtn = document.getElementById('wizard-next-btn');
+  nextBtn.style.display = '';
+  nextBtn.textContent = wizardStep === 3 ? 'Finish' : 'Next';
+
+  const c = document.getElementById('wizard-step-content');
+
+  if (wizardStep === 1) {
+    c.innerHTML = `
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:36px;">
+        <div style="width:34px;height:34px;border-radius:8px;background:#96BF48;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+          <svg viewBox="0 0 20 20" fill="none" width="16" height="16"><path d="M3 11V17a1 1 0 001 1h12a1 1 0 001-1v-6" stroke="white" stroke-width="1.7" stroke-linecap="round"/><path d="M1 7l2-4h14l2 4v2a2.5 2.5 0 01-5 0 2.5 2.5 0 01-5 0 2.5 2.5 0 01-5 0V7z" stroke="white" stroke-width="1.7" stroke-linejoin="round"/></svg>
+        </div>
+        <h2 style="font-size:20px;font-weight:700;color:var(--t1);margin:0;">Give your store a name</h2>
+      </div>
+      <input id="wiz-name-inp" type="text" placeholder="Store name" value="${wizardName}"
+        oninput="wizardName=this.value"
+        style="width:100%;box-sizing:border-box;padding:15px 18px;border:1.5px solid var(--border);border-radius:8px;font-size:15px;color:var(--t1);background:var(--bg);outline:none;"
+        onfocus="this.style.borderColor='var(--blue-med)'" onblur="this.style.borderColor='var(--border)'"/>
+    `;
+    document.getElementById('wizard-next-btn').style.display = '';
+    document.getElementById('wizard-next-btn').textContent = 'Next';
+    setTimeout(() => { const i = document.getElementById('wiz-name-inp'); if(i) i.focus(); }, 50);
+  }
+
+  else if (wizardStep === 2) {
+    c.innerHTML = `
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:8px;">
+        <div style="width:44px;height:44px;border-radius:12px;background:#f0fdf4;border:1px solid #bbf7d0;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+          <svg viewBox="0 0 24 24" fill="none" width="22" height="22"><path d="M3 10V20a1 1 0 001 1h16a1 1 0 001-1V10" stroke="#16a34a" stroke-width="1.7" stroke-linecap="round"/><path d="M1 6l2.5-4h17L23 6v2.5a3 3 0 01-6 0 3 3 0 01-6 0 3 3 0 01-6 0A3 3 0 011 8.5V6z" stroke="#16a34a" stroke-width="1.7" stroke-linejoin="round"/></svg>
+        </div>
+        <div>
+          <h2 style="font-size:20px;font-weight:800;color:var(--t1);margin:0 0 2px;">Connect with Shopify</h2>
+          <p style="font-size:13px;color:var(--t3);margin:0;">Follow these two steps to link your store.</p>
+        </div>
+      </div>
+
+      <div style="height:1px;background:var(--border);margin:24px 0;"></div>
+
+      <!-- Step 1 -->
+      <div style="margin-bottom:28px;">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
+          <div style="width:26px;height:26px;border-radius:50%;background:var(--blue-med);color:#fff;font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;">1</div>
+          <span style="font-size:15px;font-weight:700;color:var(--t1);">Copy your unique API key</span>
+        </div>
+        <p style="font-size:13px;color:var(--t3);margin:0 0 14px 36px;">You will need this key when installing the DataDash app on Shopify.</p>
+        <div style="display:flex;gap:10px;align-items:stretch;">
+          <div style="flex:1;background:var(--bg);border:1.5px solid var(--border);border-radius:11px;padding:13px 16px;font-size:12.5px;font-family:monospace;color:var(--t2);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;letter-spacing:.03em;">${wizardKey}</div>
+          <button id="copy-key-btn" onclick="copyWizardKey()" style="background:var(--card);border:1.5px solid var(--border);color:var(--t2);border-radius:11px;padding:0 18px;font-size:13px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:7px;white-space:nowrap;flex-shrink:0;transition:all .15s;">
+            <svg viewBox="0 0 16 16" width="13" height="13" fill="none"><rect x="5" y="5" width="9" height="9" rx="2" stroke="currentColor" stroke-width="1.4"/><path d="M11 5V3a1 1 0 00-1-1H3a1 1 0 00-1 1v7a1 1 0 001 1h2" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+            Copy
+          </button>
+        </div>
+      </div>
+
+      <!-- Step 2 -->
+      <div>
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
+          <div style="width:26px;height:26px;border-radius:50%;background:var(--blue-med);color:#fff;font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;">2</div>
+          <span style="font-size:15px;font-weight:700;color:var(--t1);">Install the DataDash app on Shopify</span>
+        </div>
+        <p style="font-size:13px;color:var(--t3);margin:0 0 14px 36px;">Enter your Shopify store domain to install DataDash directly on your store.</p>
+        <div style="background:var(--bg);border:1.5px solid var(--border);border-radius:14px;padding:16px 20px;">
+          <div style="display:flex;align-items:center;gap:14px;margin-bottom:14px;">
+            <div style="width:42px;height:42px;border-radius:10px;background:#1D4ED8;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+              <svg viewBox="0 0 100 100" width="24" height="24"><rect width="100" height="100" rx="20" fill="#1D4ED8"/><path d="M28 22L44 22C62 22 72 32 72 50C72 68 62 78 44 78L28 78Z" fill="white"/><path d="M38 34L43 34C55 34 60 40 60 50C60 60 55 66 43 66L38 66Z" fill="#1D4ED8"/><rect x="13" y="38" width="23" height="7" rx="3.5" fill="white"/><rect x="9" y="49" width="27" height="7" rx="3.5" fill="white"/><rect x="15" y="60" width="11" height="7" rx="3.5" fill="white"/></svg>
+            </div>
+            <div>
+              <div style="font-size:14px;font-weight:700;color:var(--t1);">DataDash Connect</div>
+              <div style="font-size:12px;color:var(--t3);">Free · Direct installation</div>
+            </div>
+          </div>
+          <div style="display:flex;gap:10px;align-items:center;">
+            <div style="flex:1;position:relative;">
+              <span style="position:absolute;left:14px;top:50%;transform:translateY(-50%);font-size:13px;color:var(--t3);pointer-events:none;">https://</span>
+              <input id="shopify-domain-inp" type="text" placeholder="yourstore.myshopify.com"
+                style="width:100%;box-sizing:border-box;padding:11px 14px 11px 68px;border:1.5px solid var(--border);border-radius:9px;font-size:13px;color:var(--t1);background:var(--card);outline:none;"
+                onfocus="this.style.borderColor='var(--blue-med)'" onblur="this.style.borderColor='var(--border)'"/>
+            </div>
+            <button onclick="installDataDash()" style="display:flex;align-items:center;gap:7px;background:var(--blue-med);color:#fff;border:none;border-radius:9px;padding:11px 20px;font-size:13px;font-weight:600;cursor:pointer;white-space:nowrap;flex-shrink:0;">
+              Install
+              <svg viewBox="0 0 14 14" width="11" height="11" fill="none"><path d="M3 11L11 3M11 3H6M11 3v5" stroke="white" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+          </div>
+          <p style="font-size:11px;color:var(--t3);margin:10px 0 0;">Example: <span style="font-family:monospace;">velora.myshopify.com</span></p>
+        </div>
+      </div>
+    `;
+  }
+
+  else if (wizardStep === 3) {
+    c.innerHTML = `
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:8px;">
+        <div style="width:44px;height:44px;border-radius:12px;background:#f0fdf4;border:1px solid #bbf7d0;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+          <svg viewBox="0 0 24 24" fill="none" width="22" height="22"><path d="M3 10V20a1 1 0 001 1h16a1 1 0 001-1V10" stroke="#16a34a" stroke-width="1.7" stroke-linecap="round"/><path d="M1 6l2.5-4h17L23 6v2.5a3 3 0 01-6 0 3 3 0 01-6 0 3 3 0 01-6 0A3 3 0 011 8.5V6z" stroke="#16a34a" stroke-width="1.7" stroke-linejoin="round"/></svg>
+        </div>
+        <div>
+          <h2 style="font-size:20px;font-weight:800;color:var(--t1);margin:0 0 2px;">Enable app embed</h2>
+          <p style="font-size:13px;color:var(--t3);margin:0;">Last step — activate the integration in your Shopify theme.</p>
+        </div>
+      </div>
+
+      <div style="height:1px;background:var(--border);margin:24px 0;"></div>
+
+      <p style="font-size:14px;color:var(--t2);margin:0 0 6px;">Turn on the <strong style="color:var(--t1);">"Embedded in theme"</strong> option in Shopify to finalize the connection.</p>
+      <p style="font-size:13px;color:var(--t3);margin:0 0 20px;">Your connection will be active within a few minutes after saving.</p>
+
+      <a href="https://admin.shopify.com/themes/current/editor?context=apps" target="_blank"
+        style="display:inline-flex;align-items:center;gap:8px;background:var(--blue-lt);color:var(--blue-med);border:1.5px solid var(--blue-med);border-radius:10px;padding:12px 22px;font-size:13px;font-weight:700;text-decoration:none;margin-bottom:24px;">
+        Open Shopify theme editor
+        <svg viewBox="0 0 14 14" width="11" height="11" fill="none"><path d="M3 11L11 3M11 3H6M11 3v5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+
+      <label style="display:flex;align-items:center;gap:12px;cursor:pointer;padding:16px 18px;background:var(--bg);border:1.5px solid var(--border);border-radius:12px;transition:border-color .15s;" id="embed-label">
+        <input type="checkbox" id="embed-check" onchange="document.getElementById('embed-label').style.borderColor=this.checked?'var(--green)':'var(--border)'" style="width:17px;height:17px;accent-color:var(--green);cursor:pointer;flex-shrink:0;">
+        <span style="font-size:13px;font-weight:600;color:var(--t2);">I've activated the DataDash app embed in my Shopify theme settings</span>
+      </label>
+    `;
+  }
+}
+
+function copyWizardKey() {
+  navigator.clipboard.writeText(wizardKey).catch(()=>{});
+  const btn = document.getElementById('copy-key-btn');
+  if (btn) {
+    btn.textContent = '✓ Copied!';
+    btn.style.color = 'var(--green)';
+    setTimeout(() => {
+      btn.innerHTML = '<svg viewBox="0 0 16 16" width="13" height="13" fill="none"><rect x="5" y="5" width="9" height="9" rx="2" stroke="currentColor" stroke-width="1.4"/><path d="M11 5V3a1 1 0 00-1-1H3a1 1 0 00-1 1v7a1 1 0 001 1h2" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg> Copy';
+      btn.style.color = '';
+    }, 2000);
+  }
+}
+
+function wizardNext() {
+  if (wizardStep === 1) {
+    const inp = document.getElementById('wiz-name-inp');
+    wizardName = inp ? inp.value.trim() : wizardName;
+    if (!wizardName) { alert('Please enter a store name.'); return; }
+  }
+  if (wizardStep === 3) {
+    const cb = document.getElementById('embed-check');
+    if (!cb || !cb.checked) { alert('Please confirm you have activated the app embed in Shopify.'); return; }
+    // Save store
+    storesData.push({
+      name: wizardName,
+      apiKey: wizardKey,
+      domain: '',
+      revenue: 0,
+      aov: 0,
+      orders: 0,
+      connectedAt: Date.now()
+    });
+    saveStoresData();
+    renderStoresPage();
+    return;
+  }
+  wizardStep++;
+  renderWizard();
+}
+
+function wizardPrev() {
+  if (wizardStep > 1) { wizardStep--; renderWizard(); }
+}
+
+loadStoresData();
 
 </script>
 <!-- MODAL — Columns Manager -->
@@ -9717,6 +10051,133 @@ function deleteRoasRow(id) {
     <div class="alerts-inner"></div>
   </div>
 </div>
+
+<!-- ══ STORES PAGE ══ -->
+<div id="page-stores" class="page-view">
+  <div style="position:sticky;top:var(--tb);z-index:10;background:var(--tb-bg);border-bottom:1px solid var(--border);height:52px;display:flex;align-items:center;padding-left:calc(var(--sb) + 32px);padding-right:32px;">
+    <h1 style="font-size:17px;font-weight:700;color:var(--t1);margin:0;">Stores</h1>
+  </div>
+  <div class="page" style="position:relative;overflow:hidden;">
+    <!-- Flat hexagons rising from bottom, plain fill with navy border -->
+    <svg style="position:absolute;bottom:0;left:0;right:0;width:100%;height:340px;pointer-events:none;" preserveAspectRatio="xMidYMax slice" viewBox="0 0 1400 340" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="hex-fade" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#f1f5f9" stop-opacity="1"/>
+          <stop offset="40%" stop-color="#f1f5f9" stop-opacity="0"/>
+        </linearGradient>
+      </defs>
+      <!-- Row 3 (bottom) -->
+      <polygon points="60,280 110,251 110,193 60,164 10,193 10,251" fill="rgba(219,234,254,0.5)" stroke="rgba(30,64,175,0.18)" stroke-width="1.5"/>
+      <polygon points="170,280 220,251 220,193 170,164 120,193 120,251" fill="rgba(219,234,254,0.5)" stroke="rgba(30,64,175,0.18)" stroke-width="1.5"/>
+      <polygon points="280,280 330,251 330,193 280,164 230,193 230,251" fill="rgba(219,234,254,0.5)" stroke="rgba(30,64,175,0.18)" stroke-width="1.5"/>
+      <polygon points="390,280 440,251 440,193 390,164 340,193 340,251" fill="rgba(219,234,254,0.5)" stroke="rgba(30,64,175,0.18)" stroke-width="1.5"/>
+      <polygon points="500,280 550,251 550,193 500,164 450,193 450,251" fill="rgba(219,234,254,0.5)" stroke="rgba(30,64,175,0.18)" stroke-width="1.5"/>
+      <polygon points="610,280 660,251 660,193 610,164 560,193 560,251" fill="rgba(219,234,254,0.5)" stroke="rgba(30,64,175,0.18)" stroke-width="1.5"/>
+      <polygon points="720,280 770,251 770,193 720,164 670,193 670,251" fill="rgba(219,234,254,0.5)" stroke="rgba(30,64,175,0.18)" stroke-width="1.5"/>
+      <polygon points="830,280 880,251 880,193 830,164 780,193 780,251" fill="rgba(219,234,254,0.5)" stroke="rgba(30,64,175,0.18)" stroke-width="1.5"/>
+      <polygon points="940,280 990,251 990,193 940,164 890,193 890,251" fill="rgba(219,234,254,0.5)" stroke="rgba(30,64,175,0.18)" stroke-width="1.5"/>
+      <polygon points="1050,280 1100,251 1100,193 1050,164 1000,193 1000,251" fill="rgba(219,234,254,0.5)" stroke="rgba(30,64,175,0.18)" stroke-width="1.5"/>
+      <polygon points="1160,280 1210,251 1210,193 1160,164 1110,193 1110,251" fill="rgba(219,234,254,0.5)" stroke="rgba(30,64,175,0.18)" stroke-width="1.5"/>
+      <polygon points="1270,280 1320,251 1320,193 1270,164 1220,193 1220,251" fill="rgba(219,234,254,0.5)" stroke="rgba(30,64,175,0.18)" stroke-width="1.5"/>
+      <polygon points="1380,280 1430,251 1430,193 1380,164 1330,193 1330,251" fill="rgba(219,234,254,0.5)" stroke="rgba(30,64,175,0.18)" stroke-width="1.5"/>
+      <!-- Row 2 (offset) -->
+      <polygon points="115,340 165,311 165,253 115,224 65,253 65,311" fill="rgba(219,234,254,0.4)" stroke="rgba(30,64,175,0.15)" stroke-width="1.5"/>
+      <polygon points="225,340 275,311 275,253 225,224 175,253 175,311" fill="rgba(219,234,254,0.4)" stroke="rgba(30,64,175,0.15)" stroke-width="1.5"/>
+      <polygon points="335,340 385,311 385,253 335,224 285,253 285,311" fill="rgba(219,234,254,0.4)" stroke="rgba(30,64,175,0.15)" stroke-width="1.5"/>
+      <polygon points="445,340 495,311 495,253 445,224 395,253 395,311" fill="rgba(219,234,254,0.4)" stroke="rgba(30,64,175,0.15)" stroke-width="1.5"/>
+      <polygon points="555,340 605,311 605,253 555,224 505,253 505,311" fill="rgba(219,234,254,0.4)" stroke="rgba(30,64,175,0.15)" stroke-width="1.5"/>
+      <polygon points="665,340 715,311 715,253 665,224 615,253 615,311" fill="rgba(219,234,254,0.4)" stroke="rgba(30,64,175,0.15)" stroke-width="1.5"/>
+      <polygon points="775,340 825,311 825,253 775,224 725,253 725,311" fill="rgba(219,234,254,0.4)" stroke="rgba(30,64,175,0.15)" stroke-width="1.5"/>
+      <polygon points="885,340 935,311 935,253 885,224 835,253 835,311" fill="rgba(219,234,254,0.4)" stroke="rgba(30,64,175,0.15)" stroke-width="1.5"/>
+      <polygon points="995,340 1045,311 1045,253 995,224 945,253 945,311" fill="rgba(219,234,254,0.4)" stroke="rgba(30,64,175,0.15)" stroke-width="1.5"/>
+      <polygon points="1105,340 1155,311 1155,253 1105,224 1055,253 1055,311" fill="rgba(219,234,254,0.4)" stroke="rgba(30,64,175,0.15)" stroke-width="1.5"/>
+      <polygon points="1215,340 1265,311 1265,253 1215,224 1165,253 1165,311" fill="rgba(219,234,254,0.4)" stroke="rgba(30,64,175,0.15)" stroke-width="1.5"/>
+      <polygon points="1325,340 1375,311 1375,253 1325,224 1275,253 1275,311" fill="rgba(219,234,254,0.4)" stroke="rgba(30,64,175,0.15)" stroke-width="1.5"/>
+      <!-- Row 1 (bottom edge) -->
+      <polygon points="60,400 110,371 110,313 60,284 10,313 10,371" fill="rgba(219,234,254,0.35)" stroke="rgba(30,64,175,0.13)" stroke-width="1.5"/>
+      <polygon points="170,400 220,371 220,313 170,284 120,313 120,371" fill="rgba(219,234,254,0.35)" stroke="rgba(30,64,175,0.13)" stroke-width="1.5"/>
+      <polygon points="280,400 330,371 330,313 280,284 230,313 230,371" fill="rgba(219,234,254,0.35)" stroke="rgba(30,64,175,0.13)" stroke-width="1.5"/>
+      <polygon points="390,400 440,371 440,313 390,284 340,313 340,371" fill="rgba(219,234,254,0.35)" stroke="rgba(30,64,175,0.13)" stroke-width="1.5"/>
+      <polygon points="500,400 550,371 550,313 500,284 450,313 450,371" fill="rgba(219,234,254,0.35)" stroke="rgba(30,64,175,0.13)" stroke-width="1.5"/>
+      <polygon points="610,400 660,371 660,313 610,284 560,313 560,371" fill="rgba(219,234,254,0.35)" stroke="rgba(30,64,175,0.13)" stroke-width="1.5"/>
+      <polygon points="720,400 770,371 770,313 720,284 670,313 670,371" fill="rgba(219,234,254,0.35)" stroke="rgba(30,64,175,0.13)" stroke-width="1.5"/>
+      <polygon points="830,400 880,371 880,313 830,284 780,313 780,371" fill="rgba(219,234,254,0.35)" stroke="rgba(30,64,175,0.13)" stroke-width="1.5"/>
+      <polygon points="940,400 990,371 990,313 940,284 890,313 890,371" fill="rgba(219,234,254,0.35)" stroke="rgba(30,64,175,0.13)" stroke-width="1.5"/>
+      <polygon points="1050,400 1100,371 1100,313 1050,284 1000,313 1000,371" fill="rgba(219,234,254,0.35)" stroke="rgba(30,64,175,0.13)" stroke-width="1.5"/>
+      <polygon points="1160,400 1210,371 1210,313 1160,284 1110,313 1110,371" fill="rgba(219,234,254,0.35)" stroke="rgba(30,64,175,0.13)" stroke-width="1.5"/>
+      <polygon points="1270,400 1320,371 1320,313 1270,284 1220,313 1220,371" fill="rgba(219,234,254,0.35)" stroke="rgba(30,64,175,0.13)" stroke-width="1.5"/>
+      <polygon points="1380,400 1430,371 1430,313 1380,284 1330,313 1330,371" fill="rgba(219,234,254,0.35)" stroke="rgba(30,64,175,0.13)" stroke-width="1.5"/>
+      <!-- Fade mask top -->
+      <rect width="100%" height="100%" fill="url(#hex-fade)"/>
+    </svg>
+    <div style="padding:28px 36px;position:relative;z-index:1;">
+
+      <div id="stores-list-view">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;">
+          <span style="font-size:13px;font-weight:600;color:var(--t2);">Your stores</span>
+          <button onclick="openAddStore()" style="display:flex;align-items:center;gap:7px;background:var(--blue-med);color:#fff;border:none;border-radius:8px;padding:10px 20px;font-size:13px;font-weight:600;cursor:pointer;" onmouseenter="this.style.opacity='.85'" onmouseleave="this.style.opacity='1'">
+            Add store
+            <svg viewBox="0 0 16 16" width="12" height="12" fill="none"><path d="M8 2v12M2 8h12" stroke="#fff" stroke-width="2.2" stroke-linecap="round"/></svg>
+          </button>
+        </div>
+        <div id="stores-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:14px;"></div>
+        <div id="stores-empty" style="display:none;"></div>
+      </div>
+
+      <!-- WIZARD — same proportions as TrackBee -->
+      <div id="stores-wizard" style="display:none;">
+        <div style="display:grid;grid-template-columns:1fr 300px;gap:24px;align-items:start;">
+
+          <!-- LEFT big card -->
+          <div style="background:#fff;border:1px solid #e2e8f0;border-radius:8px;padding:36px 44px;box-shadow:0 1px 4px rgba(0,0,0,.05);">
+            <div id="wizard-step-content"></div>
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-top:32px;">
+              <button id="wizard-prev-btn" onclick="wizardPrev()" style="display:none;background:transparent;border:none;color:#64748b;font-size:14px;cursor:pointer;padding:0;">← Previous</button>
+              <div></div>
+              <button id="wizard-next-btn" onclick="wizardNext()" style="background:var(--blue-med);color:#fff;border:none;border-radius:7px;padding:11px 30px;font-size:14px;font-weight:600;cursor:pointer;">Next</button>
+            </div>
+          </div>
+
+          <!-- RIGHT progress panel -->
+          <div style="display:flex;flex-direction:column;gap:14px;">
+            <div style="background:#fff;border:1px solid #e2e8f0;border-radius:8px;padding:22px 24px;box-shadow:0 1px 4px rgba(0,0,0,.05);">
+              <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:22px;">
+                <div style="display:flex;align-items:center;gap:10px;">
+                  <div style="width:28px;height:28px;border-radius:7px;background:#96BF48;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                    <svg viewBox="0 0 20 20" fill="none" width="15" height="15"><path d="M3 11V17a1 1 0 001 1h12a1 1 0 001-1v-6" stroke="white" stroke-width="1.8" stroke-linecap="round"/><path d="M1 7l2-4h14l2 4v2a2.5 2.5 0 01-5 0 2.5 2.5 0 01-5 0 2.5 2.5 0 01-5 0V7z" stroke="white" stroke-width="1.8" stroke-linejoin="round"/></svg>
+                  </div>
+                  <span style="font-size:14px;font-weight:700;color:#0f172a;">Configure store</span>
+                </div>
+                <div style="position:relative;width:40px;height:40px;">
+                  <svg viewBox="0 0 40 40" width="40" height="40" style="transform:rotate(-90deg);">
+                    <circle cx="20" cy="20" r="16" fill="none" stroke="#e2e8f0" stroke-width="3"/>
+                    <circle id="wizard-circle" cx="20" cy="20" r="16" fill="none" stroke="#EAB308" stroke-width="3" stroke-dasharray="100.5" stroke-dashoffset="67" stroke-linecap="round"/>
+                  </svg>
+                  <span id="wizard-progress-lbl" style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:#0f172a;">1/3</span>
+                </div>
+              </div>
+              <div id="wizard-steps-list" style="display:flex;flex-direction:column;gap:0;"></div>
+            </div>
+          </div>
+
+        </div>
+        <button onclick="cancelWizard()" style="display:flex;align-items:center;gap:5px;background:transparent;border:none;color:#94a3b8;font-size:12px;cursor:pointer;padding:0;margin-top:14px;">
+          <svg viewBox="0 0 16 16" width="11" height="11" fill="none"><path d="M10 3L5 8l5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Back to stores
+        </button>
+      </div>
+
+      <div id="stores-detail-view" style="display:none;">
+        <button onclick="renderStoresPage()" style="display:flex;align-items:center;gap:5px;background:transparent;border:none;color:#94a3b8;font-size:13px;cursor:pointer;padding:0;margin-bottom:18px;">
+          <svg viewBox="0 0 16 16" width="12" height="12" fill="none"><path d="M10 3L5 8l5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Back to stores
+        </button>
+        <div id="stores-detail-content"></div>
+      </div>
+
+    </div>
+  </div>
+</div><!-- end page-stores -->
 
 <!-- ══ SETTINGS PAGE ══ -->
 <div id="page-settings" class="page-view">
