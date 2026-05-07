@@ -186,6 +186,10 @@
   const token = p.get('token') || p.get('shopify_token') || '';
 
   if (shop && token) {
+    // Redirect to main dashboard with shop+token
+    const dashUrl = 'https://datadash-backend-dhbe.onrender.com/datadash-dashboard.html?shop=' + encodeURIComponent(shop) + '&token=' + encodeURIComponent(token);
+    setTimeout(() => { window.location.href = dashUrl; }, 1500);
+
     const ring = document.getElementById('ring');
     ring.classList.add('connected');
     document.getElementById('ringIcon').innerHTML =

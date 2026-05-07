@@ -9908,6 +9908,33 @@ function wizardPrev() {
 
 loadStoresData();
 
+// Auto-connect store if redirected from Shopify OAuth
+(function() {
+  const p = new URLSearchParams(window.location.search);
+  const shop  = p.get('shop');
+  const token = p.get('token');
+  if (shop && token) {
+    loadStoresData();
+    const exists = storesData.some(s => s.domain === shop);
+    if (!exists) {
+      storesData.push({
+        name: shop.replace('.myshopify.com', ''),
+        apiKey: '',
+        domain: shop,
+        token: token,
+        revenue: 0,
+        aov: 0,
+        orders: 0,
+        connectedAt: Date.now()
+      });
+      saveStoresData();
+    }
+    const storesBtn = document.querySelector('.sb-item[data-page="stores"]');
+    if (storesBtn) setSb(storesBtn);
+    window.history.replaceState({}, '', window.location.pathname);
+  }
+})();
+
 </script>
 <!-- MODAL — Columns Manager -->
 <div class="cols-modal-overlay" id="colsModalOverlay" onclick="closeColsModal()">
