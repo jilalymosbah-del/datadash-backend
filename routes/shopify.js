@@ -88,7 +88,7 @@ router.get('/success', (req, res) => {
         window.close();
       } else {
         // Fallback si pas de popup
-      window.location.href = '/connected.html?shop=${shop}&token=${token}';
+      window.location.href = 'https://${shop}/admin/apps/datadash?shop=${shop}&token=${token}';
       }
     </script>
     <p>Connexion réussie ! Fermeture en cours...</p>
