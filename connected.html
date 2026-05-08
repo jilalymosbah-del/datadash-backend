@@ -144,19 +144,9 @@
   // Si pas de token dans l'URL, le récupérer depuis le backend
   async function init() {
     if (!shop) {
-      // Cas 1 : hostname = zjziwa-9i.myshopify.com
-      const matchHost = window.location.hostname.match(/([a-z0-9-]+\.myshopify\.com)/);
-      if (matchHost) shop = matchHost[1];
-      // Cas 2 : URL admin.shopify.com/store/STORENAME/apps/...
-      if (!shop) {
-        const matchPath = window.location.href.match(/store\/([a-z0-9-]+)\/apps/);
-        if (matchPath) shop = matchPath[1] + '.myshopify.com';
-      }
-      // Cas 3 : param host encodé base64 envoyé par Shopify
-      if (!shop) {
-        const host = p.get('host') || '';
-        if (host) { try { const dec = atob(host); const m = dec.match(/([a-z0-9-]+\.myshopify\.com)/); if (m) shop = m[1]; } catch(e) {} }
-      }
+     const matchPath = window.location.href.match(/store\/([a-z0-9-]+)\/apps/);
+if (matchPath) shop = matchPath[1] + '.myshopify.com';
+if (!shop) { const host = p.get('host')||''; if (host) { try { const dec = atob(host); const m = dec.match(/([a-z0-9-]+\.myshopify\.com)/); if (m) shop = m[1]; } catch(e) {} } }
     }
     if (shop && !token) {
       try {
