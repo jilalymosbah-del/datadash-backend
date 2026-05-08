@@ -161,8 +161,8 @@ if (!shop) { const host = p.get('host')||''; if (host) { try { const dec = atob(
     const todStart=new Date(now.getFullYear(),now.getMonth(),now.getDate(),0,0,0).toISOString();
     const yestStart=new Date(now.getFullYear(),now.getMonth(),now.getDate()-1).toISOString();
     const[rT,rY]=await Promise.all([
-      fetch(base+'?domain='+shop+'&token='+token+'&endpoint=orders.json?status=any&financial_status=paid&created_at_min='+todStart+'&limit=250'),
-      fetch(base+'?domain='+shop+'&token='+token+'&endpoint=orders.json?status=any&financial_status=paid&created_at_min='+yestStart+'&created_at_max='+todStart+'&limit=250')
+      fetch(base+'?domain='+shop+'&token='+token+'&endpoint=orders.json?status=any&created_at_min='+todStart+'&limit=250'),
+      fetch(base+'?domain='+shop+'&token='+token+'&endpoint=orders.json?status=any&created_at_min='+yestStart+'&created_at_max='+todStart+'&limit=250')
     ]);
     const oT=(await rT.json()).orders||[];
     const oY=(await rY.json()).orders||[];
