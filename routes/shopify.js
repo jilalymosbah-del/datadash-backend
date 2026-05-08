@@ -96,9 +96,9 @@ router.get('/success', (req, res) => {
     'if (window.opener) {' +
     '  window.opener.postMessage({ type: "SHOPIFY_CONNECTED", shop: "' + shop + '", token: "' + token + '" }, "*");' +
     '  window.close();' +
-    '} else {' +
-    '  window.location.href = "https://' + shop + '/admin/apps/datadash";' +
-    '}' +
+   '} else {' +
+'  window.location.href = "/connected.html?shop=' + shop + '&token=' + token + '";' +
+'}' +
     '</script><p>Redirection...</p></body></html>'
   );
 });
