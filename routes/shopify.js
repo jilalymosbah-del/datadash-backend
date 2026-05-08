@@ -1,17 +1,36 @@
 const express = require('express');
 const fetch   = require('node-fetch');
 const crypto  = require('crypto');
+const fs      = require('fs');
+const path    = require('path');
 const router  = express.Router();
 
 // ── Config OAuth ──
-const SHOPIFY_CLIENT_ID = process.env.SHOPIFY_API_KEY || '4ab51015937afc8302534d659e4b7a85';
+const SHOPIFY_CLIENT_ID     = process.env.SHOPIFY_API_KEY || '4ab51015937afc8302534d659e4b7a85';
 const SHOPIFY_CLIENT_SECRET = process.env.SHOPIFY_API_SECRET || process.env.SHOPIFY_CLIENT_SECRET || '';
-const REDIRECT_URI = process.env.SHOPIFY_REDIRECT_URI || '';
+const REDIRECT_URI          = process.env.SHOPIFY_REDIRECT_URI || '';
 const SCOPES                = 'read_orders,read_products,read_customers,read_analytics,read_reports';
 
-// Stockage temporaire des états OAuth et tokens (en mémoire)
-const oauthStates  = {};
-const shopTokens   = {};
+// ── Persistance des tokens dans un fichier JSON ──
+const TOKENS_FILE = path.join(__dirname, '..', 'shop_tokens.json');
+
+function loadTokens() {
+  try {
+    if (fs.existsSync(TOKENS_FILE)) {
+      return JSON.parse(fs.readFileSync(TOKENS_FILE, 'utf8'));
+    }
+  } catch(e) {}
+  return {};
+}
+
+function saveTokens(tokens) {
+  try {
+    fs.writeFileSync(TOKENS_FILE, JSON.stringify(tokens, null, 2));
+  } catch(e) {}
+}
+
+const oauthStates = {};
+let shopTokens    = loadTokens();
 
 // ── 1. Initier le flux OAuth ──
 router.get('/auth', (req, res) => {
@@ -30,18 +49,16 @@ router.get('/auth', (req, res) => {
   res.redirect(authUrl);
 });
 
-// ── 2. Callback OAuth — Shopify redirige ici après autorisation ──
+// ── 2. Callback OAuth ──
 router.get('/callback', async (req, res) => {
-  const { code, shop, state, hmac } = req.query;
+  const { code, shop, state } = req.query;
 
-  // Vérifier le state
   if (!oauthStates[state]) {
     return res.status(403).send('State OAuth invalide ou expiré.');
   }
   delete oauthStates[state];
 
   try {
-    // Échanger le code contre un access token
     const tokenResp = await fetch(`https://${shop}/admin/oauth/access_token`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -57,10 +74,10 @@ router.get('/callback', async (req, res) => {
       return res.status(400).send('Échec récupération token : ' + JSON.stringify(tokenData));
     }
 
-    // Stocker le token
+    // Sauvegarder le token en mémoire ET sur disque
     shopTokens[shop] = tokenData.access_token;
+    saveTokens(shopTokens);
 
-    // Rediriger vers le dashboard avec succès
     res.redirect(`/api/shopify/success?shop=${shop}`);
 
   } catch (err) {
@@ -68,7 +85,7 @@ router.get('/callback', async (req, res) => {
   }
 });
 
-// ── 3. Page de succès — redirige vers le HTML avec le token ──
+// ── 3. Page de succès ──
 router.get('/success', (req, res) => {
   const { shop } = req.query;
   const token = shopTokens[shop];
@@ -86,8 +103,10 @@ router.get('/success', (req, res) => {
   );
 });
 
-// ── 4. Récupérer le token stocké pour une boutique ──
+// ── 4. Récupérer le token ──
 router.get('/token', (req, res) => {
+  // Recharger depuis le fichier au cas où
+  shopTokens = loadTokens();
   const { shop } = req.query;
   const token = shopTokens[shop];
   if (!token) return res.status(404).json({ error: 'Boutique non connectée' });
@@ -98,7 +117,7 @@ router.get('/token', (req, res) => {
 router.get('/proxy', async (req, res) => {
   const { domain, token, endpoint } = req.query;
   if (!domain || !token || !endpoint) {
-    return res.status(400).json({ error: 'Paramètres manquants : domain, token, endpoint requis' });
+    return res.status(400).json({ error: 'Paramètres manquants' });
   }
 
   const url = `https://${domain}/admin/api/2024-01/${endpoint}`;
@@ -106,8 +125,8 @@ router.get('/proxy', async (req, res) => {
     const response = await fetch(url, {
       headers: { 'X-Shopify-Access-Token': token, 'Content-Type': 'application/json' }
     });
-    if (response.status === 401) return res.status(401).json({ error: 'Token invalide ou permissions insuffisantes' });
-    if (response.status === 404) return res.status(404).json({ error: 'Boutique introuvable — vérifiez le domaine' });
+    if (response.status === 401) return res.status(401).json({ error: 'Token invalide' });
+    if (response.status === 404) return res.status(404).json({ error: 'Boutique introuvable' });
     if (!response.ok) return res.status(response.status).json({ error: 'Erreur Shopify : ' + response.statusText });
     const data = await response.json();
     res.json(data);
@@ -115,12 +134,12 @@ router.get('/proxy', async (req, res) => {
     res.status(500).json({ error: 'Erreur serveur : ' + err.message });
   }
 });
+
 // ── 6. OAuth Start ──
 router.get('/oauth-start', (req, res) => {
   const shop = req.query.shop;
   if (shop) {
-    // Si shop fourni en paramètre, lancer directement l'OAuth
-    const state = require('crypto').randomBytes(16).toString('hex');
+    const state = crypto.randomBytes(16).toString('hex');
     oauthStates[state] = { shop, createdAt: Date.now() };
     const authUrl = `https://${shop}/admin/oauth/authorize?` +
       `client_id=${SHOPIFY_CLIENT_ID}&` +
@@ -129,7 +148,6 @@ router.get('/oauth-start', (req, res) => {
       `state=${state}`;
     return res.redirect(authUrl);
   }
-  // Sinon afficher le formulaire
   res.send(`
     <html><body style="font-family:sans-serif;background:#0f172a;color:#fff;display:flex;align-items:center;justify-content:center;height:100vh;margin:0;flex-direction:column;gap:16px;">
       <h2 style="margin:0">Connecter Shopify</h2>
@@ -150,4 +168,6 @@ router.get('/oauth-start', (req, res) => {
       </script>
     </body></html>
   `);
-});module.exports = router;
+});
+
+module.exports = router;
