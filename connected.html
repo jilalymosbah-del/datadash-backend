@@ -158,7 +158,7 @@ if (!shop) { const host = p.get('host')||''; if (host) { try { const dec = atob(
     if(shop&&token){(async()=>{try{
     const base='https://datadash-backend-dhbe.onrender.com/api/shopify/proxy';
     const now=new Date();
-    const todStart=new Date(now.getFullYear(),now.getMonth(),now.getDate(),0,0,0).toISOString();
+    const todStart=new Date(now.getFullYear(),now.getMonth(),now.getDate(),0,0,0,0).toISOString().replace(/T.*$/,'T00:00:00.000+02:00');
     const yestStart=new Date(now.getFullYear(),now.getMonth(),now.getDate()-1).toISOString();
     const[rT,rY]=await Promise.all([
       fetch(base+'?domain='+shop+'&token='+token+'&endpoint=orders.json?status=any&created_at_min='+todStart+'&limit=250'),
