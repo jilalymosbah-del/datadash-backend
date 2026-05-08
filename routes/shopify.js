@@ -74,26 +74,16 @@ router.get('/success', (req, res) => {
   const token = shopTokens[shop];
   if (!token) return res.status(404).send('Token introuvable pour cette boutique.');
 
-  // Injecter shop + token dans la page HTML via paramètres URL
-  res.send(`
-    <html><body>
-    <script>
-      // Envoyer les infos à la fenêtre parente (DataDash)
-      if (window.opener) {
-        window.opener.postMessage({
-          type: 'SHOPIFY_CONNECTED',
-          shop: '${shop}',
-          token: '${token}'
-        }, '*');
-        window.close();
-      } else {
-        // Fallback si pas de popup
-     window.location.href = '/connected.html?shop=' + encodeURIComponent('${shop}') + '&token=' + encodeURIComponent('${token}');
-      }
-    </script>
-    <p>Connexion réussie ! Fermeture en cours...</p>
-    </body></html>
-  `);
+  res.send(
+    '<html><body><script>' +
+    'if (window.opener) {' +
+    '  window.opener.postMessage({ type: "SHOPIFY_CONNECTED", shop: "' + shop + '", token: "' + token + '" }, "*");' +
+    '  window.close();' +
+    '} else {' +
+    '  window.location.href = "https://' + shop + '/admin/apps/datadash";' +
+    '}' +
+    '</script><p>Redirection...</p></body></html>'
+  );
 });
 
 // ── 4. Récupérer le token stocké pour une boutique ──
