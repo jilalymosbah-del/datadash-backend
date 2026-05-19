@@ -11,28 +11,101 @@ const SHOPIFY_CLIENT_SECRET = process.env.SHOPIFY_API_SECRET || process.env.SHOP
 const REDIRECT_URI          = process.env.SHOPIFY_REDIRECT_URI || '';
 const SCOPES                = 'read_orders,read_products,read_customers,read_analytics,read_reports';
 
-// ── Persistance des tokens dans un fichier JSON ──
+// ── Persistance des tokens ──
 const TOKENS_FILE = path.join(__dirname, '..', 'shop_tokens.json');
+const COGS_FILE   = path.join(__dirname, '..', 'shop_cogs.json');
+const SYNC_FILE   = path.join(__dirname, '..', 'shop_sync.json');
 
-function loadTokens() {
+function loadJSON(file) {
   try {
-    if (fs.existsSync(TOKENS_FILE)) {
-      return JSON.parse(fs.readFileSync(TOKENS_FILE, 'utf8'));
-    }
+    if (fs.existsSync(file)) return JSON.parse(fs.readFileSync(file, 'utf8'));
   } catch(e) {}
   return {};
 }
 
-function saveTokens(tokens) {
-  try {
-    fs.writeFileSync(TOKENS_FILE, JSON.stringify(tokens, null, 2));
-  } catch(e) {}
+function saveJSON(file, data) {
+  try { fs.writeFileSync(file, JSON.stringify(data, null, 2)); } catch(e) {}
 }
 
 const oauthStates = {};
-let shopTokens    = loadTokens();
+let shopTokens = loadJSON(TOKENS_FILE);
+let shopCogs   = loadJSON(COGS_FILE);
+let shopSync   = loadJSON(SYNC_FILE);
 
-// ── 1. Initier le flux OAuth ──
+// ── Helper: Shopify API call ──
+async function shopifyAPI(shop, token, endpoint) {
+  const url = `https://${shop}/admin/api/2024-01/${endpoint}`;
+  const res = await fetch(url, {
+    headers: { 'X-Shopify-Access-Token': token, 'Content-Type': 'application/json' }
+  });
+  if (!res.ok) throw new Error(`Shopify API error: ${res.status} ${res.statusText}`);
+  return res.json();
+}
+
+// ── Initial Sync: fetch all orders + products ──
+async function doInitialSync(shop, token) {
+  try {
+    // Fetch orders (last 250)
+    const ordersData = await shopifyAPI(shop, token, 'orders.json?status=any&limit=250');
+    const orders = ordersData.orders || [];
+
+    // Fetch products
+    const productsData = await shopifyAPI(shop, token, 'products.json?limit=250');
+    const products = productsData.products || [];
+
+    // Calculate revenue
+    const revenue = orders
+      .filter(o => o.financial_status === 'paid')
+      .reduce((sum, o) => sum + parseFloat(o.total_price || 0), 0);
+
+    // Save sync data
+    shopSync[shop] = {
+      orders,
+      products,
+      revenue: parseFloat(revenue.toFixed(2)),
+      orderCount: orders.length,
+      lastSync: new Date().toISOString()
+    };
+    saveJSON(SYNC_FILE, shopSync);
+
+    // Register webhook
+    await registerWebhook(shop, token);
+
+    return shopSync[shop];
+  } catch(err) {
+    console.error('Initial sync error:', err.message);
+    throw err;
+  }
+}
+
+// ── Register Webhook ──
+async function registerWebhook(shop, token) {
+  try {
+    const webhookUrl = `${process.env.HOST || 'https://datadash-backend-dhbe.onrender.com'}/api/shopify/webhook/orders`;
+    
+    // Check existing webhooks
+    const existing = await shopifyAPI(shop, token, 'webhooks.json');
+    const alreadyExists = (existing.webhooks || []).some(w => 
+      w.topic === 'orders/create' && w.address === webhookUrl
+    );
+    if (alreadyExists) return;
+
+    // Create webhook
+    const res = await fetch(`https://${shop}/admin/api/2024-01/webhooks.json`, {
+      method: 'POST',
+      headers: { 'X-Shopify-Access-Token': token, 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        webhook: { topic: 'orders/create', address: webhookUrl, format: 'json' }
+      })
+    });
+    const data = await res.json();
+    console.log('Webhook registered:', data.webhook?.id);
+  } catch(err) {
+    console.error('Webhook registration error:', err.message);
+  }
+}
+
+// ── 1. Auth ──
 router.get('/auth', (req, res) => {
   const shop = req.query.shop;
   if (!shop) return res.status(400).json({ error: 'Paramètre shop manquant' });
@@ -41,97 +114,79 @@ router.get('/auth', (req, res) => {
   oauthStates[state] = { shop, createdAt: Date.now() };
 
   const authUrl = `https://${shop}/admin/oauth/authorize?` +
-    `client_id=${SHOPIFY_CLIENT_ID}&` +
-    `scope=${SCOPES}&` +
-    `redirect_uri=${encodeURIComponent(REDIRECT_URI)}&` +
-    `state=${state}`;
+    `client_id=${SHOPIFY_CLIENT_ID}&scope=${SCOPES}&` +
+    `redirect_uri=${encodeURIComponent(REDIRECT_URI)}&state=${state}`;
 
   res.redirect(authUrl);
 });
 
-// ── 2. Callback OAuth ──
+// ── 2. Callback ──
 router.get('/callback', async (req, res) => {
   const { code, shop, state } = req.query;
 
-  if (!oauthStates[state]) {
-    return res.status(403).send('State OAuth invalide ou expiré.');
-  }
+  if (!oauthStates[state]) return res.status(403).send('State OAuth invalide ou expiré.');
   delete oauthStates[state];
 
   try {
     const tokenResp = await fetch(`https://${shop}/admin/oauth/access_token`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        client_id:     SHOPIFY_CLIENT_ID,
-        client_secret: SHOPIFY_CLIENT_SECRET,
-        code
-      })
+      body: JSON.stringify({ client_id: SHOPIFY_CLIENT_ID, client_secret: SHOPIFY_CLIENT_SECRET, code })
     });
 
     const tokenData = await tokenResp.json();
-    if (!tokenData.access_token) {
-      return res.status(400).send('Échec récupération token : ' + JSON.stringify(tokenData));
-    }
+    if (!tokenData.access_token) return res.status(400).send('Échec token: ' + JSON.stringify(tokenData));
 
-    // Sauvegarder le token en mémoire ET sur disque
     shopTokens[shop] = tokenData.access_token;
-    saveTokens(shopTokens);
+    saveJSON(TOKENS_FILE, shopTokens);
+
+    // Initial sync en arrière-plan
+    doInitialSync(shop, tokenData.access_token).catch(console.error);
 
     res.redirect(`/api/shopify/success?shop=${shop}`);
-
-  } catch (err) {
-    res.status(500).send('Erreur OAuth : ' + err.message);
+  } catch(err) {
+    res.status(500).send('Erreur OAuth: ' + err.message);
   }
 });
 
-// ── 3. Page de succès ──
+// ── 3. Success ──
 router.get('/success', (req, res) => {
   const { shop } = req.query;
   const token = shopTokens[shop];
-  if (!token) return res.status(404).send('Token introuvable pour cette boutique.');
+  if (!token) return res.status(404).send('Token introuvable.');
 
   res.send(
     '<html><body><script>' +
     'if (window.opener) {' +
     '  window.opener.postMessage({ type: "SHOPIFY_CONNECTED", shop: "' + shop + '", token: "' + token + '" }, "*");' +
     '  window.close();' +
-    '} else {' +
-    '  window.location.href = "https://' + shop + '/admin/apps/datadash";' +
-    '}' +
-    '</script><p>Redirection...</p></body></html>'
+    '} else { window.location.href = "/"; }' +
+    '</script><p>Connexion réussie, fermeture...</p></body></html>'
   );
 });
 
-// ── 4. Récupérer le token ──
+// ── 4. Token ──
 router.get('/token', (req, res) => {
-  // Recharger depuis le fichier au cas où
-  shopTokens = loadTokens();
+  shopTokens = loadJSON(TOKENS_FILE);
   const { shop } = req.query;
   const token = shopTokens[shop];
   if (!token) return res.status(404).json({ error: 'Boutique non connectée' });
   res.json({ shop, token });
 });
 
-// ── 5. Proxy Shopify API ──
+// ── 5. Proxy ──
 router.get('/proxy', async (req, res) => {
   const { domain, token, endpoint } = req.query;
-  if (!domain || !token || !endpoint) {
-    return res.status(400).json({ error: 'Paramètres manquants' });
-  }
+  if (!domain || !token || !endpoint) return res.status(400).json({ error: 'Paramètres manquants' });
 
-  const url = `https://${domain}/admin/api/2024-01/${endpoint}`;
   try {
-    const response = await fetch(url, {
+    const response = await fetch(`https://${domain}/admin/api/2024-01/${endpoint}`, {
       headers: { 'X-Shopify-Access-Token': token, 'Content-Type': 'application/json' }
     });
-    if (response.status === 401) return res.status(401).json({ error: 'Token invalide' });
-    if (response.status === 404) return res.status(404).json({ error: 'Boutique introuvable' });
-    if (!response.ok) return res.status(response.status).json({ error: 'Erreur Shopify : ' + response.statusText });
-    const data = await response.json();
-    res.json(data);
-  } catch (err) {
-    res.status(500).json({ error: 'Erreur serveur : ' + err.message });
+    if (!response.ok) return res.status(response.status).json({ error: response.statusText });
+    res.json(await response.json());
+  } catch(err) {
+    res.status(500).json({ error: err.message });
   }
 });
 
@@ -142,32 +197,172 @@ router.get('/oauth-start', (req, res) => {
     const state = crypto.randomBytes(16).toString('hex');
     oauthStates[state] = { shop, createdAt: Date.now() };
     const authUrl = `https://${shop}/admin/oauth/authorize?` +
-      `client_id=${SHOPIFY_CLIENT_ID}&` +
-      `scope=${SCOPES}&` +
-      `redirect_uri=${encodeURIComponent(REDIRECT_URI)}&` +
-      `state=${state}`;
+      `client_id=${SHOPIFY_CLIENT_ID}&scope=${SCOPES}&` +
+      `redirect_uri=${encodeURIComponent(REDIRECT_URI)}&state=${state}`;
     return res.redirect(authUrl);
   }
   res.send(`
     <html><body style="font-family:sans-serif;background:#0f172a;color:#fff;display:flex;align-items:center;justify-content:center;height:100vh;margin:0;flex-direction:column;gap:16px;">
-      <h2 style="margin:0">Connecter Shopify</h2>
-      <p style="color:#94a3b8;margin:0">Entrez le domaine de votre boutique</p>
-      <div style="display:flex;gap:8px;align-items:center">
-        <span style="color:#94a3b8">https://</span>
-        <input id="shop" placeholder="ma-boutique.myshopify.com" style="padding:10px 14px;border-radius:8px;border:1px solid #334155;background:#1e293b;color:#fff;font-size:15px;width:260px;" />
-      </div>
-      <button onclick="go()" style="background:#5c6ac4;color:#fff;border:none;padding:12px 28px;border-radius:8px;font-size:15px;cursor:pointer;font-weight:600">Connecter →</button>
+      <h2>Connecter Shopify</h2>
+      <input id="shop" placeholder="ma-boutique.myshopify.com" style="padding:10px 14px;border-radius:8px;border:1px solid #334155;background:#1e293b;color:#fff;font-size:15px;width:260px;" />
+      <button onclick="go()" style="background:#5c6ac4;color:#fff;border:none;padding:12px 28px;border-radius:8px;font-size:15px;cursor:pointer;">Connecter →</button>
       <script>
         function go() {
           let shop = document.getElementById('shop').value.trim().replace('https://','').replace(/\\/$/,'');
-          if (!shop) return alert('Entrez votre domaine');
-          if (!shop.includes('.')) shop = shop + '.myshopify.com';
-          window.location.href = 'https://datadash-backend-dhbe.onrender.com/api/shopify/oauth-start?shop=' + encodeURIComponent(shop);
+          if (!shop.includes('.')) shop += '.myshopify.com';
+          window.location.href = '/api/shopify/oauth-start?shop=' + encodeURIComponent(shop);
         }
         document.getElementById('shop').addEventListener('keydown', e => { if(e.key==='Enter') go(); });
       </script>
     </body></html>
   `);
+});
+
+// ── 7. Dashboard Data (formatted for frontend) ──
+router.get('/dashboard', async (req, res) => {
+  const { shop, token } = req.query;
+  if (!shop || !token) return res.status(400).json({ error: 'shop et token requis' });
+
+  try {
+    // Use cached sync data if available
+    let syncData = shopSync[shop];
+    
+    if (!syncData) {
+      syncData = await doInitialSync(shop, token);
+    }
+
+    const cogs = shopCogs[shop] || {};
+    
+    // Calculate COGS total
+    let cogsTotal = 0;
+    (syncData.products || []).forEach(product => {
+      const productCogs = cogs[product.id] || 0;
+      const sold = (syncData.orders || []).reduce((sum, order) => {
+        const lineItem = (order.line_items || []).find(li => li.product_id === product.id);
+        return sum + (lineItem ? lineItem.quantity : 0);
+      }, 0);
+      cogsTotal += productCogs * sold;
+    });
+
+    res.json({
+      shop,
+      revenue: syncData.revenue || 0,
+      orderCount: syncData.orderCount || 0,
+      products: (syncData.products || []).map(p => ({
+        id: p.id,
+        title: p.title,
+        status: p.status,
+        image: p.image?.src || null,
+        cogs: cogs[p.id] || 0
+      })),
+      cogsTotal: parseFloat(cogsTotal.toFixed(2)),
+      lastSync: syncData.lastSync
+    });
+  } catch(err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// ── 8. Net Margin ──
+router.get('/margin', (req, res) => {
+  const { shop, metaSpend } = req.query;
+  if (!shop) return res.status(400).json({ error: 'shop requis' });
+
+  const syncData = shopSync[shop];
+  if (!syncData) return res.status(404).json({ error: 'Aucune donnée sync. Connectez Shopify d\'abord.' });
+
+  const cogs = shopCogs[shop] || {};
+  let cogsTotal = 0;
+  (syncData.products || []).forEach(product => {
+    const productCogs = cogs[product.id] || 0;
+    const sold = (syncData.orders || []).reduce((sum, order) => {
+      const lineItem = (order.line_items || []).find(li => li.product_id === product.id);
+      return sum + (lineItem ? lineItem.quantity : 0);
+    }, 0);
+    cogsTotal += productCogs * sold;
+  });
+
+  const revenue   = syncData.revenue || 0;
+  const adSpend   = parseFloat(metaSpend || 0);
+  const netMargin = revenue - adSpend - cogsTotal;
+
+  res.json({
+    revenue:   parseFloat(revenue.toFixed(2)),
+    adSpend:   parseFloat(adSpend.toFixed(2)),
+    cogs:      parseFloat(cogsTotal.toFixed(2)),
+    netMargin: parseFloat(netMargin.toFixed(2)),
+    formula:   `${revenue.toFixed(2)} - ${adSpend.toFixed(2)} - ${cogsTotal.toFixed(2)} = ${netMargin.toFixed(2)}`
+  });
+});
+
+// ── 9. COGS - GET ──
+router.get('/cogs', (req, res) => {
+  const { shop } = req.query;
+  if (!shop) return res.status(400).json({ error: 'shop requis' });
+  res.json({ shop, cogs: shopCogs[shop] || {} });
+});
+
+// ── 10. COGS - SET ──
+router.post('/cogs', express.json(), (req, res) => {
+  const { shop, productId, cost } = req.body;
+  if (!shop || !productId || cost === undefined) {
+    return res.status(400).json({ error: 'shop, productId et cost requis' });
+  }
+  if (!shopCogs[shop]) shopCogs[shop] = {};
+  shopCogs[shop][productId] = parseFloat(cost);
+  saveJSON(COGS_FILE, shopCogs);
+  res.json({ success: true, shop, productId, cost: shopCogs[shop][productId] });
+});
+
+// ── 11. Webhook orders/create ──
+router.post('/webhook/orders', express.raw({ type: 'application/json' }), (req, res) => {
+  const hmac      = req.headers['x-shopify-hmac-sha256'];
+  const shop      = req.headers['x-shopify-shop-domain'];
+  const body      = req.body;
+
+  // Verify webhook signature
+  const hash = crypto.createHmac('sha256', SHOPIFY_CLIENT_SECRET)
+    .update(body, 'utf8').digest('base64');
+
+  if (hash !== hmac) return res.status(401).send('Webhook non autorisé');
+
+  try {
+    const order = JSON.parse(body.toString());
+    
+    if (shopSync[shop]) {
+      // Add new order to sync data
+      shopSync[shop].orders.unshift(order);
+      shopSync[shop].orderCount = shopSync[shop].orders.length;
+      
+      // Recalculate revenue
+      shopSync[shop].revenue = parseFloat(
+        shopSync[shop].orders
+          .filter(o => o.financial_status === 'paid')
+          .reduce((sum, o) => sum + parseFloat(o.total_price || 0), 0)
+          .toFixed(2)
+      );
+      shopSync[shop].lastSync = new Date().toISOString();
+      saveJSON(SYNC_FILE, shopSync);
+    }
+
+    console.log(`New order received for ${shop}: #${order.order_number}`);
+    res.status(200).send('OK');
+  } catch(err) {
+    res.status(500).send('Erreur webhook: ' + err.message);
+  }
+});
+
+// ── 12. Manual Sync ──
+router.post('/sync', express.json(), async (req, res) => {
+  const { shop, token } = req.body;
+  if (!shop || !token) return res.status(400).json({ error: 'shop et token requis' });
+
+  try {
+    const data = await doInitialSync(shop, token);
+    res.json({ success: true, ...data });
+  } catch(err) {
+    res.status(500).json({ error: err.message });
+  }
 });
 
 module.exports = router;
