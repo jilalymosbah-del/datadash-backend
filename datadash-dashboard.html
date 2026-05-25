@@ -99,8 +99,8 @@ html, body {
   padding: 0; z-index: 300; overflow-y: auto;
 }
 .sb-logo {
-  padding: 24px 20px 20px; display: flex; flex-direction: column;
-  align-items: center; gap: 8px; flex-shrink: 0;
+  padding: 18px 20px 6px; display: flex; flex-direction: column;
+  align-items: center; gap: 5px; flex-shrink: 0;
 }
 .sb-logo svg { width: 48px; height: 48px; }
 .sb-logo-name { font-size: 18px; font-weight: 800; color: #f8fafc; letter-spacing: -.3px; }
@@ -114,7 +114,7 @@ html, body {
 .sb-item.on { background: rgba(255,255,255,.09); }
 .sb-item.on::before {
   content: ''; position: absolute; left: 0; top: 50%; transform: translateY(-50%);
-  width: 3px; height: 22px; background: #f8fafc; border-radius: 0 3px 3px 0;
+  width: 3px; height: 20px; background: #3B82F6; border-radius: 0 3px 3px 0;
 }
 .sb-item svg { width: 20px; height: 20px; flex-shrink: 0; opacity: .6; }
 .sb-item.on svg { opacity: 1; }
@@ -473,7 +473,7 @@ html, body {
 .goal-empty span { font-size: 11.5px; line-height: 1.5; max-width: 220px; color: var(--t3); }
 .goal-hd { display: flex; justify-content: space-between; margin-bottom: 5px; }
 .goal-nm { font-size: 11.5px; color: var(--t2); }
-.goal-vl { font-size: 11.5px; color: var(--t3); font-weight: 500; }
+.an-kpi-sub { font-size: 11px; color: var(--t3); }
 .goal-track { height: 5px; background: var(--mc-bg); border-radius: 3px; overflow: hidden; }
 .goal-fill { height: 100%; border-radius: 3px; }
 .goal-status-badge {
@@ -1123,9 +1123,8 @@ html, body {
   width: 32px; height: 18px; border-radius: 9px; background: var(--border);
   cursor: pointer; position: relative; transition: background .2s; flex-shrink: 0; border: none;
 }
-.col-active-toggle.on { /* color set per-column via inline style */ }
 .col-active-toggle::after {
-  content: ''; position: absolute; top: 2px; left: 2px;
+  content: ""; position: absolute; top: 2px; left: 2px;
   width: 14px; height: 14px; border-radius: 50%; background: #fff;
   transition: transform .2s;
 }
@@ -1643,15 +1642,20 @@ html, body {
 }
 .an-hd { display: flex; align-items: center; justify-content: space-between; }
 .an-title { font-size: 20px; font-weight: 700; color: var(--t1); letter-spacing: -0.3px; }
-.an-kpis { display: grid; grid-template-columns: repeat(6,1fr); gap: 10px; }
+.an-kpis { display: grid; grid-template-columns: repeat(6,1fr); gap: 10px; margin-bottom: 12px; }
 .an-kpi {
   background: var(--card); border: 1px solid var(--border); border-radius: 10px;
-  padding: 13px 14px; display: flex; flex-direction: column; gap: 5px;
-  transition: background .25s, border-color .25s;
+  padding: 18px 14px 16px; display: flex; flex-direction: column; gap: 0; position: relative;
+  transition: background .25s, border-color .25s; min-height: 90px;
 }
-.an-kpi-lbl { font-size: 10.5px; font-weight: 600; color: var(--t3); text-transform: uppercase; letter-spacing: .05em; }
-.an-kpi-val { font-size: 20px; font-weight: 700; color: var(--t1); letter-spacing: -0.4px; line-height: 1; }
-.an-kpi-sub { font-size: 10.5px; color: var(--t3); }
+.an-kpi-icon {
+  position: absolute; top: 12px; right: 12px;
+  width: 26px; height: 26px; border-radius: 7px;
+  display: flex; align-items: center; justify-content: center;
+}
+.an-kpi-lbl { font-size: 10.5px; font-weight: 600; color: var(--t3); text-transform: uppercase; letter-spacing: .04em; }
+.an-kpi-val { font-size: 19px; font-weight: 700; color: var(--t1); letter-spacing: -0.4px; line-height: 1; margin-top: 8px; margin-bottom: 4px; }
+.an-kpi-sub { font-size: 11px; color: var(--t3); }
 .an-row { display: grid; grid-template-columns: 1.6fr 1fr; gap: 14px; }
 .an-card {
   background: var(--card); border: 1px solid var(--border); border-radius: 12px;
@@ -2362,7 +2366,7 @@ html, body {
 
   /* 9. Analytics */
   .analytics-page { padding: 14px !important; }
-  .an-kpis { grid-template-columns: repeat(3, 1fr) !important; gap: 8px !important; }
+  .an-kpis { grid-template-columns: repeat(2, 1fr) !important; gap: 10px !important; }
   .an-kpi-val { font-size: 15px !important; }
   .an-row { grid-template-columns: 1fr !important; }
   .an-chart-wrap { min-height: 160px !important; }
@@ -2751,14 +2755,7 @@ html, body {
 <!-- SIDEBAR -->
 <aside class="sidebar">
   <div class="sb-logo">
-    <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" width="48" height="48">
-      <rect width="100" height="100" rx="20" fill="#1D4ED8"/>
-      <path d="M28 22 L44 22 C62 22 72 32 72 50 C72 68 62 78 44 78 L28 78 Z" fill="white"/>
-      <path d="M38 34 L43 34 C55 34 60 40 60 50 C60 60 55 66 43 66 L38 66 Z" fill="#1D4ED8"/>
-      <rect x="13" y="38" width="23" height="7" rx="3.5" fill="white"/>
-      <rect x="9"  y="49" width="27" height="7" rx="3.5" fill="white"/>
-      <rect x="15" y="60" width="11" height="7" rx="3.5" fill="white"/>
-    </svg>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAABCGlDQ1BJQ0MgUHJvZmlsZQAAeJxjYGA8wQAELAYMDLl5JUVB7k4KEZFRCuwPGBiBEAwSk4sLGHADoKpv1yBqL+viUYcLcKakFicD6Q9ArFIEtBxopAiQLZIOYWuA2EkQtg2IXV5SUAJkB4DYRSFBzkB2CpCtkY7ETkJiJxcUgdT3ANk2uTmlyQh3M/Ck5oUGA2kOIJZhKGYIYnBncAL5H6IkfxEDg8VXBgbmCQixpJkMDNtbGRgkbiHEVBYwMPC3MDBsO48QQ4RJQWJRIliIBYiZ0tIYGD4tZ2DgjWRgEL7AwMAVDQsIHG5TALvNnSEfCNMZchhSgSKeDHkMyQx6QJYRgwGDIYMZAKbWPz9HbOBQAAAEeklEQVR4nO2X328UVRTHv+fe6WzLhqYhLZRIsBKqEE00aoI+EJEXhFfZEJ/UGEFjeDc+uP0P9EViQ7SQ+KAbYiTGR9KNMVEQ0zT8CLbotmxLd0qz2+7MznJ35t7jw87ISjBsu0B5mE+yyczezLnn3PO959wLJCQkJCQkJCSsP7lcTjKz1cZPMrNYb387hojAzLJjO50aYGZBRGZ2dn5vb++Gl4NAsxAgoNU3DUCCOWwExixUK5Wru3btugY0AzHGEBFxp76sNQACAM+rXeU2UUqFvl//zXGcd1vsPHpZxZNevjy90xjTrv+h1jqMXzyvdm5ycnLbWoOwOoxBMLOYmZl7WqlgilkrAF24S5oMEBgspeiWUj5pWRaMMRqASac37B8efiY/MfHnawBuxpLs0K+Hw9jYWPffxeLzKysrJ6KMmTAMFTOz63q/ZDKZVVeoNW1iZiYi4qmpqYGNG/vesm2ZUkFQ3bply8l5x9mfkvJFAxjACBiwEILqdXVr+/ZtY7GNuYWFI1v6+78RQggAoRDCLpVuvbd16+avmdkionAtvrUbgAUA5Url21jLQRDwqVO5J3y/HvI9KJeXv2dmYmabmW0AWFoqf8rMHGXBuK47AWRFXBjaYVV7IDIs0dS+tbi4mKvVag4A1Ov1czt2DDbCMPiyVtPaRCoWAhwaEywulk5s2tTH2SyHIyNgZhZnz5797I2DB4+nbLvfGMOpVPdzly4dfoqI/nqs9wJwp+K4rvsTM7PWWjEzF4vFg9F4W02urQzEmr948Vr/0FD/+0SUNsaAiCQAAQDGgIlYE5Floj+FEAYg+H6QO3nyi8mRkRG0rKpgZl5xXefONAwi6gWAfD7fcZNtDcACgEql8l27xb4Vx1k63monepYA4Lremf9m4Oah1vH70e4eMACglPrB933fGBMvsiQiiibUAOKsgJnZsiw0Go25q7dKY9H+0a3rkslkpJTWCwAghLCCMNTVqj8dj7fp26OHmbsAoFAsHopWv8HMxvNqk9ns6qrQqnSWy+VkJpOJv+FSqfRmOp3eCcAsLy+fCYKgMTAw8DYAFkIIpVStWq1+NTQ05OXzeQDAvn37iIiC8fHxvj17XrnQ09O90xjTEEKkHGfpg8HBgdGH2gdibU4XCq+26nx2bu7IUrlZ12Pq9dvB0aNHu+62ceXK9LOe7/8e9YDbzMye510YHR3tiqrTw8lAFAARERcKhcHe3r6PpCQ7DM3y6dNjnx879uF4Ot3zktY6kJK6/Lq6tOgsfWJZJAELdk/X5pRtv96TSh22bbtHa62klCml1PzMzMze3bt3F4wx61P/z58/P6iU8rTWYRiGQdhE36sqtZ5cazX/jyvXrw9Hi/PojtTcPBZYzNzNzJbjOO+sprQqpQrlcvnjbDbb3Ynzaz5ORzeokJua0jM3blie5/1oDEIhSMRBaq0FkWApyRCRq7UuKKV+nZiY+PnAgQO12PnH+tjwf3Dzgt9Rx31g7Tpy5H4y+LcEAzDrdg9OSEhISEhISEhIeCD8A4H17O+eeCYkAAAAAElFTkSuQmCC" width="56" height="56" style="object-fit:contain;flex-shrink:0;border-radius:12px;"/>
     <span class="sb-logo-name">DataDash</span>
   </div>
   <div class="sb-nav">
@@ -2770,9 +2767,19 @@ html, body {
     <svg viewBox="0 0 20 20" fill="none"><rect x="2" y="2" width="16" height="16" rx="2.5" stroke="#94A3B8" stroke-width="1.4"/><path d="M3 13l4-4 3 3 4-5 3 3" stroke="#94A3B8" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
     <span class="sb-lbl" data-i18n="nav.analytics">Analytics</span>
   </div>
-  <div class="sb-item" onclick="setSb(this)" data-page="stores">
-    <svg viewBox="0 0 20 20" fill="none"><path d="M3 9.5V17a1 1 0 001 1h12a1 1 0 001-1V9.5" stroke="#94A3B8" stroke-width="1.4" stroke-linecap="round"/><path d="M1.5 6l1.8-3.5h13.4L18.5 6v1.5a2.5 2.5 0 01-5 0 2.5 2.5 0 01-5 0 2.5 2.5 0 01-5 0V6z" stroke="#94A3B8" stroke-width="1.4" stroke-linejoin="round"/><path d="M8 18v-5h4v5" stroke="#94A3B8" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
-    <span class="sb-lbl">Stores</span>
+  <div class="sb-item" id="sb-stores-item" data-page="stores" style="justify-content:space-between;">
+    <div style="display:flex;align-items:center;gap:10px;flex:1;" onclick="setSb(this)" data-page="stores">
+      <svg viewBox="0 0 20 20" fill="none"><path d="M3 9.5V17a1 1 0 001 1h12a1 1 0 001-1V9.5" stroke="#94A3B8" stroke-width="1.4" stroke-linecap="round"/><path d="M1.5 6l1.8-3.5h13.4L18.5 6v1.5a2.5 2.5 0 01-5 0 2.5 2.5 0 01-5 0 2.5 2.5 0 01-5 0V6z" stroke="#94A3B8" stroke-width="1.4" stroke-linejoin="round"/><path d="M8 18v-5h4v5" stroke="#94A3B8" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <span class="sb-lbl">Stores</span>
+    </div>
+    <div onclick="toggleKpisMenu(event)" style="padding:2px 4px;cursor:pointer;display:flex;align-items:center;">
+      <svg id="stores-chevron" viewBox="0 0 10 6" fill="none" width="10" height="6" style="transition:transform .2s;flex-shrink:0;opacity:.5;margin-right:2px;"><path d="M1.5 1.5l3.5 3.5 3.5-3.5" stroke="#94A3B8" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </div>
+  </div>
+  <div id="sb-stores-children" style="display:none;margin-left:14px;">
+    <div class="sb-item" id="sb-meta-sub" onclick="navigateToMetaDashboard()" data-page="meta-dashboard" style="padding-left:20px;">
+      <span class="sb-lbl" style="font-size:12.5px;color:#60a5fa;">KPIs</span>
+    </div>
   </div>
   <div class="sb-item" onclick="setSb(this)" data-page="transactions">
     <svg viewBox="0 0 20 20" fill="none"><path d="M5 8l-3 3 3 3M15 8l3 3-3 3" stroke="#94A3B8" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/><path d="M2 11h16" stroke="#94A3B8" stroke-width="1.4" stroke-linecap="round"/><path d="M7 5h10M3 5h2" stroke="#94A3B8" stroke-width="1.3" stroke-linecap="round"/></svg>
@@ -2807,8 +2814,8 @@ html, body {
 <header class="topbar">
   <div class="tb-l">
     <div class="tb-brand-wrap" onclick="goHome()" title="Go to Overview">
-      <img class="tb-brand-logo" src="data:image/png;base64,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" alt="DataDash"/>
-      <span class="brand-name tb-brand">DataDash</span>
+      <img class="tb-brand-logo" src="data:image/png;base64,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" alt="DataDash"/>
+      <span class="brand-name tb-brand" style="display:none;">DataDash</span>
       <span class="tb-brand-short">D<span>&amp;</span>D</span>
     </div>
   </div>
@@ -2817,7 +2824,8 @@ html, body {
     <!-- REFRESH BUTTON -->
     <div class="theme-btn" id="refreshBtn" onclick="refreshAllData()" title="Rafraîchir les données">
       <svg id="refreshIcon" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" width="16" height="16">
-        <path d="M3.5 10a6.5 6.5 0 0111.14-4.55L16 7V3.5M16.5 10a6.5 6.5 0 01-11.14 4.55L4 13v3.5" stroke="#94A3B8" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M17 10a7 7 0 11-1.47-4.33" stroke="#94A3B8" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M14 3.5l1.53 2.17L13.5 7" stroke="#94A3B8" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
       </svg>
     </div>
 
@@ -3066,7 +3074,20 @@ html, body {
     </div>
     <div class="tmod-field">
       <label class="tmod-lbl" data-i18n="test.modal.niche">Niche</label>
-      <select class="tmod-inp" id="prodNicheInp" style="cursor:pointer;appearance:none;-webkit-appearance:none;background-image:url(\"data:image/svg+xml,%3Csvg width='10' height='6' viewBox='0 0 10 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%2394A3B8' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E\");background-repeat:no-repeat;background-position:right 12px center;padding-right:32px;">
+      <select 
+  class="tmod-inp" 
+  id="prodNicheInp"
+  style="
+    cursor: pointer;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background-image: url('data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2210%22 height=%226%22 viewBox=%220 0 10 6%22 fill=%22none%22%3E%3Cpath d=%22M1 1L5 5L9 1%22 stroke=%2294A3B8%22 stroke-width=%221.5%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22/%3E%3C/svg%3E');
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    padding-right: 32px;
+  "
+>
         <option value="" disabled selected data-i18n="niche.placeholder">— Select a niche —</option>
         <option value="Automobile">Automobile</option>
         <option value="Beauté">Beauté</option>
@@ -3734,6 +3755,8 @@ function applyTranslations() {
 function refreshAllData() {
   const btn = document.getElementById('refreshBtn');
   if (btn) btn.classList.add('spinning');
+  metaSpendFetchKey = ''; // force fresh Meta spend fetch
+  metaLiveSpend = null;   // clear cached value
 
   // Sync Shopify if connected
   if (shopifyState.connected && shopifyState.domain && shopifyState.token) {
@@ -3749,6 +3772,20 @@ function refreshAllData() {
   updateDashboard();
   renderTxPanel();
   renderPerfCard();
+
+  // If on KPIs page, refresh Meta data too
+  var kpiPage = document.getElementById('page-meta-kpis');
+  if (kpiPage && kpiPage.classList.contains('active')) {
+    if (typeof fetchMetaData === 'function') fetchMetaData();
+  }
+
+  // Refresh current page if it has a render function
+  var activePage = document.querySelector('.page-view.active');
+  if (activePage) {
+    var pageId = activePage.id;
+    if (pageId === 'page-analytics' && typeof renderAnalytics === 'function') renderAnalytics();
+    if (pageId === 'page-transactions' && typeof renderTxPage === 'function') renderTxPage();
+  }
 
   // Stop spinning after 1.5s
   setTimeout(() => {
@@ -3809,6 +3846,22 @@ function setLang(lang, e) {
 
   // Apply all translations
   applyTranslations();
+
+  // Re-render the active page so dynamic content updates
+  var activePage = document.querySelector('.page-view.active');
+  if (activePage) {
+    var pid = activePage.id;
+    if (pid === 'page-overview')   updateDashboard();
+    if (pid === 'page-analytics')  renderAnalytics();
+    if (pid === 'page-meta-kpis')  renderMetaDashboard();
+    if (pid === 'page-stores')     renderStoresPage();
+    if (pid === 'page-settings')   renderSettingsPage();
+    if (pid === 'page-todo')       renderTodo();
+    if (pid === 'page-notes')      renderNotesPage();
+    if (pid === 'page-alerts')     renderAlertsPage();
+    if (pid === 'page-roas')       renderRoasPage();
+    if (pid === 'page-transactions') renderTxPage();
+  }
 }
 
 document.addEventListener('click', e => {
@@ -3831,7 +3884,7 @@ function setSb(el) {
     target.classList.add('active');
     // Render page content on navigation
     if (page === 'testing')   { renderProdGrid(); }
-    if (page === 'analytics') { renderAnalytics(); }
+    if (page === 'analytics') { metaSpendFetchKey = ''; renderAnalytics(); }
     if (page === 'orders')       { renderOrdersPage(); }
     if (page === 'transactions')  { renderTxPage(); }
     if (page === 'todo')          { switchTodoPageTab(activeTodoPageTab); renderTodo(); }
@@ -3839,11 +3892,11 @@ function setSb(el) {
     if (page === 'alerts')    { renderAlertsPage(); }
     if (page === 'roas')      { renderRoasPage(); }
     if (page === 'settings')  { renderSettingsPage(); }
-    if (page === 'overview')  { updateDashboard(); }
+    if (page === 'overview')  { metaSpendFetchKey = ''; updateDashboard(); }
     if (page === 'stores')    { renderStoresPage(); }
   } else {
     document.getElementById('page-overview').classList.add('active');
-    updateDashboard();
+    metaSpendFetchKey = ''; updateDashboard();
   }
 }
 
@@ -4427,6 +4480,7 @@ function applyPreset(el, key, e) {
   document.getElementById('calFrom').value = fmtFull(s);
   document.getElementById('calTo').value   = fmtFull(en);
   viewDate = new Date(s.getFullYear(), s.getMonth(), 1);
+  metaSpendFetchKey = ''; // force refetch for new period
   renderCals(); updateDateLabel(); updateDashboard();
 }
 
@@ -4545,6 +4599,7 @@ function confirmCal(e) {
   if (!rangeStart) { closeCal(e); return; }
   updateDateLabel();
   closeCal(e);
+  metaSpendFetchKey = ''; // force refetch for new period
   updateDashboard();
 }
 document.addEventListener('click', e => {
@@ -4570,6 +4625,72 @@ let financeFilter = {};
 /* ══════════════════════════════════════════
    DASHBOARD ← TESTING  connexion live
 ══════════════════════════════════════════ */
+// ── Meta Ads spend — in-memory only, never from localStorage ──
+var metaLiveSpend = null;      // null = loading, number = fetched value
+var metaLivePeriodKey = '';    // tracks which period is cached
+var metaSpendFetchKey = '';    // prevents duplicate fetches
+
+function fetchMetaSpendForDashboard(since, until) {
+  if (!metaState || !metaState.connected || !metaState.token || !metaState.selectedAccount) {
+    metaLiveSpend = 0; updateDashboard(); return;
+  }
+  var key = since + '_' + until;
+  if (metaSpendFetchKey === key) return;
+  metaSpendFetchKey = key;
+  // Don't reset to null on refetch — keep previous value visible while loading
+  // Only reset if period actually changed
+  if (metaLivePeriodKey !== key) {
+    metaLiveSpend = null;
+    updateDashboard();
+  }
+
+  var token = metaState.token;
+  var actId = metaState.selectedAccount.startsWith('act_') ? metaState.selectedAccount : 'act_' + metaState.selectedAccount;
+  var accountIdClean = metaState.selectedAccount.replace('act_','');
+  var GRAPH = 'https://graph.facebook.com/v19.0';
+
+  // Try with time_range first
+  var url = GRAPH + '/' + actId + '/insights' +
+    '?access_token=' + encodeURIComponent(token) +
+    '&fields=spend' +
+    '&time_range=' + encodeURIComponent(JSON.stringify({since:since, until:until})) +
+    '&level=account';
+
+  function applySpend(val) {
+    var v = parseFloat(val || 0);
+    if (!isNaN(v)) {
+      metaLiveSpend = v;
+      metaLivePeriodKey = key;
+      updateDashboard();
+    }
+  }
+
+  fetch(url).then(function(r){ return r.json(); }).then(function(data) {
+    if (data.error) throw new Error(data.error.message);
+    // Sum all rows (one per day if breakdown, or single aggregate)
+    var rows = data.data || [];
+    var total = rows.reduce(function(sum, r){ return sum + parseFloat(r.spend||0); }, 0);
+    applySpend(total);
+  }).catch(function() {
+    // Fallback: use date_preset if today
+    var today = new Date().toISOString().slice(0,10);
+    var fallbackUrl;
+    if (since === today && until === today) {
+      fallbackUrl = GRAPH + '/' + actId + '/insights?access_token=' + encodeURIComponent(token) +
+        '&fields=spend&date_preset=today&level=account';
+    } else {
+      fallbackUrl = BACKEND_URL + '/api/meta/proxy?access_token=' + encodeURIComponent(token) +
+        '&account_id=' + encodeURIComponent(accountIdClean) +
+        '&fields=spend&since=' + encodeURIComponent(since) + '&until=' + encodeURIComponent(until);
+    }
+    fetch(fallbackUrl).then(function(r){ return r.json(); }).then(function(data) {
+      var rows = data.data || [data];
+      var total = rows.reduce(function(sum, r){ return sum + parseFloat(r.spend||0); }, 0);
+      applySpend(total);
+    }).catch(function(){ metaLiveSpend = 0; updateDashboard(); });
+  });
+}
+
 function updateDashboard() {
   const start = rangeStart ? `${rangeStart.getFullYear()}-${String(rangeStart.getMonth()+1).padStart(2,'0')}-${String(rangeStart.getDate()).padStart(2,'0')}` : null;
   const end   = rangeEnd   ? `${rangeEnd.getFullYear()}-${String(rangeEnd.getMonth()+1).padStart(2,'0')}-${String(rangeEnd.getDate()).padStart(2,'0')}` : null;
@@ -4592,39 +4713,23 @@ function updateDashboard() {
 
   // ── Inject Meta Ads spend if connected ──
   if (typeof metaState !== 'undefined' && metaState.connected && metaState.token && metaState.selectedAccount) {
-    const accountId = metaState.selectedAccount.replace('act_', '');
-    let timeRangeParam = '';
+    let since, until;
+    const todayISO = new Date().toISOString().slice(0,10);
     if (start && end) {
-      timeRangeParam = '&time_range=' + encodeURIComponent(JSON.stringify({ since: start, until: end }));
+      since = start; until = end;
+    } else if (start && !end) {
+      since = start; until = start;
     } else {
-      timeRangeParam = '&date_preset=last_30d';
+      const now = new Date();
+      if (activePreset === 'today') { since = until = todayISO; }
+      else if (activePreset === 'yesterday') { const y=new Date(now); y.setDate(y.getDate()-1); since=until=y.toISOString().slice(0,10); }
+      else if (activePreset === '7d') { const s=new Date(now); s.setDate(s.getDate()-6); since=s.toISOString().slice(0,10); until=todayISO; }
+      else if (activePreset === '30d') { const s=new Date(now); s.setDate(s.getDate()-29); since=s.toISOString().slice(0,10); until=todayISO; }
+      else if (activePreset === 'thismonth') { since=todayISO.slice(0,8)+'01'; until=todayISO; }
+      else { since=until=todayISO; }
     }
-    const metaUrl = BACKEND_URL + '/api/meta/proxy?access_token=' + encodeURIComponent(metaState.token) +
-      '&account_id=' + encodeURIComponent(accountId) +
-      '&fields=spend,impressions,clicks,cpm,cpc,ctr,actions' +
-      timeRangeParam;
-
-    fetch(metaUrl).then(r => r.json()).then(data => {
-      if (data.error) return;
-      const insights = data.data && data.data[0];
-      if (insights) {
-        const metaSpend = parseFloat(insights.spend || 0);
-        metaState.syncStats = {
-          spend:       metaSpend,
-          impressions: parseInt(insights.impressions || 0),
-          clicks:      parseInt(insights.clicks || 0),
-          ctr:         parseFloat(insights.ctr || 0),
-          cpm:         parseFloat(insights.cpm || 0),
-          cpc:         parseFloat(insights.cpc || 0)
-        };
-        saveMetaState();
-
-        // Save meta stats for next synchronous render
-        saveMetaState();
-        // Refresh dashboard with updated meta spend (no direct DOM override)
-        updateDashboard();
-      }
-    }).catch(() => {});
+    // Fetch in background — only if period changed
+    fetchMetaSpendForDashboard(since, until);
   }
 
   const hasData = daysWithData.size > 0;
@@ -4642,19 +4747,19 @@ function updateDashboard() {
   const subOrd   = document.getElementById('dash-orders-sub');
   const subAds   = document.getElementById('dash-ads-sub');
 
-  // Include cached Meta spend in ads display (synchronous, no flicker)
-  const cachedMetaSpend = (typeof metaState !== 'undefined' && metaState.connected && metaState.syncStats)
-    ? (metaState.syncStats.spend || 0) : 0;
+  // Include live Meta spend (in-memory, fetched fresh each session)
+  const cachedMetaSpend = (typeof metaLiveSpend === 'number') ? metaLiveSpend : 0;
+  const metaLoading = metaState && metaState.connected && metaLiveSpend === null;
   const totalAdsDisplay = totalAds + cachedMetaSpend;
   const roasDisplay = totalAdsDisplay > 0 ? '×' + (totalCA / totalAdsDisplay).toFixed(2) : roas;
-  const adsSubLabel = cachedMetaSpend > 0
-    ? (totalAds > 0 ? 'Testing + Meta Ads' : 'Meta Ads · 30j')
-    : (hasData ? dayLabel + ' · ' + products.length + ' ' + t('dash.products') : '');
+  // Build period label
+  // periodLabel removed - date shown in calendar widget
+  const adsSubLabel = ''; // date already shown in calendar
 
   if (elCA)     elCA.textContent     = hasData ? fmtEur(totalCA)        : '—';
   if (elMargin) elMargin.textContent = hasData ? fmtEur(totalMarge)     : '—';
   if (elOrders) elOrders.textContent = hasData ? totalOrders.toLocaleString() : '—';
-  if (elAds)    elAds.textContent    = totalAdsDisplay > 0 ? fmtEur(totalAdsDisplay) : '—';
+  if (elAds)    elAds.textContent    = (metaState && metaState.connected) ? (metaLoading ? '…' : fmtEur(totalAdsDisplay)) : (totalAdsDisplay > 0 ? fmtEur(totalAdsDisplay) : '—');
 
   if (subCA)   subCA.textContent   = hasData ? margeRate + ' ' + t('metric.margin.rate') : t('dash.nodata');
   if (subMarg) subMarg.textContent = hasData ? margeRate + ' ' + t('metric.vsperiod')    : '';
@@ -4842,6 +4947,7 @@ function renderSettingsPage() {
     { id:'fiscal',        icon:'<svg viewBox="0 0 18 18" fill="none"><rect x="2" y="2" width="14" height="14" rx="2.5" stroke="currentColor" stroke-width="1.4"/><path d="M6 6h2M12 6h-2M6 9h6M6 12h3" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/><path d="M10.5 11.5l1.5 1.5M12 11.5l-1.5 1.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>', labelKey:'settings.fiscal' },
     { id:'security',      icon:'<svg viewBox="0 0 18 18" fill="none"><path d="M9 2L4 4.5v4C4 12 6.5 15 9 16c2.5-1 5-4 5-7.5V4.5L9 2z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/><path d="M6.5 9l2 2 3-3" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>', labelKey:'settings.security' },
     { id:'preferences',   icon:'<svg viewBox="0 0 18 18" fill="none"><path d="M3 5h2M7 5h8M3 9h8M13 9h2M3 13h2M7 13h8" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/><circle cx="5.5" cy="9" r="1.5" stroke="currentColor" stroke-width="1.3"/><circle cx="5.5" cy="5" r="1.5" stroke="currentColor" stroke-width="1.3"/><circle cx="5.5" cy="13" r="1.5" stroke="currentColor" stroke-width="1.3"/></svg>', labelKey:'settings.preferences' },
+
   ];
 
   const navHtml = `<div class="settings-nav">
@@ -5095,206 +5201,7 @@ function renderSettingsPage() {
         </div>
       </div>
     </div>`;
-  } else if (activeSettingsTab === 'integrations') {
-    var shopify   = shopifyState;
-    var connected = shopify.connected;
-
-    var lastSyncLbl = shopify.lastSync
-      ? new Date(shopify.lastSync).toLocaleString(fr?'fr-FR':'en-US',{day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'})
-      : (fr ? 'Aucune synchro' : 'No preview sync yet');
-
-    var storeName  = shopify.storeName || 'Astra Beauty Store';
-    var storeOrders   = shopify.syncStats ? (shopify.syncStats.orders  || 0) : 0;
-    var storeRevenue  = shopify.syncStats ? fmtEur(shopify.syncStats.revenue || 0) : fmtEur(0);
-    var storeProducts = shopify.syncStats ? (shopify.syncStats.products || 0) : 0;
-
-    // Meta state
-    var meta = metaState;
-    var metaConnected = meta.connected;
-    var totalConnected = (connected ? 1 : 0) + (metaConnected ? 1 : 0);
-    var syncPct = totalConnected === 2 ? '100%' : totalConnected === 1 ? '50%' : '0%';
-    var metaLastSyncLbl = meta.lastSync
-      ? new Date(meta.lastSync).toLocaleString(fr?'fr-FR':'en-US',{day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'})
-      : (fr ? 'Aucune synchro' : 'Not synced yet');
-
-    // Top KPI bar
-    var kpiBar =
-      '<div class="int-kpi-bar">' +
-        '<div class="int-kpi">' +
-          '<div class="int-kpi-lbl">' + (fr?'PLATEFORMES CONNECTÉES':'CONNECTED PLATFORMS') + '</div>' +
-          '<div class="int-kpi-val">' + totalConnected + '/2</div>' +
-          '<div class="int-kpi-sub">' + (fr?'Shopify et Meta Ads disponibles':'Shopify and Meta Ads available') + '</div>' +
-        '</div>' +
-        '<div class="int-kpi-sep"></div>' +
-        '<div class="int-kpi">' +
-          '<div class="int-kpi-lbl">' + (fr?'SYNCHRONISATION':'SYNC STATUS') + '</div>' +
-          '<div class="int-kpi-val">' + syncPct + '</div>' +
-          '<div class="int-kpi-sub">' + (fr?'Données en temps réel via backend':'Real-time data via backend') + '</div>' +
-        '</div>' +
-      '</div>';
-
-    // Shopify card
-    var logLines = '';
-    if (shopify.log && shopify.log.length > 0) {
-      shopify.log.slice(0,4).forEach(function(l) {
-        logLines += '<div class="shp-log-line"><span class="shp-log-time">' + l.time + '</span><span class="shp-log-' + l.type + '">' + escHtml(l.msg) + '</span></div>';
-      });
-    }
-
-    var shopifyCard =
-      '<div class="int-card">' +
-
-        // Header
-        '<div class="int-card-hd">' +
-          '<div class="int-card-logo">' +
-            '<svg viewBox="0 0 109 124" fill="none" width="22" height="22"><path d="M74.7 14.8c-.3-.2-.9-.2-.9-.2s-9.4.7-9.4.7-6.2-6.2-6.9-6.9c-.6-.6-1.9-.5-2.4-.3l-3.3 1C49.8 3.4 46.4-2 40.4-2c-3.4 0-5 2.6-5.6 5.2C29 5.4 23 9.5 23 16.2c0 4.2 2.7 7.5 6.4 9.5l-2.2 6.5c-.3.9.3 1.8 1.2 1.8h74.2c.9 0 1.6-.8 1.4-1.7L74.7 14.8z" fill="#95BF47"/><path d="M64.5 14.5l-3.1 1C59.5 10.2 56.3 5.4 50.7 5.4c-.2 0-.4 0-.5.1C48.4 3.4 46.5 2 44.5 2 30.4 2 23.7 19.6 21.6 28.5 15.9 30 10 31.8 10 31.8L0 109.5 80 124l29-6.5L64.5 14.5z" fill="#95BF47"/><path d="M80 124l29-6.5L74.5 14.5c-.2-.1-.5-.2-.5-.2L80 124z" fill="#5E8E3E"/></svg>' +
-          '</div>' +
-          '<div>' +
-            '<div class="int-card-name">Shopify</div>' +
-            '<div class="int-card-desc">' + (fr?'Boutique, commandes et aperçu automatisé des revenus':'Store, orders, and automated revenue preview') + '</div>' +
-          '</div>' +
-        '</div>' +
-
-        // Status row
-        '<div class="int-status-row">' +
-          '<div class="int-status-dot ' + (connected?'on':'') + '"></div>' +
-          '<span class="int-status-lbl">' + (connected ? (fr?'Connecté':'Connected') : (fr?'Prêt à connecter':'Ready to connect')) + '</span>' +
-          '<span class="int-status-sync">' + lastSyncLbl + '</span>' +
-        '</div>' +
-
-        // Body (2 columns when not connected: form left, preview right)
-        '<div class="int-body">' +
-          '<div class="int-body-left">' +
-
-            // Note box
-            '<div class="int-note">' +
-              '<strong>' + (fr?'Connexion OAuth sécurisée :':'Secure OAuth connection:') + '</strong> ' +
-              (connected
-                ? (fr?'Vos données Shopify sont synchronisées automatiquement.':'Your Shopify data is synced automatically.')
-                : (fr?'Cliquez sur le bouton pour vous connecter via Shopify. Aucun token à saisir manuellement.':'Click the button to connect via Shopify. No token to enter manually.')) +
-            '</div>' +
-
-            // Stats if connected
-            (connected ?
-              '<div class="int-mini-stats">' +
-                '<div class="int-mini-stat"><div class="int-mini-val">' + storeOrders + '</div><div class="int-mini-lbl">' + (fr?'COMMANDES':'ORDERS') + '</div></div>' +
-                '<div class="int-mini-stat"><div class="int-mini-val">' + storeRevenue + '</div><div class="int-mini-lbl">' + (fr?'CA ESTIMÉ':'ESTIMATED REVENUE') + '</div></div>' +
-                '<div class="int-mini-stat"><div class="int-mini-val">' + storeProducts + '</div><div class="int-mini-lbl">' + (fr?'PRODUITS':'PRODUCTS') + '</div></div>' +
-              '</div>'
-            : '') +
-
-            // Log
-            (logLines ? '<div class="shp-log" style="margin:12px 0 0;">' + logLines + '</div>' : '') +
-
-          '</div>' +
-
-          // Right panel: connection preview
-          '<div class="int-body-right">' +
-            '<div class="int-preview-title">' + (fr?'Aperçu de la connexion':'Connection preview') + '</div>' +
-            '<div class="int-preview-rows">' +
-              '<div class="int-preview-row"><span class="int-preview-key">' + (fr?'BOUTIQUE':'STORE') + '</span><span class="int-preview-val">' + escHtml(storeName) + '</span></div>' +
-              '<div class="int-preview-row"><span class="int-preview-key">' + (fr?'CATALOGUE':'CATALOG') + '</span><span class="int-preview-val">' + storeProducts + ' ' + (fr?'produits':'products') + '</span></div>' +
-              '<div class="int-preview-row"><span class="int-preview-key">' + (fr?'FLUX ATTENDU':'EXPECTED FLOW') + '</span><span class="int-preview-val">' + (fr?'Commandes, revenus, marge':'Orders, revenue, margin') + '</span></div>' +
-            '</div>' +
-          '</div>' +
-
-        '</div>' +
-
-        // Action button
-        '<div class="int-actions">' +
-          (connected
-            ? '<button class="int-sync-btn" onclick="shopifySync()">↻ ' + (fr?'Synchroniser':'Sync now') + '</button>' +
-              '<button class="int-disconnect-btn" onclick="shopifyDisconnect()">' + (fr?'Déconnecter':'Disconnect') + '</button>'
-            : '<button class="int-connect-btn" id="shopifyConnectBtn" onclick="shopifyConnect()">+ ' + (fr?'Activer la connexion Shopify':'Enable Shopify connection') + '</button>') +
-        '</div>' +
-
-      '</div>';
-
-    // ── Meta Ads Card ──
-    var metaLogLines = '';
-    if (meta.log && meta.log.length > 0) {
-      meta.log.slice(0,4).forEach(function(l) {
-        metaLogLines += '<div class="shp-log-line"><span class="shp-log-time">' + l.time + '</span><span class="shp-log-' + l.type + '">' + escHtml(l.msg) + '</span></div>';
-      });
-    }
-
-    var metaAccountOptions = '';
-    if (meta.adaccounts && meta.adaccounts.length > 0) {
-      meta.adaccounts.forEach(function(acc) {
-        var selected = (meta.selectedAccount === acc.id) ? ' selected' : '';
-        metaAccountOptions += '<option value="' + escHtml(acc.id) + '"' + selected + '>' + escHtml(acc.name || acc.id) + '</option>';
-      });
-    }
-
-    var metaCard =
-      '<div class="int-card" style="margin-top:16px">' +
-
-        // Header
-        '<div class="int-card-hd">' +
-          '<div class="int-card-logo" style="background:rgba(24,119,242,.12)">' +
-            '<svg viewBox="0 0 36 36" fill="none" width="22" height="22"><path d="M36 18C36 8.059 27.941 0 18 0S0 8.059 0 18c0 8.988 6.584 16.436 15.188 17.779V23.203H10.617V18h4.571v-3.968c0-4.513 2.688-7.006 6.802-7.006 1.97 0 4.031.352 4.031.352v4.433h-2.271c-2.237 0-2.933 1.389-2.933 2.812V18h4.992l-.798 5.203h-4.194v12.576C29.416 34.436 36 26.988 36 18z" fill="#1877F2"/><path d="M25.012 23.203L25.81 18h-4.992v-3.377c0-1.423.696-2.812 2.933-2.812h2.271V7.378S23.961 7.026 21.99 7.026c-4.114 0-6.802 2.493-6.802 7.006V18h-4.571v5.203h4.571v12.576a18.2 18.2 0 005.624 0V23.203h4.2z" fill="#fff"/></svg>' +
-          '</div>' +
-          '<div>' +
-            '<div class="int-card-name">Meta Ads</div>' +
-            '<div class="int-card-desc" style="display:none;"></div>' +
-          '</div>' +
-        '</div>' +
-
-        // Status row
-        '<div class="int-status-row">' +
-          '<div class="int-status-dot ' + (metaConnected?'on':'') + '"></div>' +
-          '<span class="int-status-lbl">' + (metaConnected ? (fr?'Connecté':'Connected') : (fr?'Prêt à connecter':'Ready to connect')) + '</span>' +
-          '<span class="int-status-sync">' + metaLastSyncLbl + '</span>' +
-        '</div>' +
-
-        // Body
-        '<div class="int-body" style="grid-template-columns:1fr;">' +
-          '<div class="int-body-left">' +
-
-            (metaConnected ?
-              '<div class="int-note" style="margin-bottom:12px">' +
-                '<strong>' + escHtml(meta.userName) + '</strong> — ' +
-                (meta.adaccounts.length > 0
-                  ? (fr ? meta.adaccounts.length + ' compte(s) publicitaire(s) disponible(s)' : meta.adaccounts.length + ' ad account(s) available')
-                  : (fr ? 'Aucun compte pub trouvé' : 'No ad accounts found')) +
-              '</div>' +
-              (meta.adaccounts.length > 0 ?
-                '<div class="int-field">' +
-                  '<label class="int-lbl">' + (fr?'COMPTE PUBLICITAIRE':'AD ACCOUNT') + '</label>' +
-                  '<select class="int-inp" onchange="metaState.selectedAccount=this.value;saveMetaState()">' +
-                    metaAccountOptions +
-                  '</select>' +
-                '</div>'
-              : '')
-            :
-              '<div class="int-note">' +
-                '<strong>' + (fr?'Connexion OAuth sécurisée :':'Secure OAuth connection:') + '</strong> ' +
-                (fr?'Cliquez sur le bouton pour vous connecter via Facebook.':'Click the button to connect via Facebook.') +
-              '</div>'
-            ) +
-
-          '</div>' +
-        '</div>' +
-
-        // Action buttons
-        '<div class="int-actions">' +
-          (metaConnected
-            ? '<button class="int-sync-btn" onclick="metaSync()">↻ ' + (fr?'Synchroniser':'Sync now') + '</button>' +
-              '<button class="int-disconnect-btn" onclick="metaDisconnect()">' + (fr?'Déconnecter':'Disconnect') + '</button>'
-            : '<button class="int-connect-btn" onclick="metaConnect()">+ ' + (fr?'Connecter Meta Ads':'Connect Meta Ads') + '</button>') +
-        '</div>' +
-
-      '</div>';
-
-    contentHtml =
-      '<div class="settings-content">' +
-        '<div class="int-page-title">' + (fr?'Intégrations':'Integrations') + '</div>' +
-        '<div class="int-page-sub">' + (fr?'Connectez vos plateformes pour automatiser vos données':'Connect your platforms to automate your data flow.') + '</div>' +
-        kpiBar +
-        shopifyCard +
-        metaCard +
-      '</div>';
-  } // end integrations
+  } // end preferences
 
   el.innerHTML = navHtml + contentHtml;
 
@@ -5539,7 +5446,8 @@ function loadMetaState() {
       metaState.adaccounts      = d.adaccounts      || [];
       metaState.selectedAccount = d.selectedAccount || null;
       metaState.lastSync        = d.lastSync        || null;
-      metaState.syncStats       = d.syncStats       || { spend: 0, impressions: 0, clicks: 0, roas: 0 };
+      // Always start with 0 spend — will be fetched fresh for current period
+      metaState.syncStats       = { spend: 0, impressions: 0, clicks: 0, roas: 0 };
     }
   } catch(e) {}
 }
@@ -6087,7 +5995,6 @@ let showSubForm   = false;
   renderPerfCard();
   if (isMobile()) { renderMobNav(); updateMobSidebar(); }
   updateUserUI();
-  // return;
   // Populate country selects after DOM is ready
   setTimeout(populateCountrySelects, 50);
 })();
@@ -6107,6 +6014,14 @@ let currentCurrency = 'EUR'; // EUR | USD | GBP | CAD | CHF
 
 const CURRENCY_SYMBOLS = { EUR:'€', USD:'$', GBP:'£', CAD:'CA$', CHF:'CHF ' };
 const CURRENCY_POSITION = { EUR:'before', USD:'before', GBP:'before', CAD:'before', CHF:'before' };
+
+// Load all persisted state now that all variables are declared
+(function loadPersistedState() {
+  try { loadAppState(); } catch(e) {}
+  try { loadShopifyState(); } catch(e) {}
+  try { loadMetaState(); } catch(e) {}
+  try { updateMetaSidebarVisibility(); } catch(e) {}
+})();
 
 function fmtMoney(v) {
   if (v === null || v === undefined || isNaN(v)) return '—';
@@ -7070,29 +6985,39 @@ function renderAnalytics() {
     sub: hasData && totCA > 0 ? ((totMarge/totCA)*100).toFixed(1)+'%' : '',
   };
 
-  // Include Meta Ads spend in analytics
-  const metaSpendAn = (typeof metaState !== 'undefined' && metaState.connected && metaState.syncStats)
-    ? (metaState.syncStats.spend || 0) : 0;
+  // Include live Meta Ads spend in analytics (same in-memory value as Overview)
+  const metaSpendAn = (typeof metaLiveSpend === 'number') ? metaLiveSpend : 0;
   const combinedAds = totAds + metaSpendAn;
   const combinedRoas = combinedAds > 0 ? totCA / combinedAds : roas;
-  const adsSub = metaSpendAn > 0 ? 'Testing + Meta Ads' : '';
+  const adsSub = ''; // no sub-label needed
 
   const kpis = [
     { key:'analytics.kpi.ca',     val: hasData ? fmtEur(totCA)    : '—', sub: hasData ? (daysSet.size + ' ' + t('dash.days')) : '' },
     { key:'analytics.kpi.orders', val: hasData ? totOrders.toLocaleString() : '—', sub: hasData ? (aov>0 ? 'AOV ' + fmtEur(aov) : '') : '' },
     margeKpi,
     { key:'analytics.kpi.roas',   val: combinedAds>0 ? '×'+combinedRoas.toFixed(2) : '—', sub: '' },
-    { key:'analytics.kpi.ads',    val: combinedAds>0 ? fmtEur(combinedAds) : (hasData ? fmtEur(totAds) : '—'), sub: adsSub },
+    { key:'analytics.kpi.ads',    val: (typeof metaState !== 'undefined' && metaState.connected) ? fmtEur(combinedAds) : (combinedAds>0 ? fmtEur(combinedAds) : '—'), sub: '' },
     { key:'analytics.kpi.aov',    val: hasData && aov>0 ? fmtEur(aov) : '—', sub: '' },
   ];
 
+  const kpiIcons = [
+    { bg:'rgba(59,130,246,.12)', svg:'<svg viewBox="0 0 20 20" fill="none" width="18" height="18"><path d="M3 17l4-8 4 4 3-5 3 4" stroke="#3B82F6" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>' },
+    { bg:'rgba(34,197,94,.12)',  svg:'<svg viewBox="0 0 20 20" fill="none" width="18" height="18"><path d="M10 3v14M6 7l4-4 4 4" stroke="#22C55E" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>' },
+    { bg:'rgba(20,184,166,.12)', svg:'<svg viewBox="0 0 20 20" fill="none" width="18" height="18"><circle cx="10" cy="10" r="7" stroke="#14B8A6" stroke-width="1.5"/><path d="M10 7v3l2 2" stroke="#14B8A6" stroke-width="1.5" stroke-linecap="round"/></svg>' },
+    { bg:'rgba(168,85,247,.12)', svg:'<svg viewBox="0 0 20 20" fill="none" width="18" height="18"><path d="M4 10h12M10 4l6 6-6 6" stroke="#A855F7" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>' },
+    { bg:'rgba(245,158,11,.12)', svg:'<svg viewBox="0 0 20 20" fill="none" width="18" height="18"><path d="M3 17c0-3 2-5 7-5s7 2 7 5" stroke="#F59E0B" stroke-width="1.5" stroke-linecap="round"/><circle cx="10" cy="7" r="3" stroke="#F59E0B" stroke-width="1.5"/></svg>' },
+    { bg:'rgba(239,68,68,.12)',  svg:'<svg viewBox="0 0 20 20" fill="none" width="18" height="18"><path d="M10 3l2.5 5 5.5.8-4 3.9.9 5.5L10 15.5l-4.9 2.7.9-5.5L2 8.8l5.5-.8z" stroke="#EF4444" stroke-width="1.4" stroke-linejoin="round"/></svg>' }
+  ];
   const kpisEl = document.getElementById('anKpis');
-  if (kpisEl) kpisEl.innerHTML = kpis.map(k => `
-    <div class="an-kpi${k.fiscal?' an-kpi-fiscal':''}">
+  if (kpisEl) kpisEl.innerHTML = kpis.map((k,i) => {
+    const icon = kpiIcons[i] || kpiIcons[0];
+    return `<div class="an-kpi${k.fiscal?' an-kpi-fiscal':''}">
+      <div class="an-kpi-icon" style="background:${icon.bg};">${icon.svg}</div>
       <div class="an-kpi-lbl" style="${k.fiscal?'color:var(--teal);':''}">${t(k.key)}</div>
       <div class="an-kpi-val" style="${k.color?'color:'+k.color+';':''}">${k.val}</div>
       ${k.sub ? `<div class="an-kpi-sub" style="${k.fiscal?'color:var(--teal);opacity:.8;':''}">${k.sub}</div>` : ''}
-    </div>`).join('') + (fiscalActive ? `
+    </div>`;
+  }).join('') + (fiscalActive ? `
     <div class="an-fiscal-disclaimer">
       <svg viewBox="0 0 14 14" fill="none" width="12" height="12" style="flex-shrink:0;margin-top:1px;"><circle cx="7" cy="7" r="6" stroke="#94A3B8" stroke-width="1.2"/><path d="M7 6v4M7 4.5v.5" stroke="#94A3B8" stroke-width="1.3" stroke-linecap="round"/></svg>
       ${isFR ? 'Net réel estimé d\'après votre profil fiscal. Consultez un comptable pour votre situation exacte.' : 'Real net estimated from your fiscal profile. Consult an accountant for your exact situation.'}
@@ -7155,98 +7080,145 @@ function renderAnalytics() {
     if (chartEl) chartEl.innerHTML = html;
   }
 
-  // ── Products table ──
-  const tableEl = document.getElementById('anProdTable');
-  if (!tableEl) return;
-  if (!hasData) {
-    tableEl.innerHTML = `<div class="an-empty"><svg viewBox="0 0 36 36" fill="none"><rect x="3" y="3" width="30" height="30" rx="5" stroke="#94A3B8" stroke-width="1.8"/><path d="M10 18h16M10 12h10M10 24h6" stroke="#94A3B8" stroke-width="1.4" stroke-linecap="round"/></svg><div class="an-empty-txt">${t('analytics.noprods')}</div></div>`;
-    return;
+  // ── Meta Funnel ──
+  const funnelEl = document.getElementById('anMetaFunnel');
+  if (funnelEl) {
+    const metaConn = typeof metaState !== 'undefined' && metaState.connected;
+    if (!metaConn) {
+      funnelEl.innerHTML = '<div style="text-align:center;padding:20px;color:var(--t3);font-size:12px;">Connectez Meta Ads depuis Stores pour voir votre funnel.</div>';
+    } else {
+      // Use KPIs data if loaded, otherwise trigger a fetch
+      var campData = (typeof metaDashCampaigns !== 'undefined' && metaDashCampaigns.length > 0)
+        ? metaDashCampaigns : [];
+
+      // If no data yet, trigger KPIs fetch in background
+      if (campData.length === 0 && typeof fetchMetaData === 'function') {
+        // Set today's date range for the fetch
+        if (!metaDashDateFrom) {
+          var today = new Date().toISOString().slice(0,10);
+          metaDashDateFrom = metaDashDateTo = today;
+        }
+        fetchMetaData().then(function(){
+          if (typeof renderAnalytics === 'function') renderAnalytics();
+        }).catch(function(){});
+        funnelEl.innerHTML = '<div style="text-align:center;padding:20px;color:var(--t3);font-size:12px;">Chargement des données Meta…</div>';
+        return;
+      }
+
+      const totImp   = campData.reduce((s,r)=>s+(r.impressions||0),0);
+      const totClk   = campData.reduce((s,r)=>s+(r.clicks||0),0);
+      const totAtc   = campData.reduce((s,r)=>s+(r.atc||0),0);
+      const totChk   = campData.reduce((s,r)=>s+(r.checkouts||0),0);
+      const totOrd   = campData.reduce((s,r)=>s+(r.orders||0),0);
+
+      // Only 3 steps: ATC, Checkout, Orders
+      const steps = [
+        {label: isFR2 ? 'Ajout au panier'  : 'Add to cart',  val:totAtc, base:totClk||totImp},
+        {label: isFR2 ? 'Page de paiement' : 'Checkout',     val:totChk, base:totAtc},
+        {label: isFR2 ? 'Achats'           : 'Purchases',    val:totOrd, base:totChk},
+      ];
+
+      const globalRate = totAtc > 0 ? ((totOrd/totAtc)*100).toFixed(2) : '0';
+      const maxVal = totAtc || 1;
+
+      const isFR2 = currentLang === 'fr';
+      let html = '<div style="margin-bottom:14px;">'
+        + '<div style="font-size:26px;font-weight:800;color:var(--t1);letter-spacing:-0.5px;">' + globalRate + '%</div>'
+        + '<div style="font-size:11px;color:var(--t3);font-weight:500;margin-top:2px;">' + (isFR2 ? 'taux de conversion global' : 'overall conversion rate') + '</div>'
+        + '</div>';
+
+      // 3 columns
+      html += '<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:12px;">';
+      steps.forEach(function(s, i) {
+        const pct = s.base > 0 ? ((s.val/s.base)*100).toFixed(1) : '0';
+        html += '<div style="text-align:center;">'
+          + '<div style="font-size:10px;font-weight:600;color:var(--t3);text-transform:uppercase;letter-spacing:.03em;margin-bottom:4px;">' + s.label + '</div>'
+          + '<div style="font-size:20px;font-weight:700;color:var(--t1);">' + pct + '%</div>'
+          + '<div style="font-size:11px;color:var(--t3);font-weight:500;margin-top:2px;">' + (s.val > 0 ? s.val.toLocaleString() : '—') + '</div>'
+          + '</div>';
+      });
+      html += '</div>';
+
+      // Bar chart 3 cols
+      html += '<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;align-items:flex-end;height:70px;">';
+      steps.forEach(function(s) {
+        const pct = maxVal > 0 ? Math.max(6, (s.val/maxVal)*100) : 6;
+        html += '<div style="display:flex;flex-direction:column;justify-content:flex-end;height:70px;">'
+          + '<div style="background:#3B82F6;border-radius:4px 4px 0 0;width:100%;height:' + pct + '%;opacity:0.85;transition:height .4s;"></div>'
+          + '</div>';
+      });
+      html += '</div>';
+      html += '<div style="height:2px;background:var(--border);border-radius:1px;"></div>';
+
+      funnelEl.innerHTML = html;
+    }
   }
-  const rows = prodList.sort((a,b)=>b.ca-a.ca).map(p => {
-    const margeRate = p.ca>0 ? ((p.marge/p.ca)*100).toFixed(1)+'%' : '—';
-    const roasVal   = p.ads>0 ? '×'+(p.ca/p.ads).toFixed(2) : '—';
-    return `<tr>
-      <td><div class="td-prod-name"><div class="td-dot" style="background:${p.prod.color};"></div>${escHtml(p.prod.name)}</div></td>
-      <td style="text-align:right;font-weight:600;">${fmtEur(p.ca)}</td>
-      <td style="text-align:right;">${p.orders}</td>
-      <td style="text-align:right;color:${p.marge>=0?'var(--green-d)':'var(--red)'};">${margeRate}</td>
-      <td style="text-align:right;">${roasVal}</td>
-    </tr>`;
-  }).join('');
-  tableEl.innerHTML = `<table class="an-table">
-    <thead><tr>
-      <th>${t('analytics.prod')}</th><th>${t('analytics.prod.ca')}</th>
-      <th>${t('analytics.prod.orders')}</th><th>${t('analytics.prod.margin')}</th>
-      <th>${t('analytics.prod.roas')}</th>
-    </tr></thead>
-    <tbody>${rows}</tbody>
-  </table>`;
 
-  // ── Extra sections ──
+  // ── Weekly Performance table ──
+  const weeklyEl = document.getElementById('anWeeklyPerf');
+  if (weeklyEl) {
+    // Build week buckets from dayMap
+    const weekMap = {};
+    Object.keys(dayMap).sort().forEach(function(d){
+      const dt = new Date(d+'T00:00:00');
+      // Get Monday of that week
+      const day = dt.getDay();
+      const diff = (day === 0 ? -6 : 1 - day);
+      const mon = new Date(dt); mon.setDate(dt.getDate()+diff);
+      const wk = mon.toISOString().slice(0,10);
+      if (!weekMap[wk]) weekMap[wk] = {revenue:0, orders:0, ads:0};
+      const dayRevenue = Object.values(dayMap[d]).reduce((s,v)=>s+v,0);
+      weekMap[wk].revenue += dayRevenue;
+      // Add orders from products
+      products.forEach(function(prod){
+        prod.dataEntries.forEach(function(e){
+          if (e.date !== d) return;
+          if (start && e.date < start) return;
+          if (end && e.date > end) return;
+          const r = computeRow(e, prod);
+          weekMap[wk].orders += r.totalOrders;
+          weekMap[wk].ads += (e.ads||0);
+        });
+      });
+    });
+
+    const metaSpendPerWeek = combinedAds > 0 && Object.keys(weekMap).length > 0
+      ? combinedAds / Object.keys(weekMap).length : 0;
+
+    const weeks = Object.keys(weekMap).sort().slice(-8); // last 8 weeks
+    if (weeks.length === 0) {
+      weeklyEl.innerHTML = '<div style="text-align:center;padding:30px;color:var(--t3);font-size:13px;">No data for this period.</div>';
+    } else {
+      weeklyEl.innerHTML = '<table style="width:100%;border-collapse:collapse;font-size:12px;">'
+        + '<thead><tr style="border-bottom:1.5px solid var(--border);">'
+        + '<th style="text-align:left;padding:6px 8px;font-size:11px;font-weight:700;color:var(--t3);text-transform:uppercase;">Week</th>'
+        + '<th style="text-align:right;padding:6px 8px;font-size:11px;font-weight:700;color:var(--t3);text-transform:uppercase;">Revenue</th>'
+        + '<th style="text-align:right;padding:6px 8px;font-size:11px;font-weight:700;color:var(--t3);text-transform:uppercase;">Orders</th>'
+        + '<th style="text-align:right;padding:6px 8px;font-size:11px;font-weight:700;color:var(--t3);text-transform:uppercase;">Spend</th>'
+        + '<th style="text-align:right;padding:6px 8px;font-size:11px;font-weight:700;color:var(--t3);text-transform:uppercase;">ROAS</th>'
+        + '</tr></thead><tbody>'
+        + weeks.map(function(wk){
+            const w = weekMap[wk];
+            const spend = w.ads + (metaSpendPerWeek);
+            const roas = spend > 0 ? (w.revenue/spend).toFixed(2) : '—';
+            const roasColor = spend > 0 && w.revenue/spend >= 1 ? '#22c55e' : '#ef4444';
+            return '<tr style="border-bottom:1px solid var(--border);" onmouseenter="this.style.background=\'var(--bg)\'" onmouseleave="this.style.background=\'\'">'
+              + '<td style="padding:8px;color:var(--t2);font-weight:500;">' + wk.slice(5) + '</td>'
+              + '<td style="padding:8px;text-align:right;font-weight:600;color:var(--t1);">' + (w.revenue>0?fmtEur(w.revenue):'—') + '</td>'
+              + '<td style="padding:8px;text-align:right;color:var(--t2);">' + (w.orders||'—') + '</td>'
+              + '<td style="padding:8px;text-align:right;color:var(--t2);">' + (spend>0?fmtEur(spend):'—') + '</td>'
+              + '<td style="padding:8px;text-align:right;font-weight:700;color:' + roasColor + ';">×' + roas + '</td>'
+              + '</tr>';
+          }).join('')
+        + '</tbody></table>';
+    }
+  }
+
+  // ── Extra sections (legacy, keep empty) ──
   const extraEl = document.getElementById('anExtraSections');
-  if (!extraEl) return;
-  if (!hasData) { extraEl.innerHTML = ''; return; }
-  const fr = currentLang === 'fr';
-
-  // Trends: compare products by margin rate
-  const prodArray = Object.values(prodMap).filter(p=>p.ca>0).sort((a,b)=>b.ca-a.ca);
-  const trendRows = prodArray.map(p => {
-    const mRate = p.ca>0?((p.marge/p.ca)*100).toFixed(1):0;
-    const roasVal = p.ads>0?(p.ca/p.ads).toFixed(2):null;
-    const cls = parseFloat(mRate)>=0?'pos':'neg';
-    return `<div class="an-trend-row">
-      <span class="an-trend-lbl"><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:${p.prod.color};margin-right:6px;"></span>${escHtml(p.prod.name)}</span>
-      <div style="display:flex;gap:14px;align-items:center;">
-        <span style="font-size:11px;color:var(--t3);">${fr?'Marge':'Margin'} <span class="an-trend-val ${cls}" style="font-size:12px;">${mRate}%</span></span>
-        ${roasVal?`<span style="font-size:11px;color:var(--t3);">ROAS <span class="an-trend-val" style="font-size:12px;color:var(--purple);">×${roasVal}</span></span>`:''}
-        <span class="an-trend-val" style="font-size:12px;">${fmtEur(p.ca)}</span>
-      </div>
-    </div>`;
-  }).join('');
-
-  // Profitability stats
-  const avgMargeRate = totCA>0?((totMarge/totCA)*100).toFixed(1):'0';
-  const roasVal2 = totAds>0?(totCA/totAds).toFixed(2):null;
-  const profitDays = daysSet.size;
-  const avgDailyCA = profitDays>0?(totCA/profitDays).toFixed(2):0;
-  const avgDailyOrders = profitDays>0?(totOrders/profitDays).toFixed(1):0;
-
-  extraEl.innerHTML = `<div class="an-sections-grid">
-    <div class="an-section-card">
-      <div class="an-section-hd">
-        <div class="an-section-icon"><svg viewBox="0 0 15 15" fill="none"><path d="M2 12l4-4 3 2 4-6" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-        <div><div class="an-section-title">${fr?'Performance par produit':'Performance by product'}</div><div class="an-section-sub">${fr?'Marge et ROAS comparés':'Margin and ROAS comparison'}</div></div>
-      </div>
-      <div class="an-section-body">${trendRows}</div>
-    </div>
-    <div class="an-section-card">
-      <div class="an-section-hd">
-        <div class="an-section-icon"><svg viewBox="0 0 15 15" fill="none"><circle cx="7.5" cy="7.5" r="6" stroke="currentColor" stroke-width="1.4"/><path d="M7.5 4v3.5l2.5 2" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg></div>
-        <div><div class="an-section-title">${fr?'Moyennes quotidiennes':'Daily averages'}</div><div class="an-section-sub">${profitDays} ${fr?'jour(s) actif(s)':'active day(s)'}</div></div>
-      </div>
-      <div class="an-section-body">
-        <div class="ord-metric-grid">
-          <div class="ord-metric-cell">
-            <div class="ord-metric-lbl">${fr?'CA / jour':'Revenue/day'}</div>
-            <div class="ord-metric-val">${fmtEur(parseFloat(avgDailyCA))}</div>
-          </div>
-          <div class="ord-metric-cell">
-            <div class="ord-metric-lbl">${fr?'Cmd / jour':'Orders/day'}</div>
-            <div class="ord-metric-val">${avgDailyOrders}</div>
-          </div>
-          <div class="ord-metric-cell">
-            <div class="ord-metric-lbl">${fr?'Marge nette %':'Net margin %'}</div>
-            <div class="ord-metric-val" style="color:${parseFloat(avgMargeRate)>=0?'var(--teal)':'var(--red)'};">${avgMargeRate}%</div>
-          </div>
-          <div class="ord-metric-cell">
-            <div class="ord-metric-lbl">ROAS moyen</div>
-            <div class="ord-metric-val" style="color:var(--purple);">${roasVal2?'×'+roasVal2:'—'}</div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>`;
+  if (extraEl) extraEl.innerHTML = '';
 }
+
 
 /* ══════════════════════════════════════════
    TODO PAGE (kanban)
@@ -9050,6 +9022,7 @@ function checkOnboarding() { return; } function checkOnboarding_disabled() {
         loadAppState();
         loadShopifyState();
         loadMetaState();
+        updateMetaSidebarVisibility();
         updateUserUI();
         document.getElementById('onboardingOverlay').classList.add('hidden');
         applyOnboardingI18n();
@@ -9590,24 +9563,48 @@ function installDataDash() {
   if (!domain) { inp.focus(); inp.style.borderColor = 'var(--red)'; return; }
   domain = domain.replace(/^https?:\/\//i, '').replace(/\/.*$/, '');
   if (!domain.includes('.myshopify.com')) domain = domain.replace(/\.shopify\.com$/, '') + '.myshopify.com';
-  const backendUrl = 'https://datadash-backend-dhbe.onrender.com/api/shopify/oauth-start?shop=' + encodeURIComponent(domain);
-  const popup = window.open(backendUrl, 'ShopifyAuth', 'width=600,height=700,scrollbars=yes,popup=yes');
-  if (!popup) { alert('Veuillez autoriser les popups pour ce site.'); return; }
+  const installUrl = 'https://datadash-backend-dhbe.onrender.com/api/shopify/auth?shop=' + encodeURIComponent(domain);
+
   const btn = document.getElementById('shopify-install-btn');
-  if (btn) { btn.disabled = true; btn.textContent = 'En attente...'; btn.style.opacity = '.6'; }
-  window.addEventListener('message', function onShopifyMsg(e) {
+  if (btn) { btn.textContent = 'Connecting…'; btn.disabled = true; }
+
+  const popup = window.open(installUrl, 'ShopifyInstall', 'width=700,height=700,scrollbars=yes');
+
+  function onMsg(e) {
     if (!e.data || e.data.type !== 'SHOPIFY_CONNECTED') return;
-    window.removeEventListener('message', onShopifyMsg);
+    window.removeEventListener('message', onMsg);
+    clearInterval(poll);
+    const shop  = e.data.shop  || domain;
+    const token = e.data.token || '';
+    if (popup) try { popup.close(); } catch(ex) {}
+
     loadStoresData();
-    const storeName = e.data.shopName || e.data.shop.replace('.myshopify.com', '');
-    const exists = storesData.some(s => s.domain === e.data.shop);
+    const exists = storesData.some(function(s) { return s.domain === shop; });
     if (!exists) {
-      storesData.push({ name: wizardName || storeName, apiKey: wizardKey || '', domain: e.data.shop, token: e.data.token, revenue: 0, aov: 0, orders: 0, connectedAt: Date.now() });
+      // Auto-generate store name from domain (no manual name step)
+      const autoName = shop.replace('.myshopify.com', '').replace(/-/g, ' ').replace(/\b\w/g, function(c){ return c.toUpperCase(); });
+      storesData.push({
+        name: autoName,
+        apiKey: '',
+        domain: shop,
+        token: token,
+        revenue: 0, aov: 0, orders: 0,
+        connectedAt: Date.now()
+      });
       saveStoresData();
     }
-    if (btn) { btn.disabled = false; btn.textContent = 'Connecte'; btn.style.background = '#16a34a'; }
-    setTimeout(() => { if (typeof wizardStep !== 'undefined' && wizardStep < 3) { wizardStep = 3; renderWizard(); } else { renderStoresPage(); } }, 800);
-  });
+    // Advance to Meta Ads step
+    renderConnectPage();
+  }
+  window.addEventListener('message', onMsg);
+
+  var poll = setInterval(function() {
+    if (popup && popup.closed) {
+      clearInterval(poll);
+      window.removeEventListener('message', onMsg);
+      if (btn) { btn.textContent = currentLang === 'fr' ? 'Connecter' : 'Connect'; btn.disabled = false; }
+    }
+  }, 500);
 }
 
 function loadStoresData() {
@@ -9631,6 +9628,571 @@ function genApiKey() {
   return k;
 }
 
+// ── META DASHBOARD ──────────────────────────────────────────────
+var metaDashDateFrom  = null;
+var metaDashDateTo    = null;
+var metaDashPreset    = 'today';
+var metaDashTab       = 'campaigns'; // 'campaigns' | 'adsets' | 'ads'
+var metaDashCampaigns = [];
+var metaDashAdsets    = [];
+var metaDashAds       = [];
+var metaDashLoading   = false;
+
+// ── KPI CALENDAR STATE ───────────────────────────────────────────
+var kpiCalOpen   = false;
+var kpiCalStart  = null;
+var kpiCalEnd    = null;
+var kpiCalPicking = 'start';
+var kpiCalMonth1 = null;
+var kpiCalMonth2 = null;
+
+function buildKpiCalDrop() {
+  var drop = document.createElement('div');
+  drop.id = 'kpiCalDrop';
+  drop.style.cssText = 'display:none;position:fixed;z-index:9000;background:var(--card);border:1px solid var(--border);border-radius:12px;box-shadow:0 8px 28px rgba(0,0,0,.15);width:580px;overflow:hidden;flex-direction:row;';
+  drop.addEventListener('click', function(e){ e.stopPropagation(); });
+
+  // Left presets
+  var presetList = document.createElement('div');
+  presetList.style.cssText = 'width:140px;background:var(--bg);border-right:1px solid var(--border);padding:10px 0;flex-shrink:0;';
+  var kpiPresets = [
+    {key:'today',lbl:'Today'},{key:'yesterday',lbl:'Yesterday'},
+    {key:'7d',lbl:'Last 7 days'},{key:'30d',lbl:'Last 30 days'},
+    {key:'thismonth',lbl:'This month'},{key:'lastmonth',lbl:'Last month'}
+  ];
+  kpiPresets.forEach(function(p){
+    var btn = document.createElement('button');
+    btn.textContent = p.lbl;
+    btn.className = 'kpi-preset-btn';
+    btn.dataset.key = p.key;
+    btn.style.cssText = 'display:block;width:100%;text-align:left;padding:8px 14px;font-size:12.5px;font-weight:500;color:var(--t2);cursor:pointer;border:none;background:none;font-family:inherit;';
+    btn.addEventListener('click', function(){
+      var now=new Date(), t=now.toISOString().slice(0,10);
+      metaDashPreset=p.key;
+      switch(p.key){
+        case 'today': metaDashDateFrom=metaDashDateTo=t; break;
+        case 'yesterday': var y=new Date(now); y.setDate(y.getDate()-1); metaDashDateFrom=metaDashDateTo=y.toISOString().slice(0,10); break;
+        case '7d': var s=new Date(now); s.setDate(s.getDate()-6); metaDashDateFrom=s.toISOString().slice(0,10); metaDashDateTo=t; break;
+        case '30d': var s=new Date(now); s.setDate(s.getDate()-29); metaDashDateFrom=s.toISOString().slice(0,10); metaDashDateTo=t; break;
+        case 'thismonth': metaDashDateFrom=t.slice(0,8)+'01'; metaDashDateTo=t; break;
+        case 'lastmonth': var lm=new Date(now.getFullYear(),now.getMonth()-1,1),le=new Date(now.getFullYear(),now.getMonth(),0); metaDashDateFrom=lm.toISOString().slice(0,10); metaDashDateTo=le.toISOString().slice(0,10); break;
+      }
+      closeKpiCal(); fetchMetaData(); renderMetaDashboard();
+    });
+    presetList.appendChild(btn);
+  });
+  drop.appendChild(presetList);
+
+  // Right: months + inputs + footer
+  var right = document.createElement('div');
+  right.style.cssText = 'flex:1;padding:16px;min-width:0;';
+
+  var inputRow = document.createElement('div');
+  inputRow.style.cssText = 'display:flex;align-items:center;gap:8px;margin-bottom:12px;';
+  var fi = document.createElement('input'); fi.id='kpiCalFrom'; fi.readOnly=true; fi.placeholder='Start';
+  fi.style.cssText='flex:1;text-align:center;font-size:12.5px;font-weight:600;padding:6px 10px;border:1px solid var(--border);border-radius:6px;background:var(--bg);color:var(--t1);outline:none;';
+  var arr = document.createElement('span'); arr.textContent='→'; arr.style.cssText='color:var(--t3);font-size:14px;flex-shrink:0;';
+  var ti = document.createElement('input'); ti.id='kpiCalTo'; ti.readOnly=true; ti.placeholder='End';
+  ti.style.cssText='flex:1;text-align:center;font-size:12.5px;font-weight:600;padding:6px 10px;border:1px solid var(--border);border-radius:6px;background:var(--bg);color:var(--t1);outline:none;';
+  inputRow.appendChild(fi); inputRow.appendChild(arr); inputRow.appendChild(ti);
+  right.appendChild(inputRow);
+
+  var monthsRow = document.createElement('div');
+  monthsRow.style.cssText='display:grid;grid-template-columns:1fr 1fr;gap:12px;';
+  var m1=document.createElement('div'); m1.id='kpiMonth1';
+  var m2=document.createElement('div'); m2.id='kpiMonth2';
+  monthsRow.appendChild(m1); monthsRow.appendChild(m2);
+  right.appendChild(monthsRow);
+
+  var footer = document.createElement('div');
+  footer.style.cssText='display:flex;justify-content:flex-end;gap:8px;margin-top:12px;padding-top:10px;border-top:1px solid var(--border);';
+  var cancel=document.createElement('button'); cancel.textContent='Cancel';
+  cancel.style.cssText='padding:7px 16px;border:1px solid var(--border);border-radius:7px;background:transparent;color:var(--t2);font-size:13px;font-weight:600;cursor:pointer;';
+  cancel.addEventListener('click', closeKpiCal);
+  var apply=document.createElement('button'); apply.textContent='Apply';
+  apply.style.cssText='padding:7px 16px;border:none;border-radius:7px;background:var(--blue-med);color:#fff;font-size:13px;font-weight:700;cursor:pointer;';
+  apply.addEventListener('click', function(){
+    if(kpiCalStart) metaDashDateFrom=kpiCalStart.toISOString().slice(0,10);
+    if(kpiCalEnd) metaDashDateTo=kpiCalEnd.toISOString().slice(0,10);
+    else if(kpiCalStart) metaDashDateTo=metaDashDateFrom;
+    metaDashPreset='custom';
+    closeKpiCal(); fetchMetaData(); renderMetaDashboard();
+  });
+  footer.appendChild(cancel); footer.appendChild(apply);
+  right.appendChild(footer);
+  drop.appendChild(right);
+  return drop;
+}
+
+function toggleKpiCal(btn) {
+  var drop = document.getElementById('kpiCalDrop');
+  if (!drop) {
+    // Create and append to body so it persists across renderMetaDashboard calls
+    drop = buildKpiCalDrop();
+    document.body.appendChild(drop);
+  }
+  kpiCalOpen = !kpiCalOpen;
+  if (kpiCalOpen) {
+    // Position below the button
+    if (btn) {
+      var r = btn.getBoundingClientRect();
+      drop.style.top  = (r.bottom + window.scrollY + 4) + 'px';
+      drop.style.right = (window.innerWidth - r.right) + 'px';
+      drop.style.left = 'auto';
+    }
+    drop.style.display = 'flex';
+    renderKpiCals();
+  } else {
+    drop.style.display = 'none';
+  }
+}
+function closeKpiCal() {
+  kpiCalOpen = false;
+  var drop = document.getElementById('kpiCalDrop');
+  if (drop) drop.style.display = 'none';
+}
+document.addEventListener('click', function(e){
+  var drop = document.getElementById('kpiCalDrop');
+  if (drop && kpiCalOpen && !drop.contains(e.target) && !e.target.closest('[id="kpiCalDrop"]')) {
+    var btn = e.target.closest('[style*="position:relative"]');
+    if (!btn || !btn.contains(drop)) closeKpiCal();
+  }
+});
+
+function renderKpiCals() {
+  if (!kpiCalMonth1) {
+    var n = new Date();
+    kpiCalMonth1 = new Date(n.getFullYear(), n.getMonth(), 1);
+    kpiCalMonth2 = new Date(n.getFullYear(), n.getMonth()+1, 1);
+  }
+  renderKpiMo('kpiMonth1', kpiCalMonth1);
+  renderKpiMo('kpiMonth2', kpiCalMonth2);
+}
+
+function renderKpiMo(containerId, monthDate) {
+  var el = document.getElementById(containerId);
+  if (!el) return;
+  var MOS = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+  var WDS = ['Su','Mo','Tu','We','Th','Fr','Sa'];
+  var year = monthDate.getFullYear(), month = monthDate.getMonth();
+  var firstDay = new Date(year, month, 1).getDay();
+  var daysInMonth = new Date(year, month+1, 0).getDate();
+  var today = new Date(); today.setHours(0,0,0,0);
+
+  var isM1 = containerId === 'kpiMonth1';
+  var html = '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">';
+  html += '<button onclick="kpiCalNav(-1,\'' + containerId + '\')" style="background:none;border:none;cursor:pointer;color:var(--t3);font-size:16px;padding:2px 6px;">‹</button>';
+  html += '<span style="font-size:13px;font-weight:700;color:var(--t1);">' + MOS[month] + ' ' + year + '</span>';
+  html += '<button onclick="kpiCalNav(1,\'' + containerId + '\')" style="background:none;border:none;cursor:pointer;color:var(--t3);font-size:16px;padding:2px 6px;">›</button>';
+  html += '</div>';
+  html += '<div style="display:grid;grid-template-columns:repeat(7,1fr);gap:2px;text-align:center;">';
+  WDS.forEach(function(d){ html += '<div style="font-size:11px;font-weight:600;color:var(--t3);padding:3px 0;">' + d + '</div>'; });
+  for (var i=0; i<firstDay; i++) html += '<div></div>';
+  for (var d=1; d<=daysInMonth; d++) {
+    var cur = new Date(year, month, d);
+    var isToday = cur.getTime() === today.getTime();
+    var isStart = kpiCalStart && cur.getTime() === kpiCalStart.getTime();
+    var isEnd   = kpiCalEnd   && cur.getTime() === kpiCalEnd.getTime();
+    var inRange = kpiCalStart && kpiCalEnd && cur > kpiCalStart && cur < kpiCalEnd;
+    var bg = isStart||isEnd ? 'var(--blue-med)' : inRange ? 'var(--blue-lt, rgba(59,130,246,.1))' : 'transparent';
+    var color = isStart||isEnd ? '#fff' : isToday ? 'var(--blue-med)' : 'var(--t1)';
+    var fw = isStart||isEnd||isToday ? '700' : '400';
+    var border = isToday && !isStart && !isEnd ? '1px solid var(--blue-med)' : 'none';
+    var radius = isStart ? '50% 0 0 50%' : isEnd ? '0 50% 50% 0' : inRange ? '0' : '50%';
+    if (isStart && isEnd) radius = '50%';
+    html += '<div onclick="kpiCalPick(' + year + ',' + month + ',' + d + ')" style="cursor:pointer;padding:4px 0;background:' + bg + ';color:' + color + ';font-weight:' + fw + ';font-size:12.5px;border-radius:' + radius + ';border:' + border + ';transition:background .1s;" onmouseenter="this.style.opacity=\'0.8\'" onmouseleave="this.style.opacity=\'1\'">' + d + '</div>';
+  }
+  html += '</div>';
+  el.innerHTML = html;
+}
+
+function kpiCalNav(dir, fromId) {
+  var isM1 = fromId === 'kpiMonth1';
+  if (isM1) {
+    kpiCalMonth1 = new Date(kpiCalMonth1.getFullYear(), kpiCalMonth1.getMonth()+dir, 1);
+    kpiCalMonth2 = new Date(kpiCalMonth1.getFullYear(), kpiCalMonth1.getMonth()+1, 1);
+  } else {
+    kpiCalMonth2 = new Date(kpiCalMonth2.getFullYear(), kpiCalMonth2.getMonth()+dir, 1);
+    kpiCalMonth1 = new Date(kpiCalMonth2.getFullYear(), kpiCalMonth2.getMonth()-1, 1);
+  }
+  renderKpiCals();
+}
+
+function kpiCalPick(year, month, day) {
+  var picked = new Date(year, month, day);
+  if (kpiCalPicking === 'start' || !kpiCalStart || (kpiCalStart && kpiCalEnd)) {
+    kpiCalStart = picked; kpiCalEnd = null; kpiCalPicking = 'end';
+  } else {
+    if (picked < kpiCalStart) { kpiCalEnd = kpiCalStart; kpiCalStart = picked; }
+    else kpiCalEnd = picked;
+    kpiCalPicking = 'start';
+  }
+  // Update display inputs
+  var fromEl = document.getElementById('kpiCalFrom');
+  var toEl   = document.getElementById('kpiCalTo');
+  if (fromEl) fromEl.value = kpiCalStart ? kpiCalStart.toISOString().slice(0,10) : '';
+  if (toEl)   toEl.value   = kpiCalEnd   ? kpiCalEnd.toISOString().slice(0,10)   : '';
+  renderKpiCals();
+}
+// ── END KPI CALENDAR ─────────────────────────────────────────────
+
+function navigateToMetaDashboard() {
+  document.querySelectorAll('.sb-item').forEach(function(el){ el.classList.remove('on'); });
+  var sub = document.getElementById('sb-meta-sub');
+  if (sub) sub.classList.add('on');
+  document.querySelectorAll('.page-view').forEach(function(p){ p.classList.remove('active'); });
+  var pg = document.getElementById('page-meta-kpis');
+  if (pg) pg.classList.add('active');
+
+  // Always reload from localStorage to get latest state
+  if (typeof loadMetaState === 'function') loadMetaState();
+
+  // Always reset to today
+  var today = new Date().toISOString().slice(0,10);
+  metaDashDateFrom = metaDashDateTo = today;
+  metaDashPreset = 'today';
+
+  renderMetaDashboard();
+  fetchMetaData();
+}
+
+function setMetaKpiTab(tab) {
+  metaDashTab = tab;
+  renderMetaDashboard();
+}
+
+function setMetaDateRange(preset) {
+  metaDashPreset = preset;
+  var now = new Date();
+  var todayStr = now.toISOString().slice(0,10);
+  switch(preset) {
+    case 'today':     metaDashDateFrom = metaDashDateTo = todayStr; break;
+    case 'yesterday': var y = new Date(now); y.setDate(y.getDate()-1); metaDashDateFrom = metaDashDateTo = y.toISOString().slice(0,10); break;
+    case '7d':        var s7 = new Date(now); s7.setDate(s7.getDate()-6); metaDashDateFrom = s7.toISOString().slice(0,10); metaDashDateTo = todayStr; break;
+    case '30d':       var s30 = new Date(now); s30.setDate(s30.getDate()-29); metaDashDateFrom = s30.toISOString().slice(0,10); metaDashDateTo = todayStr; break;
+  }
+  fetchMetaData();
+}
+
+function renderMetaDashboard() {
+  var fr  = currentLang === 'fr';
+  var el  = document.getElementById('stores-meta-content');
+  if (!el) return;
+
+  // Store name
+  var storeName = '';
+  if (typeof storesData !== 'undefined' && storesData.length > 0) storeName = storesData[0].name || '';
+  if (!storeName && metaState && metaState.userName) storeName = metaState.userName;
+  if (!storeName) storeName = 'My Store';
+
+  // Tabs
+  var tabs = [
+    {key:'campaigns', lbl: fr?'Campagnes':'Campaigns'},
+    {key:'adsets',    lbl: fr?'Ensembles pub':'Ad groups'},
+    {key:'ads',       lbl: fr?'Publicit\u00e9s':'Advertisements'}
+  ];
+  var tabsHtml = tabs.map(function(t){
+    var on = metaDashTab === t.key;
+    return '<button onclick="setMetaKpiTab(\'' + t.key + '\')" style="padding:11px 20px;font-size:14px;font-weight:' + (on?'700':'500') + ';color:' + (on?'var(--t1)':'var(--t3)') + ';background:transparent;border:none;border-bottom:2.5px solid ' + (on?'var(--blue-med)':'transparent') + ';cursor:pointer;transition:all .15s;">' + t.lbl + '</button>';
+  }).join('');
+
+  // Columns — translated + Budget label
+  var cols = [
+    {key:'name',         label: fr?'Nom':'Name',            align:'left',  tip:false},
+    {key:'daily_budget', label: fr?'Budget':'Budget',        align:'right', tip:true},
+    {key:'spend',        label: fr?'Dépenses':'Spend',       align:'right', tip:true},
+    {key:'reach',        label: fr?'Portée':'Reach',         align:'right', tip:true},
+    {key:'impressions',  label: 'Impressions',               align:'right', tip:true},
+    {key:'cpm',          label: 'CPM',                       align:'right', tip:true},
+    {key:'ctr',          label: 'CTR',                       align:'right', tip:true},
+    {key:'cpc',          label: 'CPC',                       align:'right', tip:true},
+    {key:'clicks',       label: fr?'Clics':'Clicks',         align:'right', tip:true},
+    {key:'link_clicks',  label: fr?'Clics lien':'Link clicks', align:'right', tip:true},
+    {key:'atc',          label: fr?'Ajout panier':'ATC',     align:'right', tip:true},
+    {key:'checkouts',    label: fr?'Paiements':'Checkouts',  align:'right', tip:true},
+    {key:'orders',       label: fr?'Achats':'Orders',        align:'right', tip:true},
+    {key:'revenue',      label: fr?'Revenus':'Revenue',      align:'right', tip:true},
+    {key:'roas',         label: 'ROAS',                      align:'right', tip:true},
+    {key:'cost_result',  label: fr?'Coût/résultat':'Cost/result', align:'right', tip:true},
+  ];
+
+  var data = metaDashTab === 'campaigns' ? metaDashCampaigns
+           : metaDashTab === 'adsets'    ? metaDashAdsets
+           : metaDashAds;
+
+  var fmtE = function(v){ return v!=null?'\u20ac'+Number(v).toFixed(2):'--'; };
+  var fmtN = function(v){ return v!=null?Number(v).toLocaleString():'--'; };
+  var fmtP = function(v){ return v!=null?Number(v).toFixed(2)+'%':'--'; };
+  var fmtX = function(v){ return v!=null?Number(v).toFixed(2)+'x':'--'; };
+
+  var thHtml = cols.map(function(c, i){
+    var borderRight = i < cols.length-1 ? 'border-right:1px solid var(--border);' : '';
+    return '<th style="padding:13px 16px;font-size:11px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--t1);white-space:nowrap;border-bottom:2px solid var(--border);text-align:' + c.align + ';background:var(--bg);' + borderRight + '">' + c.label + '</th>';
+  }).join('');
+
+  var tbHtml = '';
+  if (metaDashLoading) {
+    tbHtml = '<tr><td colspan="' + cols.length + '" style="text-align:center;padding:60px;color:var(--t3);font-size:13px;">Loading\u2026</td></tr>';
+  } else if (!metaState || !metaState.connected) {
+    tbHtml = '<tr><td colspan="' + cols.length + '" style="text-align:center;padding:60px;color:var(--t3);font-size:13px;">' + (fr?'Connectez Meta Ads depuis Stores.':'Connect Meta Ads from Stores.') + '</td></tr>';
+  } else if (data.length === 0) {
+    tbHtml = '<tr><td colspan="' + cols.length + '" style="text-align:center;padding:60px;color:var(--t3);font-size:13px;">' + (fr?'Aucune donn\u00e9e pour cette p\u00e9riode.':'No data for this period.') + '</td></tr>';
+  } else {
+    var totals = {spend:0,reach:0,impressions:0,clicks:0,link_clicks:0,atc:0,checkouts:0,orders:0,revenue:0};
+    data.forEach(function(row){
+      ['spend','reach','impressions','clicks','link_clicks','atc','checkouts','orders','revenue'].forEach(function(k){
+        if (row[k]!=null) totals[k] += Number(row[k]);
+      });
+    });
+    data.forEach(function(row){
+      var dot = '<span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:' + (row.status==='ACTIVE'?'#22c55e':'#94a3b8') + ';margin-right:8px;vertical-align:middle;flex-shrink:0;"></span>';
+      var cells = cols.map(function(c, ci){
+        var val;
+        switch(c.key){
+          case 'name':         val = dot + '<span style="font-weight:600;color:var(--t1);">' + (row.name||'--') + '</span>'; break;
+          case 'daily_budget': val = fmtE(row.daily_budget); break;
+          case 'spend':        val = fmtE(row.spend); break;
+          case 'reach':        val = fmtN(row.reach); break;
+          case 'impressions':  val = fmtN(row.impressions); break;
+          case 'cpm':          val = fmtE(row.cpm); break;
+          case 'ctr':          val = fmtP(row.ctr); break;
+          case 'cpc':          val = fmtE(row.cpc); break;
+          case 'clicks':       val = fmtN(row.clicks); break;
+          case 'link_clicks':  val = fmtN(row.link_clicks); break;
+          case 'atc':          val = fmtN(row.atc); break;
+          case 'checkouts':    val = fmtN(row.checkouts); break;
+          case 'orders':       val = fmtN(row.orders); break;
+          case 'revenue':      val = fmtE(row.revenue); break;
+          case 'roas':         val = fmtX(row.roas); break;
+          case 'cost_result':  val = fmtE(row.cost_result); break;
+          default: val = '--';
+        }
+        return '<td style="padding:14px 16px;font-size:13px;color:var(--t2);white-space:nowrap;text-align:' + c.align + ';border-bottom:1px solid var(--border);">' + val + '</td>';
+      }).join('');
+      tbHtml += '<tr onmouseenter="this.style.background=\'var(--bg)\'" onmouseleave="this.style.background=\'\'">' + cells + '</tr>';
+    });
+    // Totals
+    var totCells = cols.map(function(c, ci){
+      var val;
+      switch(c.key){
+        case 'name':        val='<span style="font-weight:700;color:var(--t3);font-size:11px;text-transform:uppercase;">' + (fr?'TOTAL':'TOTAL') + '</span>'; break;
+        case 'spend':       val=fmtE(totals.spend); break;
+        case 'reach':       val=fmtN(totals.reach); break;
+        case 'impressions': val=fmtN(totals.impressions); break;
+        case 'clicks':      val=fmtN(totals.clicks); break;
+        case 'link_clicks': val=fmtN(totals.link_clicks); break;
+        case 'atc':         val=fmtN(totals.atc); break;
+        case 'checkouts':   val=fmtN(totals.checkouts); break;
+        case 'orders':      val=fmtN(totals.orders); break;
+        case 'revenue':     val=fmtE(totals.revenue); break;
+        default: val='--';
+      }
+      return '<td style="padding:12px 16px;font-size:12.5px;font-weight:700;color:var(--t2);white-space:nowrap;text-align:' + c.align + ';border-top:2px solid var(--border);background:var(--bg);">' + val + '</td>';
+    }).join('');
+    tbHtml += '<tr>' + totCells + '</tr>';
+  }
+
+  // Build the full page using DOM to avoid quote conflicts
+  el.innerHTML = '';
+
+  // ── Header row ──
+  var hdr = document.createElement('div');
+  hdr.style.cssText = 'display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;flex-wrap:wrap;gap:14px;';
+
+  // Left: store name
+  var storeLabel = document.createElement('div');
+  storeLabel.style.cssText = 'display:flex;align-items:center;gap:9px;';
+  storeLabel.innerHTML = '<svg viewBox="0 0 20 20" fill="none" width="16" height="16"><path d="M3 9.5V17a1 1 0 001 1h12a1 1 0 001-1V9.5" stroke="#94A3B8" stroke-width="1.4" stroke-linecap="round"/><path d="M1.5 6l1.8-3.5h13.4L18.5 6v1.5a2.5 2.5 0 01-5 0 2.5 2.5 0 01-5 0 2.5 2.5 0 01-5 0V6z" stroke="#94A3B8" stroke-width="1.4" stroke-linejoin="round"/></svg><span style="font-size:16px;font-weight:700;color:var(--t1);">' + storeName + '</span>';
+  hdr.appendChild(storeLabel);
+
+  // Right: calendar button
+  var dateWrap = document.createElement('div');
+  dateWrap.style.cssText = 'position:relative;';
+
+  var calBtn = document.createElement('div');
+  calBtn.style.cssText = 'display:flex;align-items:center;gap:7px;background:var(--card);border:1px solid var(--border);border-radius:8px;padding:7px 14px;cursor:pointer;font-size:13px;font-weight:600;color:var(--t1);user-select:none;position:relative;';
+  calBtn.innerHTML = '<svg viewBox="0 0 13 13" fill="none" width="13" height="13"><rect x="1.5" y="2" width="10" height="9.5" rx="1.5" stroke="#94A3B8" stroke-width="1.2"/><path d="M4.5 1v2M8.5 1v2M1.5 5.5h10" stroke="#94A3B8" stroke-width="1.2" stroke-linecap="round"/></svg><span id="kpi-date-lbl">' + (metaDashDateFrom === metaDashDateTo ? metaDashDateFrom : metaDashDateFrom + ' → ' + metaDashDateTo) + '</span>';
+  calBtn.addEventListener('click', function(e){ e.stopPropagation(); toggleKpiCal(calBtn); });
+  dateWrap.appendChild(calBtn);
+
+  // Calendar dropdown is built once on body by toggleKpiCal
+  hdr.appendChild(dateWrap);
+  el.appendChild(hdr);
+
+  // ── Tabs + Table ──
+  var tableSection = document.createElement('div');
+  tableSection.innerHTML =
+    '<div style="border-bottom:1px solid var(--border);">' + tabsHtml + '</div>' +
+    '<div style="background:var(--card);border:1px solid var(--border);border-top:none;overflow:hidden;">' +
+      '<div style="overflow-x:auto;scrollbar-width:thin;scrollbar-color:#cbd5e1 transparent;">' +
+        '<style>.kpi-scroll::-webkit-scrollbar{height:6px}.kpi-scroll::-webkit-scrollbar-track{background:transparent}.kpi-scroll::-webkit-scrollbar-thumb{background:#cbd5e1;border-radius:3px}</style>' +
+        '<div class="kpi-scroll" style="overflow-x:auto;">' +
+          '<table style="width:100%;border-collapse:collapse;min-width:1600px;">' +
+            '<thead><tr>' + thHtml + '</tr></thead>' +
+            '<tbody>' + tbHtml + '</tbody>' +
+          '</table>' +
+        '</div>' +
+      '</div>' +
+    '</div>';
+  el.appendChild(tableSection);
+}
+
+async function fetchMetaData() {
+  if (!metaState || !metaState.connected || !metaState.token) {
+    metaDashCampaigns = metaDashAdsets = metaDashAds = [];
+    renderMetaDashboard();
+    return;
+  }
+  metaDashLoading = true;
+  renderMetaDashboard();
+
+  var rawAccount = metaState.selectedAccount || (metaState.adaccounts && metaState.adaccounts[0] && metaState.adaccounts[0].id) || '';
+  var accountId = rawAccount.startsWith('act_') ? rawAccount : 'act_' + rawAccount;
+
+  var since = metaDashDateFrom || new Date().toISOString().slice(0,10);
+  var until = metaDashDateTo   || since;
+  var token = metaState.token;
+
+  // Call Meta Graph API directly (works since token is user-level)
+  var GRAPH = 'https://graph.facebook.com/v19.0';
+  var insightFields = 'campaign_name,adset_name,ad_name,spend,reach,impressions,cpm,ctr,cpc,clicks,actions,purchase_roas,cost_per_action_type';
+  var timeRange = encodeURIComponent(JSON.stringify({since:since, until:until}));
+
+  var buildGraphUrl = function(level) {
+    return GRAPH + '/' + accountId + '/insights' +
+      '?access_token=' + encodeURIComponent(token) +
+      '&level=' + level +
+      '&fields=' + encodeURIComponent(insightFields) +
+      '&time_range=' + timeRange +
+      '&limit=100';
+  };
+
+  // Also get campaign list for names + daily_budget
+  var campListUrl = GRAPH + '/' + accountId + '/campaigns' +
+    '?access_token=' + encodeURIComponent(token) +
+    '&fields=name,status,daily_budget,effective_status' +
+    '&limit=100';
+
+  var parseRows = function(data, level, campMap) {
+    var rows = data.data || [];
+    return rows.map(function(row) {
+      var getA = function(type) {
+        var a = (row.actions||[]).find(function(x){ return x.action_type === type; });
+        return a ? parseFloat(a.value) : null;
+      };
+      var getRoas = function() {
+        var r = row.purchase_roas;
+        if (!r) return null;
+        return Array.isArray(r) ? parseFloat((r[0]||{}).value||0) : parseFloat(r)||null;
+      };
+      var rev = getA('purchase_value') || getA('omni_purchase_value');
+      if (!rev && getRoas() && row.spend) rev = getRoas() * parseFloat(row.spend);
+      var name = level==='campaign' ? row.campaign_name : level==='adset' ? row.adset_name : row.ad_name;
+      var campInfo = campMap && row.campaign_id ? campMap[row.campaign_id] : null;
+      return {
+        name:         name || '--',
+        status:       (campInfo && campInfo.effective_status) || row.status || 'ACTIVE',
+        daily_budget: row.daily_budget ? parseFloat(row.daily_budget)/100 : (campInfo && campInfo.daily_budget ? parseFloat(campInfo.daily_budget)/100 : null),
+        spend:        row.spend ? parseFloat(row.spend) : null,
+        reach:        row.reach ? parseInt(row.reach) : null,
+        impressions:  row.impressions ? parseInt(row.impressions) : null,
+        cpm:          row.cpm ? parseFloat(row.cpm) : null,
+        ctr:          row.ctr ? parseFloat(row.ctr) : null,
+        cpc:          row.cpc ? parseFloat(row.cpc) : null,
+        clicks:       row.clicks ? parseInt(row.clicks) : null,
+        link_clicks:  getA('link_click'),
+        atc:          getA('add_to_cart'),
+        checkouts:    getA('initiate_checkout'),
+        orders:       getA('purchase') || getA('omni_purchase'),
+        revenue:      rev,
+        roas:         getRoas(),
+        cost_result:  row.cost_per_action_type ? parseFloat(((row.cost_per_action_type||[])[0]||{}).value||0)||null : null,
+      };
+    });
+  };
+
+  try {
+    // Fetch campaigns list + insights in parallel
+    var [campListResp, campInsResp, adsetResp, adResp] = await Promise.all([
+      fetch(campListUrl),
+      fetch(buildGraphUrl('campaign')),
+      fetch(buildGraphUrl('adset')),
+      fetch(buildGraphUrl('ad'))
+    ]);
+    var [campListData, campInsData, adsetData, adData] = await Promise.all([
+      campListResp.json(), campInsResp.json(), adsetResp.json(), adResp.json()
+    ]);
+
+    // Build campaign map for budget lookup
+    var campMap = {};
+    (campListData.data||[]).forEach(function(c){ campMap[c.id] = c; });
+
+    console.log('[KPIs] campaigns insights:', campInsData);
+    console.log('[KPIs] campaign list:', campListData);
+
+    if (campInsData.error) {
+      console.error('[KPIs] API error:', campInsData.error);
+      // Fallback: try via backend proxy with correct format
+      var fallbackUrl = BACKEND_URL + '/api/meta/proxy?access_token=' + encodeURIComponent(token) +
+        '&account_id=' + encodeURIComponent(accountId) +
+        '&since=' + encodeURIComponent(since) +
+        '&until=' + encodeURIComponent(until) +
+        '&level=campaign&fields=' + encodeURIComponent(insightFields);
+      var fbResp = await fetch(fallbackUrl);
+      campInsData = await fbResp.json();
+      console.log('[KPIs] fallback response:', campInsData);
+    }
+
+    metaDashCampaigns = parseRows(campInsData, 'campaign', campMap);
+    metaDashAdsets    = parseRows(adsetData.error ? {data:[]} : adsetData, 'adset', campMap);
+    metaDashAds       = parseRows(adData.error ? {data:[]} : adData, 'ad', campMap);
+
+  } catch(e) {
+    console.error('[KPIs] fetch error:', e);
+    metaDashCampaigns = metaDashAdsets = metaDashAds = [];
+  }
+  metaDashLoading = false;
+  renderMetaDashboard();
+}
+
+
+// Keep old name as alias
+function fetchMetaCampaigns() { return fetchMetaData(); }
+
+// Show/hide Meta sub-item based on Meta connection state
+var storesSbOpen = false;
+
+function updateMetaSidebarVisibility() {
+  var children = document.getElementById('sb-stores-children');
+  var chevron  = document.getElementById('stores-chevron');
+  if (!children) return;
+  if (metaState && metaState.connected) {
+    children.style.display = '';
+    storesSbOpen = true;
+    if (chevron) chevron.style.transform = 'rotate(180deg)';
+  }
+}
+
+function toggleKpisMenu(e) {
+  if (e) e.stopPropagation();
+  var children = document.getElementById('sb-stores-children');
+  var chevron  = document.getElementById('stores-chevron');
+  storesSbOpen = !storesSbOpen;
+  if (children) children.style.display = storesSbOpen ? '' : 'none';
+  if (chevron)  chevron.style.transform = storesSbOpen ? 'rotate(180deg)' : 'rotate(0deg)';
+}
+
+function toggleStoresSb(el) {
+  // Legacy kept for compat — just navigate to stores
+  document.querySelectorAll('.sb-item').forEach(function(x){ x.classList.remove('on'); });
+  if (el) el.classList.add('on');
+  document.querySelectorAll('.page-view').forEach(function(p){ p.classList.remove('active'); });
+  var pg = document.getElementById('page-stores');
+  if (pg) { pg.classList.add('active'); renderStoresPage(); }
+}
+
+// ── END META DASHBOARD ───────────────────────────────────────────
+
 function renderStoresPage() {
   loadStoresData();
   // Show list, hide others
@@ -9642,19 +10204,17 @@ function renderStoresPage() {
   const empty = document.getElementById('stores-empty');
 
   if (storesData.length === 0) {
-    grid.style.display = 'none';
-    empty.style.display = '';
-    empty.innerHTML = `
-      <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:calc(100vh - 200px);gap:20px;">
-        <button onclick="openAddStore()" style="display:flex;align-items:center;gap:10px;background:var(--blue-med);color:#fff;border:none;border-radius:10px;padding:14px 32px;font-size:15px;font-weight:700;cursor:pointer;box-shadow:0 4px 16px rgba(37,99,235,.25);transition:opacity .2s;" onmouseenter="this.style.opacity='.85'" onmouseleave="this.style.opacity='1'">
-          <svg viewBox="0 0 16 16" width="14" height="14" fill="none"><path d="M8 2v12M2 8h12" stroke="#fff" stroke-width="2.5" stroke-linecap="round"/></svg>
-          Add Store
-        </button>
+    grid.innerHTML = `
+      <div onclick="openAddStore()" style="background:var(--card);border:2px dashed var(--border);border-radius:10px;padding:40px 24px;display:flex;flex-direction:column;align-items:center;gap:12px;text-align:center;cursor:pointer;transition:all .2s;min-height:180px;justify-content:center;" onmouseenter="this.style.borderColor='var(--blue-med)'" onmouseleave="this.style.borderColor='var(--border)'">
+        <div style="width:48px;height:48px;border-radius:12px;background:var(--bg);border:1.5px solid var(--border);display:flex;align-items:center;justify-content:center;">
+          <svg viewBox="0 0 20 20" fill="none" width="20" height="20"><path d="M10 4v12M4 10h12" stroke="var(--t3)" stroke-width="1.8" stroke-linecap="round"/></svg>
+        </div>
+        <div style="font-size:14px;font-weight:700;color:var(--t2);">Add your first store</div>
+        <div style="font-size:12px;color:var(--t3);">Click to connect your Shopify store</div>
       </div>
     `;
     return;
   }
-  grid.style.display = '';
   grid.innerHTML = storesData.map((s, i) => `
     <div style="background:var(--card);border:1px solid var(--border);border-radius:10px;padding:28px 24px;display:flex;flex-direction:column;align-items:center;gap:12px;text-align:center;transition:box-shadow .2s;" onmouseenter="this.style.boxShadow='0 4px 20px rgba(0,0,0,.08)'" onmouseleave="this.style.boxShadow='none'">
       <div style="width:56px;height:56px;border-radius:14px;background:#f0fdf4;border:1px solid #bbf7d0;display:flex;align-items:center;justify-content:center;">
@@ -9827,52 +10387,230 @@ function openAddStore() {
   document.getElementById('stores-list-view').style.display   = 'none';
   document.getElementById('stores-detail-view').style.display = 'none';
   document.getElementById('stores-wizard').style.display      = '';
-  document.getElementById('stores-wizard').innerHTML = `
-    <div style="max-width:480px;">
-      <button onclick="cancelWizard()" style="display:flex;align-items:center;gap:5px;background:transparent;border:none;color:var(--t3);font-size:12px;cursor:pointer;padding:0;margin-bottom:28px;">
-        <svg viewBox="0 0 16 16" width="11" height="11" fill="none"><path d="M10 3L5 8l5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        Back to stores
-      </button>
-
-      <h2 style="font-size:20px;font-weight:700;color:var(--t1);margin:0 0 6px;">Connect Shopify</h2>
-      <p style="font-size:13px;color:var(--t3);margin:0 0 28px;">Enter your store domain to authorize the connection.</p>
-
-      <div style="margin-bottom:14px;">
-        <div style="font-size:12px;font-weight:600;color:var(--t2);margin-bottom:7px;text-transform:uppercase;letter-spacing:.05em;">Store domain</div>
-        <div style="display:flex;align-items:center;border:1.5px solid var(--border);background:var(--card);" id="domain-wrap">
-          <span style="padding:0 12px;font-size:13px;color:var(--t3);border-right:1px solid var(--border);height:44px;display:flex;align-items:center;">https://</span>
-          <input id="connect-domain-inp" type="text" placeholder="yourstore.myshopify.com"
-            style="flex:1;padding:0 14px;height:44px;border:none;outline:none;font-size:14px;color:var(--t1);background:transparent;"
-            onfocus="document.getElementById('domain-wrap').style.borderColor='var(--blue-med)'"
-            onblur="document.getElementById('domain-wrap').style.borderColor='var(--border)'"
-            onkeydown="if(event.key==='Enter')connectShopifyDirect()"/>
-        </div>
-        <div style="font-size:11px;color:var(--t3);margin-top:6px;">Ex: <span style="font-family:monospace;">velora.myshopify.com</span></div>
-      </div>
-
-      <button onclick="connectShopifyDirect()" style="width:100%;height:44px;background:#1D4ED8;color:#fff;border:none;font-size:14px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;transition:opacity .15s;" onmouseenter="this.style.opacity='.88'" onmouseleave="this.style.opacity='1'">
-        <svg viewBox="0 0 20 20" fill="none" width="16" height="16"><path d="M3 10V17a1 1 0 001 1h12a1 1 0 001-1V10" stroke="white" stroke-width="1.7" stroke-linecap="round"/><path d="M1 6l2-4h14l2 4v2a2.5 2.5 0 01-5 0 2.5 2.5 0 01-5 0 2.5 2.5 0 01-5 0V6z" stroke="white" stroke-width="1.7" stroke-linejoin="round"/></svg>
-        Connect with Shopify
-      </button>
-    </div>
-  `;
-  setTimeout(() => { const i = document.getElementById('connect-domain-inp'); if(i) i.focus(); }, 50);
-}
-
-function connectShopifyDirect() {
-  let shop = (document.getElementById('connect-domain-inp')?.value || '').trim().replace('https://','').replace(/\/$/,'');
-  if (!shop) { document.getElementById('connect-domain-inp').style.outline = '2px solid var(--red)'; return; }
-  if (!shop.includes('.')) shop = shop + '.myshopify.com';
-  window.location.href = '/api/shopify/auth?shop=' + encodeURIComponent(shop);
+  renderConnectPage();
 }
 
 function cancelWizard() {
   renderStoresPage();
 }
 
+function renderConnectPage() {
+  var fr = currentLang === 'fr';
+  var metaConn = metaState && metaState.connected;
+  var c = document.getElementById('wizard-step-content');
+  if (!c) return;
+
+  loadStoresData();
+  var savedName = storesData.length > 0 ? storesData[0].name : '';
+  var savedDomain = storesData.length > 0 ? storesData[0].domain : '';
+
+  var SHOPIFY_B64 = "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";
+  var META_B64    = "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";
+
+  var root = document.createElement('div');
+
+  // Title
+  var hdr = document.createElement('div');
+  hdr.innerHTML = '<h2 style="font-size:20px;font-weight:800;color:var(--t1);margin:0 0 4px;">' + (fr?'Connecter votre boutique':'Connect your store') + '</h2><p style="font-size:13px;color:var(--t3);margin:0 0 22px;">' + (fr?'Choisissez les plateformes à connecter.':'Choose which platforms to connect.') + '</p>';
+  root.appendChild(hdr);
+
+  // ─── Shopify card ───
+  var shpCard = document.createElement('div');
+  shpCard.style.cssText = 'border:1.5px solid var(--border);padding:22px 24px;background:var(--card);margin-bottom:14px;';
+
+  var shpTop = document.createElement('div');
+  shpTop.style.cssText = 'display:flex;align-items:center;gap:11px;margin-bottom:16px;';
+  var shpImg = document.createElement('img');
+  shpImg.src = 'data:image/png;base64,' + SHOPIFY_B64;
+  shpImg.style.cssText = 'width:26px;height:26px;object-fit:contain;flex-shrink:0;';
+  shpTop.appendChild(shpImg);
+  shpTop.innerHTML += '<div><div style="font-size:14px;font-weight:800;color:var(--t1);">Shopify</div><div style="font-size:11px;color:var(--t3);margin-top:1px;">' + (fr?'Commandes, revenus, produits':'Orders, revenue, products') + '</div></div>';
+  shpCard.appendChild(shpTop);
+
+  // Store name input
+  var snLbl = document.createElement('div');
+  snLbl.style.cssText = 'font-size:10px;font-weight:700;color:var(--t3);letter-spacing:.07em;text-transform:uppercase;margin-bottom:5px;';
+  snLbl.textContent = fr ? 'NOM DE LA BOUTIQUE' : 'STORE NAME';
+  shpCard.appendChild(snLbl);
+  var snInp = document.createElement('input');
+  snInp.id = 'shop-name-inp'; snInp.type = 'text';
+  snInp.placeholder = fr ? 'Ex: Ma Boutique' : 'Ex: My Store';
+  snInp.value = savedName;
+  snInp.style.cssText = 'width:100%;box-sizing:border-box;padding:9px 11px;border:1.5px solid var(--border);font-size:13px;color:var(--t1);background:var(--bg);outline:none;margin-bottom:10px;';
+  snInp.addEventListener('focus', function(){ this.style.borderColor='var(--blue-med)'; });
+  snInp.addEventListener('blur',  function(){ this.style.borderColor='var(--border)'; });
+  shpCard.appendChild(snInp);
+
+  // Domain input
+  var domLbl = document.createElement('div');
+  domLbl.style.cssText = 'font-size:10px;font-weight:700;color:var(--t3);letter-spacing:.07em;text-transform:uppercase;margin-bottom:5px;';
+  domLbl.textContent = 'STORE DOMAIN';
+  shpCard.appendChild(domLbl);
+  var domRow = document.createElement('div');
+  domRow.id = 'shp-domain-wrap';
+  domRow.style.cssText = 'display:flex;border:1.5px solid var(--border);background:var(--card);margin-bottom:5px;';
+  var pfx = document.createElement('span');
+  pfx.textContent = 'https://';
+  pfx.style.cssText = 'padding:9px 11px;font-size:13px;color:var(--t3);background:var(--bg);border-right:1px solid var(--border);white-space:nowrap;';
+  domRow.appendChild(pfx);
+  var domInp = document.createElement('input');
+  domInp.id = 'shopify-domain-inp'; domInp.type = 'text';
+  domInp.placeholder = 'mystore.myshopify.com';
+  domInp.value = savedDomain.replace('.myshopify.com','') ? savedDomain : '';
+  domInp.style.cssText = 'flex:1;padding:9px 11px;border:none;outline:none;font-size:13px;color:var(--t1);background:var(--card);';
+  domInp.addEventListener('focus', function(){ domRow.style.borderColor='var(--blue-med)'; });
+  domInp.addEventListener('blur',  function(){ domRow.style.borderColor='var(--border)'; });
+  domInp.addEventListener('keydown', function(e){ if(e.key==='Enter') installDataDash(); });
+  domRow.appendChild(domInp);
+  shpCard.appendChild(domRow);
+
+  var shpBtn = document.createElement('button');
+  shpBtn.id = 'shopify-install-btn';
+  shpBtn.style.cssText = 'padding:10px 24px;background:var(--blue-med);color:#fff;border:none;font-size:13px;font-weight:700;cursor:pointer;transition:background .2s;border-radius:4px;';
+  shpBtn.textContent = fr ? 'Connecter Shopify' : 'Connect Shopify';
+  shpBtn.addEventListener('mouseenter', function(){ if(!this.disabled) this.style.background='#1749b1'; });
+  shpBtn.addEventListener('mouseleave', function(){ if(!this.disabled) this.style.background='var(--blue-med)'; });
+  shpBtn.addEventListener('click', installDataDash);
+  shpCard.appendChild(shpBtn);
+  root.appendChild(shpCard);
+
+  // ─── Meta card ───
+  var metaCard = document.createElement('div');
+  metaCard.style.cssText = 'border:1.5px solid var(--border);padding:22px 24px;background:var(--card);margin-bottom:14px;';
+
+  var metaTop = document.createElement('div');
+  metaTop.style.cssText = 'display:flex;align-items:center;gap:11px;margin-bottom:14px;';
+  var metaImg = document.createElement('img');
+  metaImg.src = 'data:image/png;base64,' + META_B64;
+  metaImg.style.cssText = 'width:26px;height:26px;object-fit:contain;flex-shrink:0;';
+  metaTop.appendChild(metaImg);
+  metaTop.innerHTML += '<div><div style="font-size:14px;font-weight:800;color:var(--t1);">Meta Ads</div><div style="font-size:11px;color:var(--t3);margin-top:1px;">' + (fr?'Dépenses pub, ROAS':'Ad spend, ROAS') + '</div></div>';
+  metaCard.appendChild(metaTop);
+
+  if (metaConn) {
+    var connBox = document.createElement('div');
+    connBox.style.cssText = 'display:inline-flex;align-items:center;gap:8px;padding:8px 12px;background:#f0fdf4;border:1.5px solid #22c55e;margin-bottom:12px;border-radius:4px;';
+    connBox.innerHTML = '<svg viewBox="0 0 16 16" fill="none" width="14" height="14"><path d="M3 8l4 4 6-6" stroke="#22c55e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span style="font-size:13px;font-weight:700;color:#16a34a;">Connected \u2014 ' + (metaState.userName||'') + '</span>';
+    metaCard.appendChild(connBox);
+    metaCard.appendChild(document.createElement('br'));
+    var discBtn = document.createElement('button');
+    discBtn.textContent = fr ? 'Déconnecter' : 'Disconnect';
+    discBtn.style.cssText = 'padding:7px 16px;background:#ef4444;border:none;color:#fff;font-size:12px;font-weight:700;cursor:pointer;border-radius:4px;transition:background .2s;';
+    discBtn.addEventListener('mouseenter', function(){ this.style.background='#dc2626'; });
+    discBtn.addEventListener('mouseleave', function(){ this.style.background='#ef4444'; });
+    discBtn.addEventListener('click', metaDisconnectFromWizard);
+    metaCard.appendChild(discBtn);
+  } else {
+    var metaDesc = document.createElement('p');
+    metaDesc.style.cssText = 'font-size:13px;color:var(--t2);margin:0 0 13px;line-height:1.5;';
+    metaDesc.textContent = fr ? 'Connectez votre compte Meta pour importer vos dépenses pub automatiquement.' : 'Connect your Meta ad account to automatically import your ad spend.';
+    metaCard.appendChild(metaDesc);
+    var metaBtn = document.createElement('button');
+    metaBtn.id = 'meta-connect-btn';
+    metaBtn.style.cssText = 'padding:10px 24px;background:var(--blue-med);color:#fff;border:none;font-size:13px;font-weight:700;cursor:pointer;border-radius:4px;transition:all .2s;';
+    metaBtn.textContent = fr ? 'Connecter Meta Ads' : 'Connect Meta Ads';
+    metaBtn.addEventListener('mouseenter', function(){ if(!this.disabled) this.style.background='#1749b1'; });
+    metaBtn.addEventListener('mouseleave', function(){ if(!this.disabled) this.style.background='var(--blue-med)'; });
+    metaBtn.addEventListener('click', function() {
+      metaBtn.textContent = 'Connecting\u2026';
+      metaBtn.disabled = true;
+      metaBtn.style.opacity = '0.7';
+      metaBtn.style.cursor = 'wait';
+      // Spinner dots animation
+      var dots = 0;
+      var anim = setInterval(function(){
+        dots = (dots+1)%4;
+        metaBtn.textContent = 'Connecting' + '.'.repeat(dots);
+      }, 400);
+      var popup = window.open(BACKEND_URL + '/api/meta/auth', 'MetaAuth', 'width=600,height=700,scrollbars=yes');
+      window.addEventListener('message', function onMsg(e) {
+        if (!e.data || e.data.type !== 'META_CONNECTED') return;
+        window.removeEventListener('message', onMsg);
+        clearInterval(anim);
+        metaState.connected = true;
+        metaState.userId = e.data.userId;
+        metaState.userName = e.data.user ? (e.data.user.name||'') : '';
+        metaState.token = e.data.token;
+        metaState.adaccounts = e.data.adaccounts || [];
+        metaState.selectedAccount = metaState.adaccounts.length > 0 ? metaState.adaccounts[0].id : null;
+        metaState.lastSync = new Date().toISOString();
+        saveMetaState();
+        if (popup) try { popup.close(); } catch(ex) {}
+        // Success animation: turn green
+        metaBtn.textContent = '\u2713 Connected';
+        metaBtn.style.background = '#22c55e';
+        metaBtn.style.opacity = '1';
+        metaBtn.style.cursor = 'default';
+        setTimeout(function(){
+          updateMetaSidebarVisibility();
+          renderConnectPage();
+        }, 800);
+      });
+    });
+    metaCard.appendChild(metaBtn);
+  }
+  root.appendChild(metaCard);
+
+  // ─── Connected stores list ───
+  if (storesData.length > 0) {
+    var storeSection = document.createElement('div');
+    var stLbl = document.createElement('div');
+    stLbl.style.cssText = 'font-size:11px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px;';
+    stLbl.textContent = fr ? 'Boutiques connectées' : 'Connected stores';
+    storeSection.appendChild(stLbl);
+    storesData.forEach(function(s, i) {
+      var row = document.createElement('div');
+      row.style.cssText = 'display:flex;align-items:center;justify-content:space-between;padding:11px 14px;border:1px solid var(--border);background:var(--bg);margin-bottom:8px;border-radius:4px;';
+      var info = document.createElement('div');
+      info.style.cssText = 'display:flex;align-items:center;gap:9px;';
+      info.innerHTML = '<span style="width:8px;height:8px;border-radius:50%;background:#22c55e;display:inline-block;flex-shrink:0;"></span><div><div style="font-size:13px;font-weight:700;color:var(--t1);">' + escHtml(s.name||s.domain||'Store') + '</div><div style="font-size:11px;color:var(--t3);font-family:monospace;">' + escHtml(s.domain||'') + '</div></div>';
+      var delBtn = document.createElement('button');
+      delBtn.textContent = fr ? 'Supprimer' : 'Delete';
+      delBtn.style.cssText = 'padding:5px 12px;background:transparent;border:1px solid #ef4444;color:#ef4444;font-size:11px;font-weight:700;cursor:pointer;border-radius:4px;transition:background .15s;';
+      delBtn.addEventListener('mouseenter', function(){ this.style.background='#fef2f2'; });
+      delBtn.addEventListener('mouseleave', function(){ this.style.background='transparent'; });
+      (function(idx){ delBtn.addEventListener('click', function(){ if(confirm('Delete this store?')){ loadStoresData(); storesData.splice(idx,1); saveStoresData(); renderConnectPage(); updateMetaSidebarVisibility(); } }); })(i);
+      row.appendChild(info); row.appendChild(delBtn);
+      storeSection.appendChild(row);
+    });
+    root.appendChild(storeSection);
+  }
+
+  c.innerHTML = '';
+  c.appendChild(root);
+}
+
+function metaConnectFromWizard() {
+  const popup = window.open(BACKEND_URL + '/api/meta/auth', 'MetaAuth', 'width=600,height=700,scrollbars=yes');
+  window.addEventListener('message', function onMsg(e) {
+    if (!e.data || e.data.type !== 'META_CONNECTED') return;
+    window.removeEventListener('message', onMsg);
+    metaState.connected       = true;
+    metaState.userId          = e.data.userId;
+    metaState.userName        = e.data.user ? (e.data.user.name || '') : '';
+    metaState.token           = e.data.token;
+    metaState.adaccounts      = e.data.adaccounts || [];
+    metaState.selectedAccount = metaState.adaccounts.length > 0 ? metaState.adaccounts[0].id : null;
+    metaState.lastSync        = new Date().toISOString();
+    saveMetaState();
+    if (popup) try { popup.close(); } catch(ex) {}
+    updateMetaSidebarVisibility();
+    renderConnectPage();
+  });
+}
+
+function metaDisconnectFromWizard() {
+  metaState.connected = false; metaState.userId = null; metaState.userName = '';
+  metaState.token = ''; metaState.adaccounts = []; metaState.selectedAccount = null;
+  saveMetaState();
+  updateMetaSidebarVisibility();
+  renderConnectPage();
+}
+
+function copyWizardKey() {}
+function renderWizard() { renderConnectPage(); }
 function wizardNext() {}
 function wizardPrev() {}
-function renderWizard() {}
 
 loadStoresData();
 
@@ -9939,29 +10677,40 @@ loadStoresData();
 
 <!-- ══ ANALYTICS PAGE ══ -->
 <div id="page-analytics" class="page-view">
+  <div style="position:sticky;top:var(--tb);z-index:10;background:var(--tb-bg);border-bottom:1px solid var(--border);height:52px;display:flex;align-items:center;padding-left:calc(var(--sb) + 32px);padding-right:32px;justify-content:space-between;">
+    <h1 style="font-size:17px;font-weight:700;color:var(--t1);margin:0;">Analytics</h1>
+    <span id="an-period-lbl" style="font-size:12px;color:var(--t3);font-weight:500;"></span>
+  </div>
 <div class="page">
   <div class="analytics-page">
-    <div class="an-hd">
-      <h1 class="an-title" data-i18n="analytics.title">Analytics</h1>
-      <span id="an-period-lbl" style="font-size:12px;color:var(--t3);font-weight:500;"></span>
-    </div>
     <div class="an-kpis" id="anKpis"></div>
-    <div class="an-row">
-      <div class="an-card">
-        <div style="display:flex;align-items:center;justify-content:space-between;">
-          <span class="an-card-title" id="anChartTitle" data-i18n="analytics.ca">Revenue by day</span>
+
+    <!-- Chart gauche | Funnel + Weekly droite -->
+    <div style="display:grid;grid-template-columns:1.2fr 0.8fr;gap:10px;height:calc(100vh - 260px);">
+      <!-- Graphique gauche -->
+      <div class="an-card" style="padding:16px;display:flex;flex-direction:column;">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
+          <span class="an-card-title" style="font-size:13px;" id="anChartTitle">Revenue by day</span>
           <div class="an-legend" id="anChartLegend"></div>
         </div>
-        <div class="an-chart-wrap" id="anChartWrap">
-          <svg id="anChartSvg" viewBox="0 0 520 200" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg"></svg>
+        <div class="an-chart-wrap" id="anChartWrap" style="margin:0;flex:1;">
+          <svg id="anChartSvg" viewBox="0 0 520 200" width="100%" height="100%" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg"></svg>
         </div>
       </div>
-      <div class="an-card">
-        <span class="an-card-title" data-i18n="analytics.topprods">Products performance</span>
-        <div id="anProdTable" style="flex:1;overflow-y:auto;"></div>
+      <!-- Colonne droite : Funnel + Weekly empilés -->
+      <div style="display:flex;flex-direction:column;gap:10px;">
+        <!-- Meta Funnel -->
+        <div class="an-card" style="padding:16px;flex:1;">
+          <span class="an-card-title" style="font-size:13px;margin-bottom:12px;display:block;">Meta Ads — Conversion funnel</span>
+          <div id="anMetaFunnel"></div>
+        </div>
+        <!-- Weekly performance -->
+        <div class="an-card" style="padding:16px;flex:1;">
+          <span class="an-card-title" style="font-size:13px;margin-bottom:10px;display:block;">Weekly performance</span>
+          <div id="anWeeklyPerf" style="overflow-x:auto;"></div>
+        </div>
       </div>
     </div>
-    <div id="anExtraSections" style="padding:0 22px 22px;"></div>
   </div>
 </div>
 </div>
@@ -10053,21 +10802,30 @@ loadStoresData();
     <h1 style="font-size:17px;font-weight:700;color:var(--t1);margin:0;">Stores</h1>
   </div>
   <div class="page" style="position:relative;overflow:hidden;">
+
     <div style="padding:28px 36px;position:relative;z-index:1;">
 
       <div id="stores-list-view">
-        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;">
-          <span style="font-size:13px;font-weight:600;color:var(--t2);">Your stores</span>
-          <button onclick="openAddStore()" style="display:flex;align-items:center;gap:7px;background:var(--blue-med);color:#fff;border:none;border-radius:8px;padding:10px 20px;font-size:13px;font-weight:600;cursor:pointer;" onmouseenter="this.style.opacity='.85'" onmouseleave="this.style.opacity='1'">
-            Add store
-            <svg viewBox="0 0 16 16" width="12" height="12" fill="none"><path d="M8 2v12M2 8h12" stroke="#fff" stroke-width="2.2" stroke-linecap="round"/></svg>
-          </button>
-        </div>
+
         <div id="stores-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:14px;"></div>
         <div id="stores-empty" style="display:none;"></div>
       </div>
 
-      <div id="stores-wizard" style="display:none;"></div>
+      <!-- WIZARD (used as connect page) -->
+      <div id="stores-wizard" style="display:none;">
+        <button onclick="cancelWizard()" style="display:flex;align-items:center;gap:5px;background:transparent;border:none;color:#94a3b8;font-size:13px;cursor:pointer;padding:0;margin-bottom:20px;">
+          <svg viewBox="0 0 16 16" width="11" height="11" fill="none"><path d="M10 3L5 8l5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Back to stores
+        </button>
+        <div style="background:var(--card);border:1px solid var(--border);border-radius:4px;padding:40px 48px;max-width:900px;box-shadow:0 1px 6px rgba(0,0,0,.06);">
+          <div id="wizard-step-content"></div>
+          <button id="wizard-next-btn" style="display:none;"></button>
+          <button id="wizard-prev-btn" style="display:none;"></button>
+          <div id="wizard-steps-list" style="display:none;"></div>
+          <svg style="display:none;"><circle id="wizard-circle"/></svg>
+          <span id="wizard-progress-lbl" style="display:none;"></span>
+        </div>
+      </div>
 
       <div id="stores-detail-view" style="display:none;">
         <button onclick="renderStoresPage()" style="display:flex;align-items:center;gap:5px;background:transparent;border:none;color:#94a3b8;font-size:13px;cursor:pointer;padding:0;margin-bottom:18px;">
@@ -10080,6 +10838,18 @@ loadStoresData();
     </div>
   </div>
 </div><!-- end page-stores -->
+
+<!-- ══ META KPIs PAGE ══ -->
+<div id="page-meta-kpis" class="page-view">
+  <div style="position:sticky;top:var(--tb);z-index:10;background:var(--tb-bg);border-bottom:1px solid var(--border);height:52px;display:flex;align-items:center;padding-left:calc(var(--sb) + 32px);padding-right:32px;">
+    <h1 style="font-size:17px;font-weight:700;color:var(--t1);margin:0;">KPIs</h1>
+  </div>
+  <div class="page">
+    <div style="padding:28px 36px;">
+      <div id="stores-meta-content"></div>
+    </div>
+  </div>
+</div>
 
 <!-- ══ SETTINGS PAGE ══ -->
 <div id="page-settings" class="page-view">
