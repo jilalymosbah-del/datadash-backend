@@ -9006,7 +9006,7 @@ function detectBrowserLang() {
   return 'en';
 }
 
-function checkOnboarding() { return; } function checkOnboarding_disabled() {
+function checkOnboarding() {
   // Look up persisted user from either localStorage (Keep me signed in) or sessionStorage (per-session)
   try {
     const saved = localStorage.getItem('dd_user') || sessionStorage.getItem('dd_user');
@@ -9172,6 +9172,8 @@ try {
     updateUserUI();
     document.getElementById('onboardingOverlay').classList.add('hidden');
     if (btn) { btn.disabled = false; btn.textContent = fr?'Commencer →':'Get started →'; }
+    // Show Shopify connect page after onboarding
+    if (!shopifyState.connected) { navigateTo('settings'); }
   }, 800);
 }
 
